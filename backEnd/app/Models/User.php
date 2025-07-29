@@ -47,4 +47,8 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    public function orangTua()
+    {
+        return $this->hasOne(OrangTua::class, 'id_user');
+    }
 }

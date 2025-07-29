@@ -11,7 +11,7 @@ Route::get('/', function () {
 Route::middleware('role:admin')->group(function () {
     Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
-    Route::get('/dashboard', function () {
+    Route::get('admin/dashboard', function () {
         return view('backend.pages.dashboard');
     });
 
@@ -20,15 +20,26 @@ Route::middleware('role:admin')->group(function () {
     });
 });
 
-Route::get('/pendaftaran', function () {
-    return view('backend.pages.pendaftaran');
-});
+Route::middleware('role:user')->group(function () {
+    Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
-Route::post('/pendaftaran', [LoginController::class, 'login'])->name('pendaftaran');
+    Route::get('admin/dashboard', function () {
+        return view('backend.pages.dashboard');
+    });
+
+    Route::get('/data-pendaftar', function () {
+        return view('backend.pages.data-pendaftar');
+    });
+});
 
 Route::get('/login', function () {
     return view('backend.pages.login');
 })->name('login.index');
 
+Route::get('/registrasi', function () {
+    return view('backend.pages.registrasi');
+})->name('registrasi.index');
+
+Route::post('/registrasi', [LoginController::class, 'registrasi'])->name('registrasi');
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
