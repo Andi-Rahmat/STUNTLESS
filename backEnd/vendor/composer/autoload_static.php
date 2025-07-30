@@ -40,6 +40,7 @@ class ComposerStaticInit88970a0117c062eed55fa8728fc43833
         'ce9671a430e4846b44e1c68c7611f9f5' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery.php',
         'a1cfe24d14977df6878b9bf804af2d1c' => __DIR__ . '/..' . '/nunomaduro/collision/src/Adapters/Phpunit/Autoload.php',
         'ec07570ca5a812141189b1fa81503674' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Assert/Functions.php',
+        'ef157334f1067da991ff8953983afdb3' => __DIR__ . '/../..' . '/app/Helpers/helper.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -523,6 +524,12 @@ class ComposerStaticInit88970a0117c062eed55fa8728fc43833
 
     public static $classMap = array (
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
+        'App\\Http\\Controllers\\LoginController' => __DIR__ . '/../..' . '/app/Http/Controllers/LoginController.php',
+        'App\\Http\\Controllers\\PendaftaranController' => __DIR__ . '/../..' . '/app/Http/Controllers/PendaftaranController.php',
+        'App\\Http\\Controllers\\ibuController' => __DIR__ . '/../..' . '/app/Http/Controllers/ibuController.php',
+        'App\\Http\\Middleware\\CheckAuth' => __DIR__ . '/../..' . '/app/Http/Middleware/CheckAuth.php',
+        'App\\Http\\Middleware\\CheckUserRole' => __DIR__ . '/../..' . '/app/Http/Middleware/CheckUserRole.php',
+        'App\\Models\\OrangTua' => __DIR__ . '/../..' . '/app/Models/OrangTua.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',

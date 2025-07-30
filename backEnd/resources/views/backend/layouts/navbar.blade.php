@@ -13,21 +13,21 @@
     </li><!-- End Dashboard Nav -->
 
     <li class="nav-item">
-      <a class="nav-link {{ $menu !== 'data-pendaftar' ? 'collapsed' : '' }} " href="/data-pendaftar">
-        <i class="bi bi-menu-button-wide"></i>
-        <span>Data Pendaftar</span>
+      <a class="nav-link {{ $menu !== 'data-pendaftar' ? 'collapsed' : '' }} " href="{{route('daftar_ibu')}}">
+        <img src="{{asset('assets/icon/mother.png')}}" alt="" width="20" style="margin-right: 7px;">
+        <span>Daftar Ibu</span>
       </a>
     </li>
 
     <li class="nav-item">
       <a class="nav-link {{ $menu !== 'konten-berita' ? 'collapsed' : '' }} " href="index.html">
         <i class="bi bi-layout-text-window-reverse"></i>
-        <span>Konten Berita</span>
+        <span>Pengukuran</span>
       </a>
     </li>
 
     <li class="nav-item">
-      <a class="nav-link {{ $menu !== 'Pendaftaran' ? 'collapsed' : '' }} " href="/pendaftaran">
+      <a class="nav-link {{ $menu !== 'Pendaftaran' ? 'collapsed' : '' }} " href="{{route('registrasi.index')}}">
         <i class="bi bi-journal-text"></i>
         <span>Pendaftaran</span>
       </a>

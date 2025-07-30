@@ -20,6 +20,30 @@
   <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
   <!-- @vite(['resources/css/app.css', 'resources/js/app.js']) -->
   
+  <style>
+    .btn {
+      position: relative;
+    }
+
+    .btn .info-text {
+      display: none;
+      position: absolute;
+      z-index: 20;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: grey;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 5px;
+      margin-top: 5px;
+      white-space: nowrap;
+    }
+
+    .btn:hover .info-text {
+      display: block;
+    }
+  </style>
 </head>
 
 <body>
@@ -39,21 +63,21 @@
 
       <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
         <img src="{{asset('assets/img/profile-img.jpg')}}" alt="Profile" class="rounded-circle">
-        <span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
+        <span class="d-none d-md-block dropdown-toggle ps-2">{{Auth::user()->name}}</span>
       </a><!-- End Profile Iamge Icon -->
 
       <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
         <li class="dropdown-header">
-          <h6>Kevin Anderson</h6>
-          <span>Web Designer</span>
+          <h6>{{Auth::user()->name}}</h6>
+          <span>{{Auth::user()->role}}</span>
         </li>
         <li>
           <hr class="dropdown-divider">
         </li>
         <li>
-          <a class="dropdown-item d-flex align-items-center" href="/logout">
+          <a class="dropdown-item d-flex align-items-center" href="{{route('logout')}}">
             <i class="bi bi-box-arrow-right"></i>
-            <span>Sign Out</span>
+            <span>Log Out</span>
           </a>
         </li>
 

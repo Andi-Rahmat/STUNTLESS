@@ -38,6 +38,8 @@ class LoginController extends Controller
             'alamat'        => 'required|string|max:255',
             'jenisKelamin'  => 'required|string|max:1',
             'tglLahir'      => 'required',
+            'jumlahAnak'    => 'required',
+            'noTelp'        => 'required',
             'nik'           => 'required|string|max:16|unique:orang_tua,nik',
             'email'         => 'required|email|unique:users,email',
             'password'      => 'required|string',
@@ -47,6 +49,7 @@ class LoginController extends Controller
         $user = User::create([
             'name'      => $request->name,
             'email'     => $request->email,
+            'noTelp'     => $request->noTelp,
             'password'  => Hash::make($request->password),
         ]);
 
@@ -55,6 +58,7 @@ class LoginController extends Controller
             'tglLahir'      => $tanggal,
             'alamat'        => $request->alamat,
             'jenisKelamin'  => $request->jenisKelamin,
+            'jumlahAnak'    => $request->jumlahAnak,
             'nik'           => $request->nik,
             'idUser'       => $user->id,
         ]);

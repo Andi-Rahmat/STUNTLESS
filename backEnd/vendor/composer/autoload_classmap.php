@@ -7,6 +7,12 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'App\\Http\\Controllers\\Controller' => $baseDir . '/app/Http/Controllers/Controller.php',
+    'App\\Http\\Controllers\\LoginController' => $baseDir . '/app/Http/Controllers/LoginController.php',
+    'App\\Http\\Controllers\\PendaftaranController' => $baseDir . '/app/Http/Controllers/PendaftaranController.php',
+    'App\\Http\\Controllers\\ibuController' => $baseDir . '/app/Http/Controllers/ibuController.php',
+    'App\\Http\\Middleware\\CheckAuth' => $baseDir . '/app/Http/Middleware/CheckAuth.php',
+    'App\\Http\\Middleware\\CheckUserRole' => $baseDir . '/app/Http/Middleware/CheckUserRole.php',
+    'App\\Models\\OrangTua' => $baseDir . '/app/Models/OrangTua.php',
     'App\\Models\\User' => $baseDir . '/app/Models/User.php',
     'App\\Providers\\AppServiceProvider' => $baseDir . '/app/Providers/AppServiceProvider.php',
     'Attribute' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',

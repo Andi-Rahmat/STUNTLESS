@@ -22,6 +22,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'noTelp',
         'password',
     ];
 
@@ -49,6 +50,6 @@ class User extends Authenticatable
     }
     public function orangTua()
     {
-        return $this->hasOne(OrangTua::class, 'id_user');
+        return $this->hasOne(OrangTua::class, 'idUser');
     }
 }

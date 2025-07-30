@@ -20,7 +20,7 @@ class CheckUserRole
     public function handle(Request $request, Closure $next, string $role)
     {
         if (Auth::check()) {
-            if (Auth::user()->role == $role) {  
+            if (Auth::user()->role != $role) {  
                 return redirect('/')->with('error', 'Akses ditolak. Peran Anda tidak cukup untuk mengakses halaman ini.');
             }
         } else {

@@ -41,7 +41,7 @@
                             </svg>
                         </div>
                         <input datepicker id="default-datepicker" type="text" name="tglLahir" id="tglLahir" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-pink-400 focus:border-pink-500 block w-full ps-10 p-3" placeholder="Select date">
-                    </div>  
+                    </div>
                 </div>
 
                 <!-- Alamat -->
@@ -60,10 +60,21 @@
                     <label for="jenisKelamin" class="block text-sm font-medium text-gray-600">
                         <span class="text-sm text-red-600">*</span> Jenis Kelamin
                     </label>
-                    <select name="jenisKelamin" id="jenisKelamin" class="w-full p-3 mb-2 border focus:border-0 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400 transition-all duration-300">
+                    <select name="jenisKelamin" id="jenisKelamin" class="w-full p-3 mb-2 border bg-gray-50 border-gray-300 focus:border-0 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400 transition-all duration-300">
                         <option value="p" {{ old('jenisKelamin') == 'p' ? 'selected' : '' }}>Perempuan</option>
                         <option value="l" {{ old('jenisKelamin') == 'l' ? 'selected' : '' }}>Laki-Laki</option>
                     </select>
+                </div>
+
+                <!-- Jumlah Anak -->
+                <div class="mb-4">
+                    <label for="jumlahAnak" class="block text-sm font-medium text-gray-600"> 
+                        <span class="text-sm text-red-600">*</span>Jumlah Anak
+                    </label>
+                    <input type="text" id="jumlahAnak" name="jumlahAnak" placeholder="Anak" value="{{old('jumlahAnak')}}" class="w-full p-3 mb-2 border bg-gray-50 border-gray-300 focus:border-0 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400 transition-all duration-300">
+                    @error('jumlahAnak')
+                    <div class="text-red-500 text-xs">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <!-- NIK -->
@@ -73,6 +84,17 @@
                     </label>
                     <input type="text" id="NIK" name="nik" placeholder="sesuai di KTP" value="{{old('nik')}}" class="w-full p-3 mb-2 border bg-gray-50 border-gray-300 focus:border-0 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400 transition-all duration-300">
                     @error('nik')
+                    <div class="text-red-500 text-xs">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <!-- No Telp -->
+                <div class="mb-4">
+                    <label for="NoTelp" class="block text-sm font-medium text-gray-600">
+                        <span class="text-sm text-red-600">*</span> No. Telp
+                    </label>
+                    <input type="text" id="NoTelp" name="noTelp" placeholder="08xxxxx" value="{{old('noTelp')}}" class="w-full p-3 mb-2 border bg-gray-50 border-gray-300 focus:border-0 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400 transition-all duration-300">
+                    @error('noTelp')
                     <div class="text-red-500 text-xs">{{ $message }}</div>
                     @enderror
                 </div>

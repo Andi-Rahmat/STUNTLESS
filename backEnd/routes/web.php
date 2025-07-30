@@ -1,39 +1,47 @@
 <?php
 
+use App\Http\Controllers\ibuController;
 use App\Http\Controllers\LoginController;
-use App\Http\Middleware\CheckUserRole;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+
+
 
 Route::get('/', function () {
     return view('backend.pages.welcome');
 });
 
-Route::middleware('role:admin')->group(function () {
+// Hrus login
+Route::middleware('auth')->group(function () {
     Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
-    Route::get('admin/dashboard', function () {
-        return view('backend.pages.dashboard');
-    });
+    Route::middleware('role:admin')->group(function () {
+    
+        Route::get('admin/dashboard', function () {
+            return view('backend.admin.dashboard');
+        })->name('admin.dashboard');
 
-    Route::get('/data-pendaftar', function () {
-        return view('backend.pages.data-pendaftar');
+        Route::get('admin/daftar-ibu', [ibuController::class, 'index'])->name('daftar_ibu');
+    
+        Route::get('/data-pendaftar', function () {
+            return view('backend.pages.data-pendaftar');
+        });
+    });
+    Route::middleware('role:user')->group(function () {
+
+        Route::get('ibu/dashboard', function () {
+            return view('backend.ibu.dashboard');
+        });
     });
 });
 
-Route::middleware('role:user')->group(function () {
-    Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
-
-    Route::get('admin/dashboard', function () {
-        return view('backend.pages.dashboard');
-    });
-
-    Route::get('/data-pendaftar', function () {
-        return view('backend.pages.data-pendaftar');
-    });
-});
 
 Route::get('/login', function () {
-    return view('backend.pages.login');
+    if (Auth::check()) {
+        return redirect()->to('admin/dashboard');
+    }else{
+        return view('backend.pages.login');
+    }
 })->name('login.index');
 
 Route::get('/registrasi', function () {

@@ -17,6 +17,7 @@ class OrangTua extends Model
         'tglLahir',
         'alamat',
         'jenisKelamin',
+        'jumlahAnak',
         'nik',
         'idUser', 
     ];
@@ -24,6 +25,6 @@ class OrangTua extends Model
     // Relasi dengan model User (1 ke 1)
     public function user()
     {
-        return $this->belongsTo(User::class, 'id_user');
+        return $this->belongsTo(User::class,'idUser');
     }
 }
