@@ -19,7 +19,39 @@
   <link href="{{ asset('assets/vendor/simple-datatables/style.css') }}" rel="stylesheet">
   <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
   <!-- @vite(['resources/css/app.css', 'resources/js/app.js']) -->
-  
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+  <style>
+    /* Styling untuk dropdown Select2 */
+    .select2-container--default .select2-selection--single {
+      width:100%;
+      height: 40px;
+      /* Mengubah tinggi input */
+      padding: 5px;
+      /* Menambahkan padding di dalam input */
+      border: 1px solid #ccc;
+      /* Border khusus */
+      border-radius: 8px;
+      /* Membulatkan sudut */
+    }
+
+    /* Styling untuk dropdown options */
+    .select2-container--default .select2-results__option {
+      padding: 10px;
+      /* Menambahkan padding pada pilihan */
+    }
+
+    /* Styling ketika dropdown difokuskan */
+    .select2-container--default .select2-selection--single:focus {
+      border-color: #ec4899;
+      /* Warna border ketika fokus */
+      box-shadow: 0 0 0 2px rgba(236, 72, 153, 0.5);
+      /* Efek bayangan saat fokus */
+    }
+  </style>
+
   <style>
     .btn {
       position: relative;
@@ -47,44 +79,44 @@
 </head>
 
 <body>
-<header id="header" class="header fixed-top d-flex align-items-center">
+  <header id="header" class="header fixed-top d-flex align-items-center">
 
-<div class="d-flex align-items-center justify-content-between">
-  <a href="index.html" class="logo d-flex align-items-center">
-    <img src="{{asset('assets/img/logo.png')}}" alt="">
-    <span class="d-none d-lg-block">NiceAdmin</span>
-  </a>
-  <i class="bi bi-list toggle-sidebar-btn"></i>
-</div><!-- End Logo -->
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="index.html" class="logo d-flex align-items-center">
+        <img src="{{asset('assets/img/logo.png')}}" alt="">
+        <span class="d-none d-lg-block">NiceAdmin</span>
+      </a>
+      <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
 
-<nav class="header-nav ms-auto">
-  <ul class="d-flex align-items-center">
-    <li class="nav-item dropdown pe-3">
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center">
+        <li class="nav-item dropdown pe-3">
 
-      <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-        <img src="{{asset('assets/img/profile-img.jpg')}}" alt="Profile" class="rounded-circle">
-        <span class="d-none d-md-block dropdown-toggle ps-2">{{Auth::user()->name}}</span>
-      </a><!-- End Profile Iamge Icon -->
+          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+            <img src="{{asset('assets/img/profile-img.jpg')}}" alt="Profile" class="rounded-circle">
+            <span class="d-none d-md-block dropdown-toggle ps-2">{{Auth::user()->name}}</span>
+          </a><!-- End Profile Iamge Icon -->
 
-      <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-        <li class="dropdown-header">
-          <h6>{{Auth::user()->name}}</h6>
-          <span>{{Auth::user()->role}}</span>
-        </li>
-        <li>
-          <hr class="dropdown-divider">
-        </li>
-        <li>
-          <a class="dropdown-item d-flex align-items-center" href="{{route('logout')}}">
-            <i class="bi bi-box-arrow-right"></i>
-            <span>Log Out</span>
-          </a>
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+            <li class="dropdown-header">
+              <h6>{{Auth::user()->name}}</h6>
+              <span>{{Auth::user()->role}}</span>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="{{route('logout')}}">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Log Out</span>
+              </a>
+            </li>
+
+          </ul>
         </li>
 
       </ul>
-    </li>
+    </nav><!-- End Icons Navigation -->
 
-  </ul>
-</nav><!-- End Icons Navigation -->
-
-</header>
+  </header>

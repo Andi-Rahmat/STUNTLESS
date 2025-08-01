@@ -20,7 +20,7 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware('role:admin')->group(function () {
     
-        Route::get('admin/dashboard', function () {
+        Route::get('/admin/dashboard', function () {
             return view('backend.admin.dashboard');
         })->name('admin.dashboard');
 
@@ -37,17 +37,15 @@ Route::middleware('auth')->group(function () {
         Route::post('/admin/registrasi-balita', [balitaController::class, 'store'])->name('registrasi.balita');
 
 
-        Route::get('admin/daftar-ibu', [ibuController::class, 'index'])->name('daftar_ibu');
-        Route::get('admin/detail-ibu/{id}', [ibuController::class, 'show'])->name('detail_ibu');
-        Route::get('admin/hapus-ibu/{id}', [ibuController::class, 'destroy'])->name('hapus.ibu');
+        Route::get('/admin/daftar-ibu', [ibuController::class, 'index'])->name('daftar_ibu');
+        Route::get('/admin/detail-ibu/{id}', [ibuController::class, 'show'])->name('detail_ibu');
+        Route::get('/admin/hapus-ibu/{id}', [ibuController::class, 'destroy'])->name('hapus.ibu');
 
-        Route::get('admin/daftar-balita', [balitaController::class, 'index'])->name('daftar_balita');
-        Route::get('admin/detail-balita/{id}', [ibuController::class, 'show'])->name('detail_balita');
-        Route::get('admin/hapus-balita/{id}', [balitaController::class, 'destroy'])->name('hapus.balita');
+        Route::get('/admin/daftar-balita', [balitaController::class, 'index'])->name('daftar_balita');
+        Route::get('/admin/detail-balita/{id}', [balitaController::class, 'show'])->name('detail_balita');
+        Route::get('/admin/hapus-balita/{id}', [balitaController::class, 'destroy'])->name('hapus.balita');
+        Route::get('/admin/pengukuran-balita', [balitaController::class, 'showPengukuran'])->name('pengukuran');
     
-        Route::get('/data-pendaftar', function () {
-            return view('backend.pages.data-pendaftar');
-        });
     });
     Route::middleware('role:user')->group(function () {
 
@@ -60,7 +58,7 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/login', function () {
     if (Auth::check()) {
-        return redirect()->to('admin/dashboard');
+        return redirect()->to('/admin/dashboard');
     }else{
         return view('backend.pages.login');
     }

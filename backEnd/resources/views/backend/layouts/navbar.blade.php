@@ -27,7 +27,7 @@
     </li>
 
     <li class="nav-item">
-      <a class="nav-link {{ $menu !== 'konten-berita' ? 'collapsed' : '' }} " href="index.html">
+      <a class="nav-link {{ $menu !== 'konten-berita' ? 'collapsed' : '' }} " href="{{route('pengukuran')}}">
         <i class="bi bi-layout-text-window-reverse"></i>
         <span>Pengukuran</span>
       </a>

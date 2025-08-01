@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Balita;
+use App\Models\DataIot;
 use App\Models\OrangTua;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -59,10 +60,22 @@ class balitaController extends Controller
      */
     public function show(string $id)
     {  
-        $data['orangTua'] = OrangTua::find($id);
+        $data['balita'] = Balita::find($id);
 
-        return view('backend.admin.ibu.detail', $data);
+        return view('backend.admin.balita.detail', $data);
         
+    }
+
+    public function showPengukuran()
+    {  
+        $balitaList = Balita::all();
+        $id = request()->query('balita');
+        if($id){
+            $dataBalita = Balita::find($id);
+            $dataIot    = DataIot::first();
+        }
+        
+        return view('backend.admin.balita.pengukuran', compact('balitaList', 'dataBalita', 'dataIot'));
     }
 
     /**
