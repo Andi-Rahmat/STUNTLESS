@@ -27,4 +27,9 @@ class OrangTua extends Model
     {
         return $this->belongsTo(User::class,'idUser');
     }
+
+    public function balita()
+    {
+        return $this->hasMany(Balita::class, 'idOrangTua');
+    }
 }

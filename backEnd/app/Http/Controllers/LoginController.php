@@ -28,7 +28,12 @@ class LoginController extends Controller
             ]);
         }
         Auth::login($user);
-        return redirect()->to('/dashboard');
+        if(Auth::user()->role == 'admin'){
+            return redirect()->to('admin/dashboard');
+        }else{
+            return redirect()->to('ibu/dashboard');
+
+        }
     }
 
     public function registrasi(Request $request)

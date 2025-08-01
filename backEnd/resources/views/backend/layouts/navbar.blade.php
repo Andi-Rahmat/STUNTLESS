@@ -1,12 +1,12 @@
 @php
-    $menu = request()->segment(1);
+    $menu = request()->url();
 @endphp
 <aside id="sidebar" class="sidebar">
 
   <ul class="sidebar-nav" id="sidebar-nav">
 
     <li class="nav-item">
-      <a class="nav-link {{ $menu !== 'dashboard' ? 'collapsed' : '' }} " href="/dashboard">
+      <a class="nav-link {{ $menu !== 'dashboard' ? 'collapsed' : '' }} " href="{{route(cekRole().'.dashboard')}}">
         <i class="bi bi-grid"></i>
         <span>Dashboard</span>
       </a>
@@ -16,6 +16,13 @@
       <a class="nav-link {{ $menu !== 'data-pendaftar' ? 'collapsed' : '' }} " href="{{route('daftar_ibu')}}">
         <img src="{{asset('assets/icon/mother.png')}}" alt="" width="20" style="margin-right: 7px;">
         <span>Daftar Ibu</span>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link {{ $menu !== 'data-pendaftar' ? 'collapsed' : '' }} " href="{{route('daftar_balita')}}">
+        <img src="{{asset('assets/icon/baby.png')}}" alt="" width="20" style="margin-right: 7px;">
+        <span>Daftar Balita</span>
       </a>
     </li>
 

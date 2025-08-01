@@ -132,7 +132,7 @@
                 <!-- Submit Button -->
                 <div>
                     <p hidden id="teksPw" class="text-center text-sm mb-4 text-red-500">Password berbeda</p>
-                    <button id="submit" type="submit" disabled class="w-full py-2 bg-red-300 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <button id="submit" type="submit" disabled class="w-full py-2 bg-pink-300 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                         Daftar
                     </button>
                     <p class="text-center text-sm mb-4 text-gray-500">Sudah punya akun ? <a href="/login" class="text-blue-600">Login</a></p>
@@ -154,10 +154,10 @@
                 teksPw.setAttribute('hidden', true);
 
                 submitButton.removeAttribute('disabled');
-                submitButton.classList.add('hover:bg-red-400');
+                submitButton.classList.add('hover:bg-pink-400');
             } else {
                 submitButton.setAttribute('disabled', true);
-                submitButton.classList.remove('hover:bg-red-400');
+                submitButton.classList.remove('hover:bg-pink-400');
 
             }
         });

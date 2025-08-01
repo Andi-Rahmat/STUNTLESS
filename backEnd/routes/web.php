@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\balitaController;
 use App\Http\Controllers\ibuController;
 use App\Http\Controllers\LoginController;
+use App\Models\Balita;
+use App\Models\OrangTua;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -21,7 +24,26 @@ Route::middleware('auth')->group(function () {
             return view('backend.admin.dashboard');
         })->name('admin.dashboard');
 
+        
+        Route::get('/admin/registrasi-ibu', function () {
+            return view('backend.admin.ibu.registrasi_ibu');
+        })->name('registrasi.balita');
+        Route::post('/admin/registrasi-ibu', [ibuController::class, 'store'])->name('registrasi.ibu');
+
+        Route::get('/admin/registrasi-balita', function () {
+            $orangTuaList = OrangTua::all();
+            return view('backend.admin.balita.registrasi_balita', compact('orangTuaList'));
+        })->name('registrasi.balita');
+        Route::post('/admin/registrasi-balita', [balitaController::class, 'store'])->name('registrasi.balita');
+
+
         Route::get('admin/daftar-ibu', [ibuController::class, 'index'])->name('daftar_ibu');
+        Route::get('admin/detail-ibu/{id}', [ibuController::class, 'show'])->name('detail_ibu');
+        Route::get('admin/hapus-ibu/{id}', [ibuController::class, 'destroy'])->name('hapus.ibu');
+
+        Route::get('admin/daftar-balita', [balitaController::class, 'index'])->name('daftar_balita');
+        Route::get('admin/detail-balita/{id}', [ibuController::class, 'show'])->name('detail_balita');
+        Route::get('admin/hapus-balita/{id}', [balitaController::class, 'destroy'])->name('hapus.balita');
     
         Route::get('/data-pendaftar', function () {
             return view('backend.pages.data-pendaftar');
@@ -31,7 +53,7 @@ Route::middleware('auth')->group(function () {
 
         Route::get('ibu/dashboard', function () {
             return view('backend.ibu.dashboard');
-        });
+        })->name('user.dashboard');
     });
 });
 
