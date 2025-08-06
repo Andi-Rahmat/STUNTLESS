@@ -43,34 +43,39 @@
             <h5 class="card-title">{{$dataBalita->namaLengkap .' - '. hitungUsia($dataBalita->tglLahir)}}</h5>
 
             <!-- Floating Labels Form -->
-            <form class="row g-3">
+            <form class="row g-3" action="{{route('pengukuran.store',['id' => $dataBalita->id])}}" method="post">
+                @csrf
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="folaotingTgl" name="tglPengukuran" required>
+                    <label for="floatingTgl">tanggal Pengukuran</label>
+                </div>
+
                 <div class="col-md-6">
                     <div class="form-floating">
-                        <input type="text" class="form-control" id="floatingEmail" placeholder="Your Email" value="{{$dataIot->berat}}">
+                        <input type="text" class="form-control" id="berat" readonly name="berat" value="">
                         <label for="floatingEmail">Berat Badan</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating">
-                        <input type="text" class="form-control" id="floatingPassword" placeholder="Password" value="{{$dataIot->tinggi}}">
+                        <input type="text" class="form-control" id="tinggi" readonly name="tinggi" value="">
                         <label for="floatingPassword">Tinggi Badan</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating">
-                        <input type="text" class="form-control" id="floatingEmail" placeholder="Your Email" value="{{$dataIot->suhu}}">
+                        <input type="text" class="form-control" id="suhu" readonly name="suhu" value="">
                         <label for="floatingEmail">Suhu</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating">
-                        <input type="text" class="form-control" id="floatingPassword" placeholder="Password" value="{{$dataIot->lingkar_kepala}}">
+                        <input type="text" class="form-control" id="lingkarKepala" readonly name="lingkarKepala" value="">
                         <label for="floatingPassword">Lingkar Kepala</label>
                     </div>
                 </div>
                 <div class="text-center">
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                    <button type="reset" class="btn btn-secondary">Reset</button>
+                    <button type="submit" class="btn btn-primary">Submt</button>
                 </div>
             </form><!-- End floating Labels Form -->
 
@@ -78,6 +83,34 @@
     </div>
     @endif
     <script>
+        flatpickr("#folaotingTgl", {
+            maxDate: "today",
+            dateFormat: "Y-m-d", // format tanggal
+            allowInput: true, // biarkan input manual jika diinginkan
+        });
+
+        const berat = document.getElementById('berat');
+        const tinggi = document.getElementById('tinggi');
+        const suhu = document.getElementById('suhu');
+        const lingkarKepala = document.getElementById('lingkarKepala');
+
+        function loadDataPengukuran() {
+            $.ajax({
+                url: '/get-data-pengukuran', // URL untuk request data
+                type: 'GET',
+                success: function(response) {
+                    berat.value = response.berat
+                    tinggi.value = response.tinggi
+                    suhu.value = response.suhu;
+                    lingkarKepala.value = response.lingkar_kepala;
+                },
+                error: function() {
+                    alert('Failed to retrieve data.');
+                }
+            });
+        }
+        setInterval(loadDataPengukuran, 2000);
+
         $(document).ready(function() {
             // Inisialisasi Select2 pada elemen select
             $('.selectpicker').select2();

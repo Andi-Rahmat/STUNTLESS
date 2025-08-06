@@ -17,7 +17,7 @@ return new class extends Migration
             $table->date('tglLahir');
             $table->string('alamat');
             $table->string('jenisKelamin');
-            $table->tinyInteger('jumlahAnak');
+            $table->tinyInteger('jumlahAnak'); 
             $table->string('nik')->unique();
             $table->unsignedBigInteger('idUser');
             $table->foreign('idUser')->references('id')->on('users')->onDelete('cascade');

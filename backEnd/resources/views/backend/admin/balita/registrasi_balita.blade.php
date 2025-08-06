@@ -60,6 +60,16 @@
                     <div class="text-red-500 text-xs">{{ $message }}</div>
                     @enderror
                 </div>
+                <!-- Golongan Darah -->
+                <div class="mb-4">
+                    <label for="jenisKelamin" class="block text-sm font-medium text-gray-600">
+                        <span class="text-sm text-red-600">*</span> Jenis Kelamin
+                    </label>
+                    <select name="jenisKelamin" id="jenisKelamin" class="w-full p-3 mb-2 border bg-gray-50 border-gray-300 focus:border-0 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400 transition-all duration-300">
+                        <option value="L" {{ old('jenisKelamin') == 'L' ? 'selected' : '' }}>Laki-Laki</option>
+                        <option value="P" {{ old('jenisKelamin') == 'P' ? 'selected' : '' }}>Perempuan</option>
+                    </select>
+                </div>
 
                 <!-- NIK -->
                 <div class="mb-4">

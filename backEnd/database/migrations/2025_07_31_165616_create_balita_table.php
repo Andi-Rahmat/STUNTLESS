@@ -18,6 +18,7 @@ class CreateBalitaTable extends Migration
             $table->string('namaLengkap'); // Kolom untuk nama lengkap
             $table->string('nik')->unique(); // Kolom untuk NIK, dengan constraint unique
             $table->date('tglLahir'); // Kolom untuk tanggal lahir
+            $table->date('jenisKelamin'); // Kolom untuk tanggal lahir
             $table->integer('anak_ke'); // Kolom untuk anak ke-
             $table->string('golongan_darah', 3); // Kolom untuk golongan darah (misal: A, B, AB, O)
             $table->foreignId('idOrangTua')->constrained('orang_tua')->onDelete('cascade'); // Relasi dengan tabel orang_tua, dengan foreign key

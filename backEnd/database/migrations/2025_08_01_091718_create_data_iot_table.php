@@ -19,6 +19,7 @@ class CreateDataIotTable extends Migration
             $table->float('tinggi'); // Field for tinggi (height)
             $table->float('suhu');  // Field for suhu (temperature)
             $table->float('lingkar_kepala');  // Field for lingkar_kepala (head circumference)
+            $table->timestamps();
         });
     }
 

@@ -22,6 +22,8 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
   <style>
     /* Styling untuk dropdown Select2 */
@@ -74,6 +76,20 @@
 
     .btn:hover .info-text {
       display: block;
+    }
+
+    .btnKlasifikasi {
+      border:1px solid #ec4899 !important;
+      color: #ec4899;
+    }
+
+    .btnKlasifikasi.active {
+      background-color: #ec7fa9;
+      color: black;
+    }
+    .btnKlasifikasi:hover{
+      background-color: #ec7fa9;
+      color: black;
     }
   </style>
 </head>

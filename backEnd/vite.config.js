@@ -9,5 +9,11 @@ export default defineConfig({
             refresh: true,
         }),
         tailwindcss(),
-    ],
+    ], server: {
+        cors: {
+          origin: 'http://192.168.90.215:8000', // Laravel app URL
+          methods: ['GET', 'POST', 'PUT', 'DELETE'],
+          allowedHeaders: ['Content-Type', 'Authorization'],
+        },
+      },
 });

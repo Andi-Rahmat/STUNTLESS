@@ -21,5 +21,5 @@ class DataIot extends Model
     ];
 
     // Jika Anda menggunakan timestamps secara manual, Anda bisa menonaktifkannya
-    public $timestamps = false;
+    public $timestamps = true;
 }

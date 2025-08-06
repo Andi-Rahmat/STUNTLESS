@@ -2,6 +2,11 @@
 
 @section('title','dashboard')
 @section('content')
+@php
+use Carbon\Carbon;
+$tglSekarang = Carbon::parse($dataSekarang->tglPengukuran);
+$tglSebelum = Carbon::parse($dataSebelum->tglPengukuran);
+@endphp
 
 
 <div class="pagetitle">
@@ -81,31 +86,36 @@
             <div class="card" style="background-color:#faf9ee;">
                 <div class="card-body">
                     <div class="card-title d-flex justify-content-around">
-                        <button type="button" class="btn btn-outline-info">Berat</button>
-                        <button type="button" class="btn btn-outline-info">Tinggi</button>
-                        <button type="button" class="btn btn-outline-info">Berat/Tinggi</button>
-                        <button type="button" class="btn btn-outline-info">Lingkar Kepala</button>
+                        <button type="button" class="btn btnKlasifikasi active">Berat</button>
+                        <button type="button" class="btn btnKlasifikasi">Tinggi</button>
+                        <button type="button" class="btn btnKlasifikasi">Berat / Tinggi</button>
+                        <button type="button" class="btn btnKlasifikasi">Lingkar Kepala</button>
                     </div>
                     <div class="row text-center bg-white mx-5 border border-0.5 py-2 rounded-3 mb-4 shadow-sm">
                         <div class="col-4">
-                            <span>Date: 9 Juli 2025</span>
-                            <h3>50 cm</h3>
+                            <span>Date: {{$tglSebelum->translatedFormat('l, d F Y'); }}</span>
+                            <h3>{{$dataSebelum->berat}} Kg</h3>
                         </div>
                         <div class="col-4">
-                            <span>Date: 9 Juli 2025</span>
-                            <h3>50 cm</h3>
+                            <span>Date: {{$tglSekarang->translatedFormat('l, d F Y'); }}</span>
+                            <h3>{{$dataSekarang->berat}} Kg</h3>
                         </div>
                         <div class="col-4">
-                            <span>Date: 9 Juli 2025</span>
-                            <h3>50 cm</h3>
+                            <span>
+                                Selisih:
+                                {{round($tglSebelum->diffInMonths($tglSekarang))}} bulan
+                                {{$tglSebelum->diffInDays($tglSekarang)}} hari
+                            </span>
+                            <h3>{{$dataSekarang->berat - $dataSebelum->berat}} Kg</h3>
                         </div>
                     </div>
                     <div class="card mx-5 py-2">
                         <div class="card-body text-center" style="height: 50vh;">
                             <p><b>Tinggi badan tergolong</b></p>
+                            <p><b>Z-score : </b></p>
                             <p style="padding: 3px 20px ; background-color:#ec7fa9; width:min-content; margin:auto; color:white; border-radius:12px;"><b>normal</b></p>
-                            <p>Data Terakhir : 9 Agust 2025</p>
-                        <div id="container" style="height: 100%"></div>
+                            <p>Data Terakhir : {{$tglSekarang->translatedFormat('l, d F Y');}}</p>
+                            <div id="container" style="height: 100%"></div>
                         </div>
                     </div>
                     <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
@@ -126,17 +136,19 @@
                                 endAngle: 0,
                                 center: ['50%', '50%'],
                                 radius: '85%',
-                                min: 0,
-                                max: 1,
-                                splitNumber: 8,
+                                min: {{$dataWHO['SD3neg']}},
+                                max: ,
+                                splitNumber: 10,
                                 axisLine: {
                                     lineStyle: {
                                         width: 6,
                                         color: [
-                                            [0.25, '#FF6E76'],
-                                            [0.5, '#FDDD60'],
-                                            [0.75, '#58D9F9'],
-                                            [1, '#7CFFB2']
+                                            [0.1, '#FF6E76'],
+                                            [0.2, '#FDDD60'],
+                                            [0.5, '#58D9F9'],
+                                            [0.8, '#58D9F9'],
+                                            [0.9, '#FDDD60'],
+                                            [1, '#FF6E76']
                                         ]
                                     }
                                 },
@@ -169,13 +181,13 @@
                                     distance: -60,
                                     rotate: 'tangential',
                                     formatter: function(value) {
-                                        if (value === 0.875) {
+                                        if (value === 0.8) {
                                             // return 'Grade A';
-                                        } else if (value === 0.625) {
+                                        } else if (value === 0.6) {
                                             // return 'Grade B';
-                                        } else if (value === 0.375) {
+                                        } else if (value === 0.3) {
                                             // return 'Grade C';
-                                        } else if (value === 0.125) {
+                                        } else if (value === 0.1) {
                                             // return 'Grade D';
                                         }
                                         return '';
@@ -190,13 +202,13 @@
                                     offsetCenter: [0, '-35%'],
                                     valueAnimation: true,
                                     formatter: function(value) {
-                                        return Math.round(value * 100) + '';
+                                        return value + '';
                                     },
                                     color: 'inherit'
                                 },
                                 data: [{
-                                    value: 0.7,
-                                    name: 'Grade Rating'
+                                    value: 19,
+                                    name: 'Kg'
                                 }]
                             }]
                         };

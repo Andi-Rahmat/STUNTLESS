@@ -16,6 +16,7 @@ class Balita extends Model
         'namaLengkap',
         'NIK',
         'tglLahir',
+        'jenisKelamin',
         'anak_ke',
         'golongan_darah',
         'idOrangTua',
@@ -24,5 +25,9 @@ class Balita extends Model
     public function orangTua()
     {
         return $this->belongsTo(OrangTua::class, 'idOrangTua');
+    }
+    public function pengukuran()
+    {
+        return $this->hasMany(Pengukuran::class, 'idBalita','id');
     }
 }

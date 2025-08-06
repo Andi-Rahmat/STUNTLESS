@@ -19,6 +19,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
     Route::middleware('role:admin')->group(function () {
+        Route::get('/get-data-pengukuran', [balitaController::class, 'dataPengukuran'])->name('data.pengukuran');
+
     
         Route::get('/admin/dashboard', function () {
             return view('backend.admin.dashboard');
@@ -45,6 +47,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/admin/detail-balita/{id}', [balitaController::class, 'show'])->name('detail_balita');
         Route::get('/admin/hapus-balita/{id}', [balitaController::class, 'destroy'])->name('hapus.balita');
         Route::get('/admin/pengukuran-balita', [balitaController::class, 'showPengukuran'])->name('pengukuran');
+        Route::post('/admin/pengukuran-balita/{id}', [balitaController::class, 'pengukuran'])->name('pengukuran.store');
     
     });
     Route::middleware('role:user')->group(function () {
