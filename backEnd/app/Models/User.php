@@ -50,6 +50,6 @@ class User extends Authenticatable
     }
     public function orangTua()
     {
-        return $this->hasOne(OrangTua::class, 'idUser');
+        return $this->hasOne(OrangTua::class, 'idUser','id');
     }
 }

@@ -11,6 +11,7 @@ return array(
     'App\\Http\\Controllers\\PendaftaranController' => $baseDir . '/app/Http/Controllers/PendaftaranController.php',
     'App\\Http\\Controllers\\balitaController' => $baseDir . '/app/Http/Controllers/balitaController.php',
     'App\\Http\\Controllers\\ibuController' => $baseDir . '/app/Http/Controllers/ibuController.php',
+    'App\\Http\\Controllers\\pengukuranController' => $baseDir . '/app/Http/Controllers/pengukuranController.php',
     'App\\Http\\Middleware\\CheckAuth' => $baseDir . '/app/Http/Middleware/CheckAuth.php',
     'App\\Http\\Middleware\\CheckUserRole' => $baseDir . '/app/Http/Middleware/CheckUserRole.php',
     'App\\Models\\Balita' => $baseDir . '/app/Models/Balita.php',

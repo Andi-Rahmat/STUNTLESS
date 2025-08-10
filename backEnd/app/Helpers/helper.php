@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 if (!function_exists('hitungUsia')) {
@@ -9,16 +10,30 @@ if (!function_exists('hitungUsia')) {
      * @param string $birthdate Tanggal lahir dalam format 'Y-m-d'
      * @return int Usia
      */
-    function hitungUsia($birthdate)
+    function hitungUsia($birthdate, $b = null)
     {
         $birthDate = new \DateTime($birthdate);
-        $today = new \DateTime();
+        $today = $b != null ? new \DateTime($b) : new \DateTime($b);
         $age = $today->diff($birthDate);
 
         return $age->y . ' tahun ' . $age->m . ' bulan';
     }
 }
 
+if (!function_exists('userOrangTua')) {
+    /**
+     * Fungsi untuk menghitung usia berdasarkan tanggal lahir
+     *
+     * @param string $birthdate Tanggal lahir dalam format 'Y-m-d'
+     * @return int Usia
+     */
+    function userOrangTua()
+    {
+        $user = User::find(Auth::user()->id);
+
+        return $user;
+    }
+}
 if (!function_exists('cekRole')) {
     /**
      * Fungsi untuk menghitung usia berdasarkan tanggal lahir
@@ -31,6 +46,23 @@ if (!function_exists('cekRole')) {
         $role = Auth::user()->role;
 
         return $role;
+    }
+}
+
+if (!function_exists('checkKelamin')) {
+    /**
+     * Fungsi untuk menghitung usia berdasarkan tanggal lahir
+     *
+     * @param string $birthdate Tanggal lahir dalam format 'Y-m-d'
+     * @return int Usia
+     */
+    function checkKelamin($kelamin)
+    {
+        if ($kelamin == 'L') {
+            return 'Laki-laki';
+        } else {
+            return 'Perempuan';
+        }
     }
 }
 
@@ -63,7 +95,7 @@ if (!function_exists('checkIndikator')) {
      */
     function checkIndikator($nilai, $jenis)
     {
-        
+
         $result = '';
 
         switch ($jenis) {
@@ -86,6 +118,8 @@ if (!function_exists('checkIndikator')) {
                     $result = 'Pendek';
                 } elseif ($nilai >= -2.0 && $nilai <= 2.0) {
                     $result = 'Normal';
+                }else {
+                    $result = 'Sangat Tinggi';
                 }
                 break;
 
@@ -101,6 +135,31 @@ if (!function_exists('checkIndikator')) {
                 }
                 break;
 
+            case 'lingkarKepala':
+                if ($nilai < -2.0) {
+                    $result = 'Mikrosefali';
+                } elseif ($nilai >= -2.0 && $nilai <= 2.0) {
+                    $result = 'Normal';
+                } else {
+                    $result = 'Makrosefali';
+                }
+                break;
+
+            case 'imt':
+                if ($nilai < -3.0) {
+                    $result = 'Gizi buruk';
+                } elseif ($nilai >= -3.0 && $nilai <= -2.0) {
+                    $result = 'Gizi kurang';
+                } elseif ($nilai > -2.0 && $nilai <= 1.0) {
+                    $result = 'Gizi baik (normal)';
+                } elseif ($nilai > 1.0 && $nilai <= 2.0) {
+                    $result = 'Gizi lebih';
+                } elseif ($nilai > 2.0 && $nilai <= 3.0) {
+                    $result = 'Gizi lebih (risiko)';
+                } else {
+                    $result = 'Obesitas';
+                }
+                break; 
             // Tambahkan kondisi untuk jenis lain seperti lingkarKepala, imt, dll.
             default:
                 $result = 'Indikator tidak valid';

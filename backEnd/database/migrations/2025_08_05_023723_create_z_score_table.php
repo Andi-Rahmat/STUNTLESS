@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('beratSd');
             $table->float('tinggi');
             $table->string('tinggiSd');
-            $table->float('beratTinggi');
-            $table->string('beratTinggiSd');
+            $table->float('berat/tinggi');
+            $table->string('berat/tinggiSd');
             $table->float('lingkar_kepala');
             $table->string('lingkar_kepalaSd');
             $table->float('imt');

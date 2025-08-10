@@ -528,6 +528,7 @@ class ComposerStaticInit88970a0117c062eed55fa8728fc43833
         'App\\Http\\Controllers\\PendaftaranController' => __DIR__ . '/../..' . '/app/Http/Controllers/PendaftaranController.php',
         'App\\Http\\Controllers\\balitaController' => __DIR__ . '/../..' . '/app/Http/Controllers/balitaController.php',
         'App\\Http\\Controllers\\ibuController' => __DIR__ . '/../..' . '/app/Http/Controllers/ibuController.php',
+        'App\\Http\\Controllers\\pengukuranController' => __DIR__ . '/../..' . '/app/Http/Controllers/pengukuranController.php',
         'App\\Http\\Middleware\\CheckAuth' => __DIR__ . '/../..' . '/app/Http/Middleware/CheckAuth.php',
         'App\\Http\\Middleware\\CheckUserRole' => __DIR__ . '/../..' . '/app/Http/Middleware/CheckUserRole.php',
         'App\\Models\\Balita' => __DIR__ . '/../..' . '/app/Models/Balita.php',

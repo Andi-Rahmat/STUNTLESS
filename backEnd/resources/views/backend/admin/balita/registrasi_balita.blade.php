@@ -122,6 +122,7 @@
                 </div>
 
                 <!-- ID Orang Tua -->
+                @if(is_array($orangTuaList))
                 <div class="mb-4">
                     <label for="idOrangTua" class="block text-sm font-medium text-gray-600">
                         <span class="text-sm text-red-600">*</span>Orang Tua
@@ -138,6 +139,9 @@
                     <div class="text-red-500 text-xs">{{ $message }}</div>
                     @enderror
                 </div>
+                @else
+                <input type="hidden" name="idOrangTua" value="{{ $orangTuaList->id }}">
+                @endif
 
                 <!-- Submit Button -->
                 <div>

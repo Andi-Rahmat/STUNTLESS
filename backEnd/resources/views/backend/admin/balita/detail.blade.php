@@ -2,10 +2,25 @@
 
 @section('title','dashboard')
 @section('content')
+
 @php
 use Carbon\Carbon;
+if($dataSekarang != null){
 $tglSekarang = Carbon::parse($dataSekarang->tglPengukuran);
 $tglSebelum = Carbon::parse($dataSebelum->tglPengukuran);
+$satuan = '';
+switch ($indikator) {
+case "berat":
+$satuan = 'Kg';
+break;
+case "tinggi":
+$satuan = 'cm';
+break;
+case "imt":
+$satuan = 'kg/m²';
+break;
+}
+}
 @endphp
 
 
@@ -79,26 +94,30 @@ $tglSebelum = Carbon::parse($dataSebelum->tglPengukuran);
     <!-- TABLE Kunjungan -->
     <div class="row">
         <div class="col-lg-12">
+            @if($dataSekarang != null)
             <div class="d-flex justify-content-around position-relative align-items-end mt-4">
-                <p style="background-color:#faf9ee; color:#F564A9; border-radius:0 10px 0 0;" class=" z-3 fw-bold position-absolute bottom-0 start-0 m-0 p-2 px-5 rounded-start-2">Grafik</p>
-                <p style="background-color:#d9d9d9; color:grey;  border-radius:0 10px 0 0;" class=" z-3 fw-bold position-absolute bottom-0 start-10 m-0 p-2 px-5 rounded-end-2">Riwayat</p>
+                <a href="?page=grafik" style="background-color:{{ request('page') != 'riwayat' ? '#faf9ee' : '#d9d9d9' }}; color:{{ request('page') != 'riwayat' ? '#F564A9' : 'grey' }}; border-radius:0 10px 0 0; text-decoration:none;" class="z-3 fw-bold position-absolute bottom-0 start-0 m-0 p-2 px-5 rounded-start-2">Grafik</a>
+                <a href="?page=riwayat" style="background-color:{{ request('page') == 'riwayat' ? '#faf9ee' : '#d9d9d9' }}; color:{{ request('page') == 'riwayat' ? '#F564A9' : 'grey' }}; border-radius:0 10px 0 0; text-decoration:none;" class="z-3 fw-bold position-absolute bottom-0 start-10 m-0 p-2 px-5 rounded-end-2">Riwayat</a>
             </div>
             <div class="card" style="background-color:#faf9ee;">
+                @if(request('page') != 'riwayat')
                 <div class="card-body">
                     <div class="card-title d-flex justify-content-around">
-                        <button type="button" class="btn btnKlasifikasi active">Berat</button>
-                        <button type="button" class="btn btnKlasifikasi">Tinggi</button>
-                        <button type="button" class="btn btnKlasifikasi">Berat / Tinggi</button>
-                        <button type="button" class="btn btnKlasifikasi">Lingkar Kepala</button>
+                        <a href="?indikator=berat" class="btn btnKlasifikasi {{$indikator == 'berat' ? 'active' : '' }} ">Berat</a>
+                        <a href="?indikator=tinggi" class="btn btnKlasifikasi {{$indikator == 'tinggi' ? 'active' : '' }} ">Tinggi</a>
+                        <a href="?indikator=berat/tinggi" class="btn btnKlasifikasi {{$indikator == 'berat/tinggi' ? 'active' : '' }} ">Berat / Tinggi</a>
+                        <a href="?indikator=lingkarKepala" class="btn btnKlasifikasi {{$indikator == 'lingkarKepala' ? 'active' : '' }} ">Lingkar Kepala</a>
+                        <a href="?indikator=imt" class="btn btnKlasifikasi {{$indikator == 'imt' ? 'active' : '' }} ">IMT</a>
                     </div>
+                    @if($indikator == 'berat/tinggi' || $indikator == 'imt')
                     <div class="row text-center bg-white mx-5 border border-0.5 py-2 rounded-3 mb-4 shadow-sm">
                         <div class="col-4">
-                            <span>Date: {{$tglSebelum->translatedFormat('l, d F Y'); }}</span>
-                            <h3>{{$dataSebelum->berat}} Kg</h3>
+                            <span>Date: {{$tglSebelum->translatedFormat('d F Y'); }}</span>
+                            <h3>{{number_format($dataSebelum->zScore->$indikator,3)}} {{$satuan}}</h3>
                         </div>
                         <div class="col-4">
-                            <span>Date: {{$tglSekarang->translatedFormat('l, d F Y'); }}</span>
-                            <h3>{{$dataSekarang->berat}} Kg</h3>
+                            <span>Date: {{$tglSekarang->translatedFormat('d F Y'); }}</span>
+                            <h3>{{number_format($dataSekarang->zScore->$indikator,3)}} {{$satuan}}</h3>
                         </div>
                         <div class="col-4">
                             <span>
@@ -106,49 +125,72 @@ $tglSebelum = Carbon::parse($dataSebelum->tglPengukuran);
                                 {{round($tglSebelum->diffInMonths($tglSekarang))}} bulan
                                 {{$tglSebelum->diffInDays($tglSekarang)}} hari
                             </span>
-                            <h3>{{$dataSekarang->berat - $dataSebelum->berat}} Kg</h3>
+                            <h3>{{number_format($dataSekarang->zScore->$indikator,3) - number_format($dataSebelum->zScore->$indikator,3)}} {{$satuan}}</h3>
                         </div>
                     </div>
+                    @else
+                    <div class="row text-center bg-white mx-5 border border-0.5 py-2 rounded-3 mb-4 shadow-sm">
+                        <div class="col-4">
+                            <span>Date: {{$tglSebelum->translatedFormat('d F Y'); }}</span>
+                            <h3>{{$dataSebelum->$indikator}} {{$satuan}}</h3>
+                        </div>
+                        <div class="col-4">
+                            <span>Date: {{$tglSekarang->translatedFormat('d F Y'); }}</span>
+                            <h3>{{$dataSekarang->$indikator}} {{$satuan}}</h3>
+                        </div>
+                        <div class="col-4">
+                            <span>
+                                Selisih:
+                                {{round($tglSebelum->diffInMonths($tglSekarang))}} bulan
+                                {{$tglSebelum->diffInDays($tglSekarang)}} hari
+                            </span>
+                            <h3>{{$dataSekarang->$indikator - $dataSebelum->$indikator}} {{$satuan}}</h3>
+                        </div>
+                    </div>
+                    @endif
                     <div class="card mx-5 py-2">
-                        <div class="card-body text-center" style="height: 50vh;">
-                            <p><b>Tinggi badan tergolong</b></p>
-                            <p><b>Z-score : </b></p>
-                            <p style="padding: 3px 20px ; background-color:#ec7fa9; width:min-content; margin:auto; color:white; border-radius:12px;"><b>normal</b></p>
+                        <div class="card-body text-center">
+                            <p><b>Z-score : <?= number_format($dataSekarang->zScore->$indikator, 3); ?> </b></p>
+                            <p><b>SD :
+                                    <?= $dataSekarang->zScore->{$indikator.'Sd'};  ?>
+                                </b></p>
+                            <div id="spedo" style="height: 250px"></div>
+                            <p
+                                style="padding: 3px 20px ; background-color:#ec7fa9; width:max-content; margin:auto; color:white; border-radius:12px;">
+                                <b>{{checkIndikator($dataSekarang->zScore->$indikator,$indikator)}}</b>
+                            </p>
                             <p>Data Terakhir : {{$tglSekarang->translatedFormat('l, d F Y');}}</p>
-                            <div id="container" style="height: 100%"></div>
                         </div>
                     </div>
                     <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
                     <script type="text/javascript">
-                        var dom = document.getElementById('container');
+                        var dom = document.getElementById('spedo');
                         var myChart = echarts.init(dom, null, {
                             renderer: 'canvas',
                             useDirtyRect: false
                         });
                         var app = {};
-
                         var option;
-
                         option = {
                             series: [{
                                 type: 'gauge',
                                 startAngle: 180,
                                 endAngle: 0,
-                                center: ['50%', '50%'],
-                                radius: '85%',
+                                center: ['50%', '70%'],
+                                radius: '100%',
                                 min: {{$dataWHO['SD3neg']}},
-                                max: ,
+                                max: {{$dataWHO['SD3']}},
                                 splitNumber: 10,
                                 axisLine: {
                                     lineStyle: {
                                         width: 6,
                                         color: [
-                                            [0.1, '#FF6E76'],
-                                            [0.2, '#FDDD60'],
-                                            [0.5, '#58D9F9'],
-                                            [0.8, '#58D9F9'],
-                                            [0.9, '#FDDD60'],
-                                            [1, '#FF6E76']
+                                            [{{($dataWHO['SD2neg'] - $dataWHO['SD3neg']) / ($dataWHO['SD3'] - $dataWHO['SD3neg'])}}, '#FF6E76'],
+                                            [{{($dataWHO['SD1neg'] - $dataWHO['SD3neg']) / ($dataWHO['SD3'] - $dataWHO['SD3neg'])}}, '#FDDD60'],
+                                            [{{($dataWHO['SD0'] - $dataWHO['SD3neg']) / ($dataWHO['SD3'] - $dataWHO['SD3neg'])}}, '#7CFFB2'],
+                                            [{{($dataWHO['SD1'] - $dataWHO['SD3neg']) / ($dataWHO['SD3'] - $dataWHO['SD3neg'])}}, '#7CFFB2'],
+                                            [{{($dataWHO['SD2'] - $dataWHO['SD3neg']) / ($dataWHO['SD3'] - $dataWHO['SD3neg'])}}, '#FDDD60'],
+                                            [{{($dataWHO['SD3'] - $dataWHO['SD3neg']) / ($dataWHO['SD3'] - $dataWHO['SD3neg'])}}, '#FF6E76'],
                                         ]
                                     }
                                 },
@@ -182,13 +224,13 @@ $tglSebelum = Carbon::parse($dataSebelum->tglPengukuran);
                                     rotate: 'tangential',
                                     formatter: function(value) {
                                         if (value === 0.8) {
-                                            // return 'Grade A';
+                                            return 'Grade A';
                                         } else if (value === 0.6) {
-                                            // return 'Grade B';
+                                            return 'Grade B';
                                         } else if (value === 0.3) {
-                                            // return 'Grade C';
+                                            return 'Grade C';
                                         } else if (value === 0.1) {
-                                            // return 'Grade D';
+                                            return 'Grade D';
                                         }
                                         return '';
                                     }
@@ -202,13 +244,13 @@ $tglSebelum = Carbon::parse($dataSebelum->tglPengukuran);
                                     offsetCenter: [0, '-35%'],
                                     valueAnimation: true,
                                     formatter: function(value) {
-                                        return value + '';
+                                        return value + ' ' + '{{$satuan}}';
                                     },
                                     color: 'inherit'
                                 },
                                 data: [{
-                                    value: 19,
-                                    name: 'Kg'
+                                    value: {{$indikator == 'berat/tinggi' ? $dataSekarang->berat : $dataSekarang->$indikator}},
+                                    name: '{{$indikator}}'
                                 }]
                             }]
                         };
@@ -216,12 +258,57 @@ $tglSebelum = Carbon::parse($dataSebelum->tglPengukuran);
                         if (option && typeof option === 'object') {
                             myChart.setOption(option);
                         }
-
                         window.addEventListener('resize', myChart.resize);
                     </script>
                 </div>
-            </div>
+                @else
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Tanggal</th>
+                                    <th>Berat (kg)</th>
+                                    <th>Tinggi (cm)</th>
+                                    <th>Lingkar Kepala (cm)</th>
+                                    <th>IMT</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($riwayatPengukuran as $riwayat)
+                                <tr>
+                                    <td>{{ Carbon::parse($riwayat->tglPengukuran)->translatedFormat('d F Y') }}</td>
+                                    <td>{{ $riwayat->berat }}</td>
+                                    <td>{{ $riwayat->tinggi }}</td>
+                                    <td>{{ $riwayat->lingkarKepala }}</td>
+                                    <td>{{ $riwayat->imt }}</td>
+                                    <td>{{ checkIndikator($riwayat->zScore->berat, 'berat') }}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
 
+                        </table>
+                    </div>
+                </div>
+                @endif
+            </div>
+            @else
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title text-center text-danger">
+                        belum ada data pengukuran
+                    </h3>
+
+                    <p class="text-center mb-4">Silahkan lakukan pengukuran terlebih dahulu</p>
+                    <div class="text-center">
+                        <a href="{{route('pengukuran',['balita' => $balita->id])}}" class="btn btn-primary" style="background-color: #ec7fa9; border: none;">
+                            <strong>Tambah Data Pengukuran</strong>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            @endif
         </div>
     </div>
 
