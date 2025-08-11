@@ -103,6 +103,7 @@ public function dataPengukuran()
         $data['dataWHO']        = $indikator == 'berat/tinggi' ? $dataWHO[$indikator][$balita->jenisKelamin == 'L' ? 'laki-laki' : 'perempuan'][$months >= 24 ? 1 : 0][(float)$data['dataSekarang']->tinggi]
                                     : $dataWHO[$indikator][$balita->jenisKelamin == 'L' ? 'laki-laki' : 'perempuan'][$months];
         $data['indikator']      = $indikator;
+        $data['dataListWHO'] = $dataWHO;
         return view('backend.admin.balita.detail', $data);
         
     }

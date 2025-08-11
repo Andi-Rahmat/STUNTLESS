@@ -59,9 +59,9 @@ if (!function_exists('checkKelamin')) {
     function checkKelamin($kelamin)
     {
         if ($kelamin == 'L') {
-            return 'Laki-laki';
+            return 'laki-laki';
         } else {
-            return 'Perempuan';
+            return 'perempuan';
         }
     }
 }

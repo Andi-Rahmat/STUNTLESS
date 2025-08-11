@@ -113,7 +113,7 @@ class pengukuranController extends Controller
             'berat'             => $request->berat, 
             'tinggi'            => $request->tinggi, 
             'suhu'              => $request->suhu,
-            'lingkar_kepala'    => $request->lingkar_kepala, 
+            'lingkarKepala'    => $request->lingkarKepala, 
             'imt'               => $IMT,
         ]);
 
@@ -124,8 +124,8 @@ class pengukuranController extends Controller
             'tinggi'                => $zscoreTinggi,
             'berat/tinggiSd'         => checkSD($request->berat,$sdBeratTinggi),
             'berat/tinggi'           => $zscoreBeratTinggi,
-            'lingkar_kepalaSd'      => checkSD($request->Berat,$sdBeratTinggi),
-            'lingkar_kepala'        => $zscoreBeratTinggi,
+            'lingkarKepalaSd'      => checkSD($request->Berat,$sdBeratTinggi),
+            'lingkarKepala'        => $zscoreBeratTinggi,
             'imtSd'                 => checkSD($IMT,$sdImt),
             'imt'                   => $zscoreIMT,
             'idPengukuran'          => $idPengukuran->id,
@@ -134,4 +134,32 @@ class pengukuranController extends Controller
         return redirect()->route('detail_balita_pengukuran', ['id' => $id, 'idPengukuran' => $idPengukuran->id])
             ->with('success', 'Pengukuran berhasil disimpan.');
     }
+
+    public function destroy(int $id)
+    {
+        $pengukuran = Pengukuran::find($id);
+        if ($pengukuran) {
+            $pengukuran->delete();
+            return redirect()->route('detail_balita',['id' => $id])->with('success', 'Pengukuran berhasil dihapus.');
+        } else {
+            return redirect()->back()->with('error', 'Pengukuran tidak ditemukan.');
+        }
+    }
+
+    public function modal(int $id)
+    {
+        $pengukuran = Pengukuran::with('zscore')->find($id);
+        if ($pengukuran) {
+            return response()->json([
+                'status' => 'success',
+                'data' => $pengukuran
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Pengukuran tidak ditemukan.'
+            ]);
+        }
+    }
+
 }

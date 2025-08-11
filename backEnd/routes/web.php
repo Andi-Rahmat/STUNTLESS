@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\aiController;
 use App\Http\Controllers\balitaController;
+use App\Http\Controllers\dashboardController;
 use App\Http\Controllers\ibuController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\pengaturanController;
@@ -11,8 +13,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 
-
+Route::view('/chat', 'chat');                 // halaman UI sederhana
+Route::post('/api/chat', [aiController::class, 'chat']);       // non-stream
+Route::post('/api/chat/stream', [aiController::class, 'stream']);
 Route::get('/', function () {
+
     return view('backend.pages.welcome');
 });
 
@@ -21,6 +26,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
     Route::get('/admin/pengukuran-balita', [pengukuranController::class, 'show'])->name('pengukuran');
     Route::post('/admin/pengukuran-balita/{id}', [pengukuranController::class, 'store'])->name('pengukuran.store');
+    Route::get('/admin/hapus-pengukuran/{id}', [pengukuranController::class, 'destroy'])->name('hapus.pengukuran');
+    Route::get('/modal/pengukuran/{id}', [pengukuranController::class, 'modal'])->name('modal.pengukuran');
+
 
 
     Route::get('/admin/daftar-balita', [balitaController::class, 'index'])->name('daftar_balita');
@@ -36,10 +44,8 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:admin')->group(function () {
         Route::get('/get-data-pengukuran', [balitaController::class, 'dataPengukuran'])->name('data.pengukuran');
 
-    
-        Route::get('/admin/dashboard', function () {
-            return view('backend.admin.dashboard');
-        })->name('admin.dashboard');
+        Route::get('/admin/dashboard', [dashboardController::class, 'index'])->name('admin.dashboard');
+
 
         
         Route::get('/admin/registrasi-ibu', function () {

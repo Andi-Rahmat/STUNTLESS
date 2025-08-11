@@ -3,26 +3,55 @@
 @section('title','dashboard')
 @section('content')
 
-@php
-use Carbon\Carbon;
-if($dataSekarang != null){
-$tglSekarang = Carbon::parse($dataSekarang->tglPengukuran);
-$tglSebelum = Carbon::parse($dataSebelum->tglPengukuran);
-$satuan = '';
-switch ($indikator) {
-case "berat":
-$satuan = 'Kg';
-break;
-case "tinggi":
-$satuan = 'cm';
-break;
-case "imt":
-$satuan = 'kg/m²';
-break;
-}
-}
-@endphp
+<?php 
 
+use Carbon\Carbon;
+
+if($dataSekarang != null) {
+    $tglSekarang = Carbon::parse($dataSekarang->tglPengukuran);
+    $tglSebelum = $dataSebelum != null ? Carbon::parse($dataSebelum->tglPengukuran) : null;
+    $satuan = '';
+    switch ($indikator) {
+        case "berat":
+            $satuan = 'Kg';
+            break;
+        case "tinggi":
+            $satuan = 'cm';
+            break;
+        case "imt":
+            $satuan = 'kg/m²';
+            break;
+    }
+}
+
+if(request('page') == 'riwayat') {
+    function getDataGrafikWHO($indikator, $sd, $kelamin, $dataWHO, $months = 0) {
+        $dataGrafik = [];
+        $dataList = [];
+        if ($indikator == 'berat/tinggi') {
+            $dataList = $dataWHO[$indikator][$kelamin][$months >= 24 ? 1 : 0];
+        } else {
+            $dataList = $dataWHO[$indikator][$kelamin];
+        }
+        foreach ($dataList as $key) {
+            $dataGrafik[] = $key[$sd];
+        }
+        return $dataGrafik;
+    }
+
+    function getHasilUkurBalita($pengukuran, $indikator,$count = 61) {
+        $dataList = array_fill(0, $count, 0);
+
+        foreach ($pengukuran as $key) {
+            $months = (int) floor(Carbon::parse($key->balita->tglLahir)->diffInMonths(Carbon::parse($key->tglPengukuran)));
+            if($dataList[$months] == 0) {
+                $dataList[$months] = $key->$indikator;
+            }
+        }
+        return $dataList;
+    }
+}
+?>
 
 <div class="pagetitle">
     <h1>Detail Balita</h1>
@@ -112,39 +141,47 @@ break;
                     @if($indikator == 'berat/tinggi' || $indikator == 'imt')
                     <div class="row text-center bg-white mx-5 border border-0.5 py-2 rounded-3 mb-4 shadow-sm">
                         <div class="col-4">
+                            @if($dataSebelum != null)
                             <span>Date: {{$tglSebelum->translatedFormat('d F Y'); }}</span>
                             <h3>{{number_format($dataSebelum->zScore->$indikator,3)}} {{$satuan}}</h3>
+                            @endif
                         </div>
                         <div class="col-4">
                             <span>Date: {{$tglSekarang->translatedFormat('d F Y'); }}</span>
                             <h3>{{number_format($dataSekarang->zScore->$indikator,3)}} {{$satuan}}</h3>
                         </div>
                         <div class="col-4">
+                            @if($dataSebelum != null)
                             <span>
                                 Selisih:
                                 {{round($tglSebelum->diffInMonths($tglSekarang))}} bulan
                                 {{$tglSebelum->diffInDays($tglSekarang)}} hari
                             </span>
                             <h3>{{number_format($dataSekarang->zScore->$indikator,3) - number_format($dataSebelum->zScore->$indikator,3)}} {{$satuan}}</h3>
+                            @endif
                         </div>
                     </div>
                     @else
                     <div class="row text-center bg-white mx-5 border border-0.5 py-2 rounded-3 mb-4 shadow-sm">
                         <div class="col-4">
+                            @if($dataSebelum != null)
                             <span>Date: {{$tglSebelum->translatedFormat('d F Y'); }}</span>
                             <h3>{{$dataSebelum->$indikator}} {{$satuan}}</h3>
+                            @endif
                         </div>
                         <div class="col-4">
                             <span>Date: {{$tglSekarang->translatedFormat('d F Y'); }}</span>
                             <h3>{{$dataSekarang->$indikator}} {{$satuan}}</h3>
                         </div>
                         <div class="col-4">
+                            @if($dataSebelum != null)
                             <span>
                                 Selisih:
                                 {{round($tglSebelum->diffInMonths($tglSekarang))}} bulan
                                 {{$tglSebelum->diffInDays($tglSekarang)}} hari
                             </span>
                             <h3>{{$dataSekarang->$indikator - $dataSebelum->$indikator}} {{$satuan}}</h3>
+                            @endif
                         </div>
                     </div>
                     @endif
@@ -152,7 +189,7 @@ break;
                         <div class="card-body text-center">
                             <p><b>Z-score : <?= number_format($dataSekarang->zScore->$indikator, 3); ?> </b></p>
                             <p><b>SD :
-                                    <?= $dataSekarang->zScore->{$indikator.'Sd'};  ?>
+                                    <?= $dataSekarang->zScore->{$indikator . 'Sd'};  ?>
                                 </b></p>
                             <div id="spedo" style="height: 250px"></div>
                             <p
@@ -263,54 +300,397 @@ break;
                 </div>
                 @else
                 <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Tanggal</th>
-                                    <th>Berat (kg)</th>
-                                    <th>Tinggi (cm)</th>
-                                    <th>Lingkar Kepala (cm)</th>
-                                    <th>IMT</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($riwayatPengukuran as $riwayat)
-                                <tr>
-                                    <td>{{ Carbon::parse($riwayat->tglPengukuran)->translatedFormat('d F Y') }}</td>
-                                    <td>{{ $riwayat->berat }}</td>
-                                    <td>{{ $riwayat->tinggi }}</td>
-                                    <td>{{ $riwayat->lingkarKepala }}</td>
-                                    <td>{{ $riwayat->imt }}</td>
-                                    <td>{{ checkIndikator($riwayat->zScore->berat, 'berat') }}</td>
-                                </tr>
-                                @endforeach
-                            </tbody>
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Tanggal</th>
+                                            <th>Usia</th>
+                                            <th>Berat (kg)</th>
+                                            <th>Tinggi (cm)</th>
+                                            <th>Lingkar Kepala (cm)</th>
+                                            <th>IMT</th>
+                                            <th>Status</th>
+                                            <th>aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($riwayatPengukuran as $riwayat)
+                                        <tr>
+                                            <td>{{ Carbon::parse($riwayat->tglPengukuran)->translatedFormat('d F Y') }}</td>
+                                            <td>{{ hitungUsia($riwayat->balita->tglLahir,$riwayat->tglPengukuran) }}</td>
+                                            <td>{{ $riwayat->berat }}</td>
+                                            <td>{{ $riwayat->tinggi }}</td>
+                                            <td>{{ $riwayat->lingkarKepala }}</td>
+                                            <td>{{ $riwayat->imt }}</td>
+                                            <td>{{ checkIndikator($riwayat->zScore->berat, 'berat') }}</td>
+                                            <td>
+                                                <button data-bs-toggle="modal" data-bs-target="#detailPengukuran" data-link="/modal/pengukuran/{{$riwayat->id}}" class="btn btn-info">
+                                                    <i class="bi bi-info-circle"></i>
+                                                    <span class="info-text">Info Detail!</span>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
 
-                        </table>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Riwayat Berat</h5>
+                            <div style="height: 400px; width: 100%;">
+                                <div id="containerBerat" style="height: 100%"></div>
+                                <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+                                <script type="text/javascript">
+                                    var dom = document.getElementById('containerBerat');
+                                    var myChart = echarts.init(dom, null, {
+                                        renderer: 'canvas',
+                                        useDirtyRect: false
+                                    });
+                                    var app = {};
+                                    
+                                    var option;
+
+                                    option = {
+                                        color: [
+                                            '#1f1f1f',  // -SD3 color
+                                            '#FF6E76',  // -SD3 color
+                                            '#FDDD60',  // -SD2 color
+                                            '#7CFFB2',  // -SD1 color 
+                                            '#58D9F9',  // SD0 color
+                                            '#7CFFB2',  // SD1 color
+                                            '#FDDD60',  // SD2 color
+                                            '#FF6E76'   // SD3 color
+                                        ],
+                                        title: {
+                                            text: 'BERAT'
+                                        },
+                                        tooltip: {
+                                            trigger: 'axis'
+                                        },
+                                        legend: {
+                                            data: ['<?= $balita->namaLengkap ;?>','-SD3', '-SD2', '-SD1', 'SD0', 'SD1', 'SD2', 'SD3']
+                                        },
+                                        
+                                        grid: {
+                                            left: '3%',
+                                            right: '4%',
+                                            bottom: '3%',
+                                            containLabel: true
+                                        },
+                                        toolbox: {
+                                            feature: {
+                                                saveAsImage: {}
+                                            }
+                                        },
+                                        xAxis: {
+                                            type: 'category',
+                                            boundaryGap: false,
+                                            data: Array.from({length: 61}, (_, i) => i)
+                                        },
+                                        yAxis: {
+                                            type: 'value'
+                                        },
+                                        series: [
+                                            {
+                                                name: '<?= $balita->namaLengkap ;?>',
+                                                type: 'line',
+                                                data: <?= json_encode(getHasilUkurBalita($riwayatPengukuran,'berat')); ?>
+
+                                            },
+                                            {
+                                                name: '-SD3',
+                                                type: 'line',
+                                                data: <?= json_encode(getDataGrafikWHO($indikator,'SD3neg', checkKelamin($balita->jenisKelamin),$dataListWHO, hitungUsia($balita->tglLahir))); ?>
+
+                                            },
+                                            {
+                                                name: '-SD2',
+                                                type: 'line', 
+                                                data: <?= json_encode(getDataGrafikWHO($indikator,'SD2neg', checkKelamin($balita->jenisKelamin),$dataListWHO, hitungUsia($balita->tglLahir))); ?>
+                                            },
+                                            {
+                                                name: '-SD1',
+                                                type: 'line',
+                                                data: <?= json_encode(getDataGrafikWHO($indikator,'SD1neg', checkKelamin($balita->jenisKelamin),$dataListWHO, hitungUsia($balita->tglLahir))); ?>
+
+                                            },
+                                            {
+                                                name: 'SD0',
+                                                type: 'line',
+                                                data: <?= json_encode(getDataGrafikWHO($indikator,'SD0', checkKelamin($balita->jenisKelamin),$dataListWHO, hitungUsia($balita->tglLahir))); ?>
+
+                                            },
+                                            {
+                                                name: 'SD1',
+                                                type: 'line',
+                                                data: <?= json_encode(getDataGrafikWHO($indikator,'SD1', checkKelamin($balita->jenisKelamin),$dataListWHO, hitungUsia($balita->tglLahir))); ?>
+
+                                            },
+                                            {
+                                                name: 'SD2',
+                                                type: 'line',
+                                                data: <?= json_encode(getDataGrafikWHO($indikator,'SD2', checkKelamin($balita->jenisKelamin),$dataListWHO, hitungUsia($balita->tglLahir))); ?>
+                                            },
+                                            {
+                                                name: 'SD3',
+                                                type: 'line',
+                                                data: <?= json_encode(getDataGrafikWHO($indikator,'SD3', checkKelamin($balita->jenisKelamin),$dataListWHO, hitungUsia($balita->tglLahir))); ?>
+                                            }
+                                        ]
+                                    };
+
+                                    if (option && typeof option === 'object') {
+                                        myChart.setOption(option);
+                                    }
+
+                                    window.addEventListener('resize', myChart.resize);
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Riwayat Tinggi</h5>
+                            <div style="height: 400px; width: 100%;">
+                                <div id="containerTinggi" style="height: 100%"></div>
+                                <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+                                <script type="text/javascript">
+                                    var dom = document.getElementById('containerTinggi');
+                                    var myChart = echarts.init(dom, null, {
+                                        renderer: 'canvas',
+                                        useDirtyRect: false
+                                    });
+                                    var app = {};
+                                    
+                                    var option;
+
+                                    option = {
+                                        color: [
+                                            '#FF6E76',  // -SD3 color
+                                            '#FDDD60',  // -SD2 color
+                                            '#7CFFB2',  // -SD1 color 
+                                            '#58D9F9',  // SD0 color
+                                            '#7CFFB2',  // SD1 color
+                                            '#FDDD60',  // SD2 color
+                                            '#FF6E76',   // SD3 color
+                                            '#1f1f1f',  // BALITA color
+
+                                        ],
+                                        title: {
+                                            text: 'TINGGI'
+                                        },
+                                        tooltip: {
+                                            trigger: 'axis'
+                                        },
+                                        legend: {
+                                            data: ['-SD3', '-SD2', '-SD1', 'SD0', 'SD1', 'SD2', 'SD3','<?= $balita->namaLengkap ;?>']
+                                        },
+                                        
+                                        grid: {
+                                            left: '3%',
+                                            right: '4%',
+                                            bottom: '3%',
+                                            containLabel: true
+                                        },
+                                        toolbox: {
+                                            feature: {
+                                                saveAsImage: {}
+                                            }
+                                        },
+                                        xAxis: {
+                                            type: 'category',
+                                            boundaryGap: false,
+                                            data: Array.from({length: 61}, (_, i) => i)
+                                        },
+                                        yAxis: {
+                                            type: 'value'
+                                        },
+                                        series: [
+                                            {
+                                                name: '-SD3',
+                                                type: 'line',
+                                                data: <?= json_encode(getDataGrafikWHO('tinggi','SD3neg', checkKelamin($balita->jenisKelamin),$dataListWHO, hitungUsia($balita->tglLahir))); ?>
+
+                                            },
+                                            {
+                                                name: '-SD2',
+                                                type: 'line', 
+                                                data: <?= json_encode(getDataGrafikWHO('tinggi','SD2neg', checkKelamin($balita->jenisKelamin),$dataListWHO, hitungUsia($balita->tglLahir))); ?>
+                                            },
+                                            {
+                                                name: '-SD1',
+                                                type: 'line',
+                                                data: <?= json_encode(getDataGrafikWHO('tinggi','SD1neg', checkKelamin($balita->jenisKelamin),$dataListWHO, hitungUsia($balita->tglLahir))); ?>
+
+                                            },
+                                            {
+                                                name: 'SD0',
+                                                type: 'line',
+                                                data: <?= json_encode(getDataGrafikWHO('tinggi','SD0', checkKelamin($balita->jenisKelamin),$dataListWHO, hitungUsia($balita->tglLahir))); ?>
+
+                                            },
+                                            {
+                                                name: 'SD1',
+                                                type: 'line',
+                                                data: <?= json_encode(getDataGrafikWHO('tinggi','SD1', checkKelamin($balita->jenisKelamin),$dataListWHO, hitungUsia($balita->tglLahir))); ?>
+
+                                            },
+                                            {
+                                                name: 'SD2',
+                                                type: 'line',
+                                                data: <?= json_encode(getDataGrafikWHO('tinggi','SD2', checkKelamin($balita->jenisKelamin),$dataListWHO, hitungUsia($balita->tglLahir))); ?>
+                                            },
+                                            {
+                                                name: 'SD3',
+                                                type: 'line',
+                                                data: <?= json_encode(getDataGrafikWHO('tinggi','SD3', checkKelamin($balita->jenisKelamin),$dataListWHO, hitungUsia($balita->tglLahir))); ?>
+                                            },
+                                            {
+                                                name: '<?= $balita->namaLengkap ;?>',
+                                                type: 'line',
+                                                data: <?= json_encode(getHasilUkurBalita($riwayatPengukuran,'tinggi')); ?>
+
+                                            },
+                                        ]
+                                    };
+
+                                    if (option && typeof option === 'object') {
+                                        myChart.setOption(option);
+                                    }
+
+                                    window.addEventListener('resize', myChart.resize);
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
+                </div>
+                @else
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title text-center text-danger">
+                            belum ada data pengukuran
+                        </h3>
+
+                        <p class="text-center mb-4">Silahkan lakukan pengukuran terlebih dahulu</p>
+                        <div class="text-center">
+                            <a href="{{route('pengukuran',['balita' => $balita->id])}}" class="btn btn-primary" style="background-color: #ec7fa9; border: none;">
+                                <strong>Tambah Data Pengukuran</strong>
+                            </a>
+                        </div>
                     </div>
                 </div>
                 @endif
             </div>
-            @else
-            <div class="card">
-                <div class="card-body">
-                    <h3 class="card-title text-center text-danger">
-                        belum ada data pengukuran
-                    </h3>
+        </div>
 
-                    <p class="text-center mb-4">Silahkan lakukan pengukuran terlebih dahulu</p>
-                    <div class="text-center">
-                        <a href="{{route('pengukuran',['balita' => $balita->id])}}" class="btn btn-primary" style="background-color: #ec7fa9; border: none;">
-                            <strong>Tambah Data Pengukuran</strong>
-                        </a>
+        @if(request('page') == 'riwayat')
+        <!-- Modal -->
+        <div class="modal fade" id="detailPengukuran" tabindex="-1" aria-labelledby="detailPengukuranLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="detailPengukuranLabel">Detail Hasil Pengukuran</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-bordered">
+                            <thead>
+                                <th>Parameter</th>
+                                <th>Pengukuran</th>
+                                <th>Z-score</th>
+                            </thead>
+                            <tr>
+                                <th>Berat Badan</th>
+                                <td><span id="berat"></span> kg</td>
+                                <td><span id="beratZscore"></span> </td>
+                            </tr>
+                            <tr>
+                                <th>Tinggi Badan</th>
+                                <td><span id="tinggi"></span> cm</td>
+                                <td><span id="tinggiZscore"></span> </td>
+                            </tr>
+                            <tr>
+                                <th>Suhu Badan</th>
+                                <td><span id="suhu"></span> °C</td>
+                                <td><span id="suhuZscore"></span> </td>
+                            </tr>
+                            <tr>
+                                <th>Lingkar Kepala</th>
+                                <td><span id="lingkarKepala"></span> cm</td>
+                                <td><span id="lingkarKepalaZscore"></span> </td>
+                            </tr>
+                            <tr>
+                                <th>Indeks Massa Tubuh</th>
+                                <td><span id="imt"></span> kg/m²</td>
+                                <td><span id="imtZscore"></span></td>
+                            </tr>
+                        </table>
+                        <div class="mt-4">
+                            <h6>Status Gizi:</h6>
+                            <div class="d-flex flex-wrap gap-2">
+                                <span class="badge" style="background-color: #FF6E76">Gizi Buruk</span>
+                                <span class="badge" style="background-color: #FDDD60">Gizi Kurang</span>
+                                <span class="badge" style="background-color: #7CFFB2">Gizi Normal</span>
+                                <span class="badge" style="background-color: #FDDD60">Gizi Lebih</span>
+                                <span class="badge" style="background-color: #FF6E76">Obesitas</span>
+                            </div>
+                            <div class="alert alert-info mt-2">
+                                Status gizi saat ini:
+                                <strong>
+                                    <span class="badge" style="background-color: 
+                                    {{ in_array(checkIndikator($riwayat->zScore->berat, 'berat'), ['Gizi Buruk', 'Obesitas']) ? '#FF6E76' : 
+                                       (in_array(checkIndikator($riwayat->zScore->berat, 'berat'), ['Gizi Kurang', 'Gizi Lebih']) ? '#FDDD60' : '#7CFFB2') }}">
+                                        {{ checkIndikator($riwayat->zScore->berat, 'berat') }}
+                                    </span>
+                                </strong>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <form action="{{ route('hapus.pengukuran', ['id' => $dataSekarang->id]) }}" method="GET" style="display: inline;" onsubmit="return confirm('Anda Yakin Ingin Menghapus Data ini ?');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-exclamation-octagon"></i>
+                                Hapus Data
+                            </button>
+                        </form>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                     </div>
                 </div>
             </div>
-            @endif
         </div>
-    </div>
+        @endif
 
+        <script>
+            document.querySelectorAll('[data-bs-target="#detailPengukuran"]').forEach(button => {
+                button.addEventListener('click', function() {
+                    const url = this.getAttribute('data-link');
+                    console.log(url);
+                    fetch(url)
+                        .then(response => response.json())
+                        .then(data => {
+                            document.getElementById('berat').textContent = data.data.berat;
+                            document.getElementById('tinggi').textContent = data.data.tinggi;
+                            document.getElementById('suhu').textContent = data.data.suhu;
+                            document.getElementById('lingkarKepala').textContent = data.data.lingkarKepala;
+                            document.getElementById('imt').textContent = data.data.imt;
+                            document.getElementById('beratZscore').textContent = data.data.zscore.berat;
+                            document.getElementById('tinggiZscore').textContent = data.data.zscore.tinggi;
+                            document.getElementById('suhuZscore').textContent = data.data.zscore.suhu;
+                            document.getElementById('lingkarKepalaZscore').textContent = data.data.zscore.lingkarKepala;
+                            document.getElementById('imtZscore').textContent = data.data.zscore.imt;
+                        })
+                        .catch(error => console.error('Error:', error));
+                });
+            });
+        </script>
 </section>
 @endsection
