@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::view('/chat', 'chat');                 // halaman UI sederhana
+Route::post('/chatAi', [aiController::class, 'chatAi']);       // non-stream
 Route::post('/api/chat', [aiController::class, 'chat']);       // non-stream
 Route::post('/api/chat/stream', [aiController::class, 'stream']);
 Route::get('/', function () {

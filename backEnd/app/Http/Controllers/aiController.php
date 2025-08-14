@@ -3,12 +3,29 @@
 namespace App\Http\Controllers;
 
 use App\Services\OpenAIService;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use OpenAI;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class aiController extends Controller
 {
- public function chat(Request $request, OpenAIService $openai)
+    public function chatAi(Request $request)
+    {
+        $yourApiKey = getenv('OPENAI_API_KEY');
+        $client = OpenAI::client($yourApiKey);
+        $result = $client->chat()->create([
+            'model' => 'gpt-4o',
+            'messages' => [
+                ['role' => 'user', 'content' => 'Hello!'],
+            ],
+        ]);
+
+        dd($result->choices[0]->message->content);
+    }
+
+
+    public function chat(Request $request, OpenAIService $openai)
     {
         $request->validate(['prompt' => 'required|string|min:1']);
         $result = $openai->chat($request->input('prompt'));
@@ -27,17 +44,20 @@ class aiController extends Controller
         $response = new StreamedResponse(function () use ($openai, $prompt) {
             // Kirim event awal (opsional)
             echo "data: " . json_encode(['type' => 'start']) . "\n\n";
-            @ob_flush(); @flush();
+            @ob_flush();
+            @flush();
 
             $openai->stream($prompt, function ($chunk) {
                 // Langsung teruskan potongan SSE dari OpenAI ke klien
                 echo $chunk;
-                @ob_flush(); @flush();
+                @ob_flush();
+                @flush();
             });
 
             // Tanda selesai
             echo "data: [DONE]\n\n";
-            @ob_flush(); @flush();
+            @ob_flush();
+            @flush();
         });
 
         $response->headers->set('Content-Type', 'text/event-stream');
@@ -47,4 +67,3 @@ class aiController extends Controller
         return $response;
     }
 }
-
