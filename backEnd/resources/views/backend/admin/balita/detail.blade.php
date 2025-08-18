@@ -24,7 +24,6 @@ if($dataSekarang != null) {
     }
 }
 
-if(request('page') == 'riwayat') {
     function getDataGrafikWHO($indikator, $sd, $kelamin, $dataWHO, $months = 0) {
         $dataGrafik = [];
         $dataList = [];
@@ -44,13 +43,17 @@ if(request('page') == 'riwayat') {
 
         foreach ($pengukuran as $key) {
             $months = (int) floor(Carbon::parse($key->balita->tglLahir)->diffInMonths(Carbon::parse($key->tglPengukuran)));
+            if($indikator == 'berat/tinggi') {
+                if($dataList[$months] == 0) {
+                $dataList[$months] = $key->berat;
+                }
+            }
             if($dataList[$months] == 0) {
                 $dataList[$months] = $key->$indikator;
             }
         }
         return $dataList;
     }
-}
 ?>
 
 <div class="pagetitle">
@@ -199,6 +202,144 @@ if(request('page') == 'riwayat') {
                             <p>Data Terakhir : {{$tglSekarang->translatedFormat('l, d F Y');}}</p>
                         </div>
                     </div>
+                    <div class="card card mx-5 py-2">
+                        <div class="card-body">
+                            <h5 class="card-title">Riwayat {{$indikator}}</h5>
+                            <div style="height: 400px; width: 100%;">
+                                <div id="containerTinggi" style="height: 100%"></div>
+                                <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+                                <script type="text/javascript">
+                                    <?php 
+                                    
+                                    if($indikator == 'berat/tinggi'){
+                                        // Array dari 45 hingga 110
+                                        $arrBeratTinggi = hitungUsiaBulan($balita->tglLahir) >= 24 ? range(65,119) : range(45,110);  // Membuat array [45, 46, ..., 110]
+
+                                        // Variabel tinggi dan berat
+                                        $tinggi = $dataSekarang->tinggi;  
+                                        $berat = $dataSekarang->berat;   
+                                        // Mencari indeks nilai yang paling mendekati tinggi
+                                        $closestIndex = array_reduce(array_keys($arrBeratTinggi), function ($prev, $curr) use ($arrBeratTinggi, $tinggi) {
+                                            return abs($arrBeratTinggi[$curr] - $tinggi) < abs($arrBeratTinggi[$prev] - $tinggi) ? $curr : $prev;
+                                        }, 0);
+
+                                        // Membuat array baru berdasarkan indeks yang didapatkan
+                                        $newArray = array_map(function ($value, $index) use ($closestIndex, $berat) {
+                                            return $index === $closestIndex ? $berat : null;
+                                        }, $arrBeratTinggi, array_keys($arrBeratTinggi));
+                                    };
+                                    ?>
+                                    var dom = document.getElementById('containerTinggi');
+                                    var myChart = echarts.init(dom, null, {
+                                        renderer: 'canvas',
+                                        useDirtyRect: false
+                                    });
+                                    var app = {};
+                                    
+                                    var option;
+
+                                    option = {
+                                        color: [
+                                            '#FF6E76',  // -SD3 color
+                                            '#FDDD60',  // -SD2 color
+                                            '#7CFFB2',  // -SD1 color 
+                                            '#58D9F9',  // SD0 color
+                                            '#7CFFB2',  // SD1 color
+                                            '#FDDD60',  // SD2 color
+                                            '#FF6E76',   // SD3 color
+                                            '#1f1f1f',  // BALITA color
+
+                                        ],
+                                        title: {
+                                            text: ''
+                                        },
+                                        tooltip: {
+                                            trigger: 'axis'
+                                        },
+                                        legend: {
+                                            data: ['-SD3', '-SD2', '-SD1', 'SD0', 'SD1', 'SD2', 'SD3','<?= $balita->namaLengkap ;?>']
+                                        },
+                                        
+                                        grid: {
+                                            left: '3%',
+                                            right: '4%',
+                                            bottom: '3%',
+                                            containLabel: true
+                                        },
+                                        toolbox: {
+                                            feature: {
+                                                saveAsImage: {}
+                                            }
+                                        },
+                                        xAxis: {
+                                            type: 'category',
+                                            boundaryGap: false,
+                                            data: <?= $indikator != "berat/tinggi" ? 'Array.from({length: 61}, (_, i) => i)' : json_encode($arrBeratTinggi); ?>,
+                                            name: 'Usia',
+                                        },
+                                        yAxis: {
+                                            type: 'value',
+                                            name: '{{$indikator}}',
+
+                                        },
+                                        series: [
+                                            {
+                                                name: '-SD3',
+                                                type: 'line',
+                                                data: <?= json_encode(getDataGrafikWHO($indikator,'SD3neg', checkKelamin($balita->jenisKelamin),$dataListWHO, hitungUsiaBulan($balita->tglLahir))); ?>
+
+                                            },
+                                            {
+                                                name: '-SD2',
+                                                type: 'line', 
+                                                data: <?= json_encode(getDataGrafikWHO($indikator,'SD2neg', checkKelamin($balita->jenisKelamin),$dataListWHO, hitungUsiaBulan($balita->tglLahir))); ?>
+                                            },
+                                            {
+                                                name: '-SD1',
+                                                type: 'line',
+                                                data: <?= json_encode(getDataGrafikWHO($indikator,'SD1neg', checkKelamin($balita->jenisKelamin),$dataListWHO, hitungUsiaBulan($balita->tglLahir))); ?>
+
+                                            },
+                                            {
+                                                name: 'SD0',
+                                                type: 'line',
+                                                data: <?= json_encode(getDataGrafikWHO($indikator,'SD0', checkKelamin($balita->jenisKelamin),$dataListWHO, hitungUsiaBulan($balita->tglLahir))); ?>
+
+                                            },
+                                            {
+                                                name: 'SD1',
+                                                type: 'line',
+                                                data: <?= json_encode(getDataGrafikWHO($indikator,'SD1', checkKelamin($balita->jenisKelamin),$dataListWHO, hitungUsiaBulan($balita->tglLahir))); ?>
+
+                                            },
+                                            {
+                                                name: 'SD2',
+                                                type: 'line',
+                                                data: <?= json_encode(getDataGrafikWHO($indikator,'SD2', checkKelamin($balita->jenisKelamin),$dataListWHO, hitungUsiaBulan($balita->tglLahir))); ?>
+                                            },
+                                            {
+                                                name: 'SD3',
+                                                type: 'line',
+                                                data: <?= json_encode(getDataGrafikWHO($indikator,'SD3', checkKelamin($balita->jenisKelamin),$dataListWHO, hitungUsiaBulan($balita->tglLahir))); ?>
+                                            },
+                                            {
+                                                name: '<?= $balita->namaLengkap ;?>',
+                                                type: 'line',
+                                                data: <?= $indikator != "berat/tinggi" ? json_encode(getHasilUkurBalita($riwayatPengukuran,$indikator)) : json_encode($newArray) ; ?>
+
+                                            },
+                                        ]
+                                    };
+
+                                    if (option && typeof option === 'object') {
+                                        myChart.setOption(option);
+                                    }
+
+                                    window.addEventListener('resize', myChart.resize);
+                                </script>
+                            </div>
+                        </div>
+                    </div>
                     <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
                     <script type="text/javascript">
                         var dom = document.getElementById('spedo');
@@ -299,6 +440,7 @@ if(request('page') == 'riwayat') {
                     </script>
                 </div>
                 @else
+                <!-- riwayat -->
                 <div class="card-body">
                     <div class="card mt-4">
                         <div class="card-body">
@@ -337,235 +479,6 @@ if(request('page') == 'riwayat') {
                                     </tbody>
 
                                 </table>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card mt-4">
-                        <div class="card-body">
-                            <h5 class="card-title">Riwayat Berat</h5>
-                            <div style="height: 400px; width: 100%;">
-                                <div id="containerBerat" style="height: 100%"></div>
-                                <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
-                                <script type="text/javascript">
-                                    var dom = document.getElementById('containerBerat');
-                                    var myChart = echarts.init(dom, null, {
-                                        renderer: 'canvas',
-                                        useDirtyRect: false
-                                    });
-                                    var app = {};
-                                    
-                                    var option;
-
-                                    option = {
-                                        color: [
-                                            '#1f1f1f',  // -SD3 color
-                                            '#FF6E76',  // -SD3 color
-                                            '#FDDD60',  // -SD2 color
-                                            '#7CFFB2',  // -SD1 color 
-                                            '#58D9F9',  // SD0 color
-                                            '#7CFFB2',  // SD1 color
-                                            '#FDDD60',  // SD2 color
-                                            '#FF6E76'   // SD3 color
-                                        ],
-                                        title: {
-                                            text: 'BERAT'
-                                        },
-                                        tooltip: {
-                                            trigger: 'axis'
-                                        },
-                                        legend: {
-                                            data: ['<?= $balita->namaLengkap ;?>','-SD3', '-SD2', '-SD1', 'SD0', 'SD1', 'SD2', 'SD3']
-                                        },
-                                        
-                                        grid: {
-                                            left: '3%',
-                                            right: '4%',
-                                            bottom: '3%',
-                                            containLabel: true
-                                        },
-                                        toolbox: {
-                                            feature: {
-                                                saveAsImage: {}
-                                            }
-                                        },
-                                        xAxis: {
-                                            type: 'category',
-                                            boundaryGap: false,
-                                            data: Array.from({length: 61}, (_, i) => i)
-                                        },
-                                        yAxis: {
-                                            type: 'value'
-                                        },
-                                        series: [
-                                            {
-                                                name: '<?= $balita->namaLengkap ;?>',
-                                                type: 'line',
-                                                data: <?= json_encode(getHasilUkurBalita($riwayatPengukuran,'berat')); ?>
-
-                                            },
-                                            {
-                                                name: '-SD3',
-                                                type: 'line',
-                                                data: <?= json_encode(getDataGrafikWHO($indikator,'SD3neg', checkKelamin($balita->jenisKelamin),$dataListWHO, hitungUsia($balita->tglLahir))); ?>
-
-                                            },
-                                            {
-                                                name: '-SD2',
-                                                type: 'line', 
-                                                data: <?= json_encode(getDataGrafikWHO($indikator,'SD2neg', checkKelamin($balita->jenisKelamin),$dataListWHO, hitungUsia($balita->tglLahir))); ?>
-                                            },
-                                            {
-                                                name: '-SD1',
-                                                type: 'line',
-                                                data: <?= json_encode(getDataGrafikWHO($indikator,'SD1neg', checkKelamin($balita->jenisKelamin),$dataListWHO, hitungUsia($balita->tglLahir))); ?>
-
-                                            },
-                                            {
-                                                name: 'SD0',
-                                                type: 'line',
-                                                data: <?= json_encode(getDataGrafikWHO($indikator,'SD0', checkKelamin($balita->jenisKelamin),$dataListWHO, hitungUsia($balita->tglLahir))); ?>
-
-                                            },
-                                            {
-                                                name: 'SD1',
-                                                type: 'line',
-                                                data: <?= json_encode(getDataGrafikWHO($indikator,'SD1', checkKelamin($balita->jenisKelamin),$dataListWHO, hitungUsia($balita->tglLahir))); ?>
-
-                                            },
-                                            {
-                                                name: 'SD2',
-                                                type: 'line',
-                                                data: <?= json_encode(getDataGrafikWHO($indikator,'SD2', checkKelamin($balita->jenisKelamin),$dataListWHO, hitungUsia($balita->tglLahir))); ?>
-                                            },
-                                            {
-                                                name: 'SD3',
-                                                type: 'line',
-                                                data: <?= json_encode(getDataGrafikWHO($indikator,'SD3', checkKelamin($balita->jenisKelamin),$dataListWHO, hitungUsia($balita->tglLahir))); ?>
-                                            }
-                                        ]
-                                    };
-
-                                    if (option && typeof option === 'object') {
-                                        myChart.setOption(option);
-                                    }
-
-                                    window.addEventListener('resize', myChart.resize);
-                                </script>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card mt-4">
-                        <div class="card-body">
-                            <h5 class="card-title">Riwayat Tinggi</h5>
-                            <div style="height: 400px; width: 100%;">
-                                <div id="containerTinggi" style="height: 100%"></div>
-                                <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
-                                <script type="text/javascript">
-                                    var dom = document.getElementById('containerTinggi');
-                                    var myChart = echarts.init(dom, null, {
-                                        renderer: 'canvas',
-                                        useDirtyRect: false
-                                    });
-                                    var app = {};
-                                    
-                                    var option;
-
-                                    option = {
-                                        color: [
-                                            '#FF6E76',  // -SD3 color
-                                            '#FDDD60',  // -SD2 color
-                                            '#7CFFB2',  // -SD1 color 
-                                            '#58D9F9',  // SD0 color
-                                            '#7CFFB2',  // SD1 color
-                                            '#FDDD60',  // SD2 color
-                                            '#FF6E76',   // SD3 color
-                                            '#1f1f1f',  // BALITA color
-
-                                        ],
-                                        title: {
-                                            text: 'TINGGI'
-                                        },
-                                        tooltip: {
-                                            trigger: 'axis'
-                                        },
-                                        legend: {
-                                            data: ['-SD3', '-SD2', '-SD1', 'SD0', 'SD1', 'SD2', 'SD3','<?= $balita->namaLengkap ;?>']
-                                        },
-                                        
-                                        grid: {
-                                            left: '3%',
-                                            right: '4%',
-                                            bottom: '3%',
-                                            containLabel: true
-                                        },
-                                        toolbox: {
-                                            feature: {
-                                                saveAsImage: {}
-                                            }
-                                        },
-                                        xAxis: {
-                                            type: 'category',
-                                            boundaryGap: false,
-                                            data: Array.from({length: 61}, (_, i) => i)
-                                        },
-                                        yAxis: {
-                                            type: 'value'
-                                        },
-                                        series: [
-                                            {
-                                                name: '-SD3',
-                                                type: 'line',
-                                                data: <?= json_encode(getDataGrafikWHO('tinggi','SD3neg', checkKelamin($balita->jenisKelamin),$dataListWHO, hitungUsia($balita->tglLahir))); ?>
-
-                                            },
-                                            {
-                                                name: '-SD2',
-                                                type: 'line', 
-                                                data: <?= json_encode(getDataGrafikWHO('tinggi','SD2neg', checkKelamin($balita->jenisKelamin),$dataListWHO, hitungUsia($balita->tglLahir))); ?>
-                                            },
-                                            {
-                                                name: '-SD1',
-                                                type: 'line',
-                                                data: <?= json_encode(getDataGrafikWHO('tinggi','SD1neg', checkKelamin($balita->jenisKelamin),$dataListWHO, hitungUsia($balita->tglLahir))); ?>
-
-                                            },
-                                            {
-                                                name: 'SD0',
-                                                type: 'line',
-                                                data: <?= json_encode(getDataGrafikWHO('tinggi','SD0', checkKelamin($balita->jenisKelamin),$dataListWHO, hitungUsia($balita->tglLahir))); ?>
-
-                                            },
-                                            {
-                                                name: 'SD1',
-                                                type: 'line',
-                                                data: <?= json_encode(getDataGrafikWHO('tinggi','SD1', checkKelamin($balita->jenisKelamin),$dataListWHO, hitungUsia($balita->tglLahir))); ?>
-
-                                            },
-                                            {
-                                                name: 'SD2',
-                                                type: 'line',
-                                                data: <?= json_encode(getDataGrafikWHO('tinggi','SD2', checkKelamin($balita->jenisKelamin),$dataListWHO, hitungUsia($balita->tglLahir))); ?>
-                                            },
-                                            {
-                                                name: 'SD3',
-                                                type: 'line',
-                                                data: <?= json_encode(getDataGrafikWHO('tinggi','SD3', checkKelamin($balita->jenisKelamin),$dataListWHO, hitungUsia($balita->tglLahir))); ?>
-                                            },
-                                            {
-                                                name: '<?= $balita->namaLengkap ;?>',
-                                                type: 'line',
-                                                data: <?= json_encode(getHasilUkurBalita($riwayatPengukuran,'tinggi')); ?>
-
-                                            },
-                                        ]
-                                    };
-
-                                    if (option && typeof option === 'object') {
-                                        myChart.setOption(option);
-                                    }
-
-                                    window.addEventListener('resize', myChart.resize);
-                                </script>
                             </div>
                         </div>
                     </div>

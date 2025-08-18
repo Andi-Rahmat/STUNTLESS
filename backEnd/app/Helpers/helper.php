@@ -19,10 +19,26 @@ if (!function_exists('hitungUsia')) {
         return $age->y . ' tahun ' . $age->m . ' bulan';
     }
 }
+if (!function_exists('hitungUsiaBulan')) {
+    /**
+     * Fungsi untuk menghitung usia berdasarkan tanggal lahir
+     *
+     * @param string $birthdate Tanggal lahir dalam format 'Y-m-d'
+     * @return int Usia
+     */
+    function hitungUsiaBulan($birthdate, $b = null)
+    {
+        $birthDate = new \DateTime($birthdate);
+        $today = $b != null ? new \DateTime($b) : new \DateTime($b);
+        $age = $today->diff($birthDate);
+
+        return $age->m + ($age->y * 12);
+    }
+}
 
 if (!function_exists('userOrangTua')) {
     /**
-     * Fungsi untuk menghitung usia berdasarkan tanggal lahir
+     * mengambbil data user yang sedang login
      *
      * @param string $birthdate Tanggal lahir dalam format 'Y-m-d'
      * @return int Usia
@@ -31,7 +47,7 @@ if (!function_exists('userOrangTua')) {
     {
         $user = User::find(Auth::user()->id);
 
-        return $user;
+        return  $user;
     }
 }
 if (!function_exists('cekRole')) {

@@ -77,6 +77,8 @@ Route::middleware('auth')->group(function () {
         Route::get('ibu/dashboard', function () {
             return view('backend.ibu.dashboard');
         })->name('user.dashboard');
+        Route::get('ibu/profile', [ibuController::class, 'profile'])->name('ibu.profile');
+        Route::post('ibu/profile', [ibuController::class, 'edit'])->name('ibu.profile.edit');
     });
 });
 

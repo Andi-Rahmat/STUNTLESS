@@ -19,7 +19,7 @@ class OrangTua extends Model
         'jenisKelamin',
         'jumlahAnak',
         'nik',
-        'idUser', 
+        'idUser',
     ];
 
     // Relasi dengan model User (1 ke 1)
