@@ -59,7 +59,6 @@ class pengukuranController extends Controller
         $IMT =number_format($request->berat / (($request->tinggi/100) * ($request->tinggi/100)),3);
 
         // hitung Zscore Berat
-        dd($months);
         $data['dataBerat']    = $dataWHO['berat'][$balita->jenisKelamin == 'L' ? 'laki-laki' : 'perempuan'][$months];
         if($request->berat == $data['dataBerat']['SD0'] ){
             $zscoreBerat = ($request->berat - $data['dataBerat']['SD0']) / $data['dataBerat']['SD0']; 
