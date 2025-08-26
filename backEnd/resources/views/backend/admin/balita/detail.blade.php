@@ -22,7 +22,6 @@ if($dataSekarang != null) {
             $satuan = 'kg/m²';
             break;
     }
-}
 
     function getDataGrafikWHO($indikator, $sd, $kelamin, $dataWHO, $months = 0) {
         $dataGrafik = [];
@@ -55,7 +54,7 @@ if($dataSekarang != null) {
         return $dataList;
     }
     $interpretasi = getInterpretasi($indikator, $dataSekarang->zScore->$indikator);
-
+}
 ?>
 
 <div class="pagetitle">
