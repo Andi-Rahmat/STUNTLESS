@@ -85,8 +85,11 @@ public function dataPengukuran()
         // Menghitung selisih usia dalam bulan
         $currentDate = $data['dataSekarang'] == null ? now() : Carbon::createFromFormat('Y-m-d', $data['dataSekarang']->tglPengukuran);
         $months = (int) $birthDateObj->diffInMonths($currentDate);
-        $data['dataWHO']        = $indikator == 'berat/tinggi' ? $dataWHO[$indikator][$balita->jenisKelamin == 'L' ? 'laki-laki' : 'perempuan'][$months >= 24 ? 1 : 0][(float)$data['dataSekarang']->tinggi]
-                                    : $dataWHO[$indikator][$balita->jenisKelamin == 'L' ? 'laki-laki' : 'perempuan'][$months];
+        if($data['dataSekarang']){
+            $data['dataWHO']        = $indikator == 'berat/tinggi' ? $dataWHO[$indikator][$balita->jenisKelamin == 'L' ? 'laki-laki' : 'perempuan'][$months >= 24 ? 1 : 0][(float)$data['dataSekarang']->tinggi]
+            : $dataWHO[$indikator][$balita->jenisKelamin == 'L' ? 'laki-laki' : 'perempuan'][$months];
+
+        }
         $data['indikator']      = $indikator;
         $data['dataListWHO'] = $dataWHO;
         return view('backend.admin.balita.detail', $data);
