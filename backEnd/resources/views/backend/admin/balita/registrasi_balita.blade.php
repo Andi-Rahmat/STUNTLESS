@@ -69,6 +69,9 @@
                         <option value="L" {{ old('jenisKelamin') == 'L' ? 'selected' : '' }}>Laki-Laki</option>
                         <option value="P" {{ old('jenisKelamin') == 'P' ? 'selected' : '' }}>Perempuan</option>
                     </select>
+                    @error('jenisKelamin')
+                    <div class="text-red-500 text-xs">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <!-- NIK -->
@@ -97,21 +100,10 @@
                     </div>
                 </div>
 
-                <!-- Anak Ke -->
-                <div class="mb-4">
-                    <label for="anakKe" class="block text-sm font-medium text-gray-600">
-                        <span class="text-sm text-red-600">*</span> Anak Ke-
-                    </label>
-                    <input type="text" id="anakKe" name="anakKe" placeholder="Urutan Anak (contoh: 1, 2, 3)" value="{{ old('anakKe') }}" class="w-full p-3 mb-2 border bg-gray-50 border-gray-300 focus:border-0 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400 transition-all duration-300">
-                    @error('anakKe')
-                    <div class="text-red-500 text-xs">{{ $message }}</div>
-                    @enderror
-                </div>
-
                 <!-- Golongan Darah -->
                 <div class="mb-4">
                     <label for="golonganDarah" class="block text-sm font-medium text-gray-600">
-                        <span class="text-sm text-red-600">*</span> Golongan Darah
+                        Golongan Darah
                     </label>
                     <select name="golonganDarah" id="golonganDarah" class="w-full p-3 mb-2 border bg-gray-50 border-gray-300 focus:border-0 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400 transition-all duration-300">
                         <option value="A" {{ old('golonganDarah') == 'A' ? 'selected' : '' }}>A</option>
@@ -122,7 +114,8 @@
                 </div>
 
                 <!-- ID Orang Tua -->
-                @if(is_array($orangTuaList))
+                 
+                @if(!is_array($orangTuaList))
                 <div class="mb-4">
                     <label for="idOrangTua" class="block text-sm font-medium text-gray-600">
                         <span class="text-sm text-red-600">*</span>Orang Tua
@@ -131,7 +124,7 @@
                         <option value="" selected disabled>Pilih Orang Tua</option>
                         @foreach($orangTuaList as $orangTua)
                         <option value="{{ $orangTua->id }}" {{ old('idOrangTua') == $orangTua->id ? 'selected' : '' }}>
-                            {{ $orangTua->namaLengkap }}
+                            {{ $orangTua->nik .' - '. $orangTua->namaLengkap }}
                         </option>
                         @endforeach
                     </select>

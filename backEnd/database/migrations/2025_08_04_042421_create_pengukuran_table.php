@@ -18,7 +18,7 @@ return new class extends Migration
             $table->float('berat');
             $table->float('tinggi');
             $table->float('suhu');
-            $table->float('lingkar_kepala');
+            $table->float('lingkarKepala');
             $table->float('imt');
             $table->timestamps();
             $table->foreign('idBalita')->references('id')->on('balita')->onDelete('cascade');

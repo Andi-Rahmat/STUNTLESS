@@ -55,6 +55,14 @@
   </style>
 
   <style>
+      .hide-scrollbar::-webkit-scrollbar {
+        display: none; /* Menyembunyikan scrollbar untuk browser berbasis Webkit (Chrome, Safari, dll.) */
+      }
+
+      .hide-scrollbar {
+        -ms-overflow-style: none; /* Menyembunyikan scrollbar untuk IE dan Edge */
+        scrollbar-width: none; /* Menyembunyikan scrollbar untuk Firefox */
+      }
     .btn {
       position: relative;
     }
@@ -122,6 +130,14 @@
             <li>
               <hr class="dropdown-divider">
             </li>
+            @if(Auth::user()->role == 'user')
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="{{route('ibu.profile')}}">
+                <i class="bi bi-person"></i>
+                <span>Profile</span>
+              </a>
+            </li>
+            @endif
             <li>
               <a class="dropdown-item d-flex align-items-center" href="{{route('logout')}}">
                 <i class="bi bi-box-arrow-right"></i>

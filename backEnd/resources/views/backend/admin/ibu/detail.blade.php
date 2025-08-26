@@ -82,6 +82,11 @@
                             </h2>
                             <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
                                 <div class="accordion-body">
+                                    @if($orangTua->balita->count() == 0)
+                                    <div class="text-center">
+                                        <p class="text-muted">Tidak ada data balita</p>
+                                    </div>
+                                    @else
                                     @foreach($orangTua->balita as $balita)
                                     <div class="d-flex align-items-center mt-3" style=" cursor: pointer;"  onclick="window.location.href='/admin/detail-balita/{{$balita->id}}'">
                                         <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
@@ -92,6 +97,7 @@
                                         </div>
                                     </div>
                                     @endforeach
+                                    @endif
                                 </div>
                             </div>
                         </div>

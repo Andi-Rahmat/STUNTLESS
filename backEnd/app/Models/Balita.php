@@ -17,7 +17,6 @@ class Balita extends Model
         'NIK',
         'tglLahir',
         'jenisKelamin',
-        'anak_ke',
         'golongan_darah',
         'idOrangTua',
     ];

@@ -19,8 +19,8 @@ return new class extends Migration
             $table->string('tinggiSd');
             $table->float('berat/tinggi');
             $table->string('berat/tinggiSd');
-            $table->float('lingkar_kepala');
-            $table->string('lingkar_kepalaSd');
+            $table->float('lingkarKepala');
+            $table->string('lingkarKepalaSd');
             $table->float('imt');
             $table->string('imtSd');
             $table->unsignedBigInteger('idPengukuran');

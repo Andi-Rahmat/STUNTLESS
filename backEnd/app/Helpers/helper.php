@@ -93,12 +93,27 @@ if (!function_exists('checkSD')) {
     {
         $kategori = '';
 
+        $prevKey = null;
+        $prevValue = null;
+
         foreach ($sdData as $key => $value) {
             if ($nilai <= $value) {
-                $kategori = $key;
+                if ($prevKey !== null) {
+                    $kategori = $prevKey;
+                } else {
+                    $kategori = $key; // Jika nilai lebih kecil dari batas pertama
+                }
                 break;
             }
+            $prevKey = $key;
+            $prevValue = $value;
         }
+
+        // Jika nilai lebih besar dari semua batas
+        if (!isset($kategori)) {
+            $kategori = array_key_last($sdData);
+        }
+
         return $kategori;
     }
 }
@@ -117,37 +132,41 @@ if (!function_exists('checkIndikator')) {
         switch ($jenis) {
             case 'berat':
                 if ($nilai < -3.0) {
-                    $result = 'Gizi Buruk';
-                } elseif ($nilai >= -3.0 && $nilai < -2.0) {
-                    $result = 'Gizi Kurang';
-                } elseif ($nilai >= -2.0 && $nilai <= 2.0) {
-                    $result = 'Gizi Baik';
+                    return 'Berat badan sangat kurang';
+                } elseif ($nilai < -2.0) {
+                    return 'Berat badan kurang';
+                } elseif ($nilai <= 1.0) {
+                    return 'Berat badan normal';
                 } else {
-                    $result = 'Gizi Lebih';
+                    return 'Risiko berat badan lebih';
                 }
                 break;
 
             case 'tinggi':
                 if ($nilai < -3.0) {
-                    $result = 'Sangat Pendek';
-                } elseif ($nilai >= -3.0 && $nilai < -2.0) {
-                    $result = 'Pendek';
-                } elseif ($nilai >= -2.0 && $nilai <= 2.0) {
-                    $result = 'Normal';
-                }else {
-                    $result = 'Sangat Tinggi';
+                    return 'Sangat pendek';
+                } elseif ($nilai < -2.0) {
+                    return 'Pendek';
+                } elseif ($nilai <= 3.0) {
+                    return 'Normal';
+                } else {
+                    return 'Tinggi';
                 }
                 break;
 
             case 'berat/tinggi':
                 if ($nilai < -3.0) {
-                    $result = 'Sangat Kurus';
-                } elseif ($nilai >= -3.0 && $nilai < -2.0) {
-                    $result = 'Kurus';
-                } elseif ($nilai >= -2.0 && $nilai <= 2.0) {
-                    $result = 'Normal';
+                    return 'Gizi buruk';
+                } elseif ($nilai < -2.0) {
+                    return 'Gizi kurang';
+                } elseif ($nilai <= 1.0) {
+                    return 'Gizi baik';
+                } elseif ($nilai <= 2.0) {
+                    return 'Berisiko gizi lebih';
+                } elseif ($nilai <= 3.0) {
+                    return 'Gizi lebih';
                 } else {
-                    $result = 'Gemuk';
+                    return 'Obesitas';
                 }
                 break;
 
@@ -163,24 +182,102 @@ if (!function_exists('checkIndikator')) {
 
             case 'imt':
                 if ($nilai < -3.0) {
-                    $result = 'Gizi buruk';
-                } elseif ($nilai >= -3.0 && $nilai <= -2.0) {
-                    $result = 'Gizi kurang';
-                } elseif ($nilai > -2.0 && $nilai <= 1.0) {
-                    $result = 'Gizi baik (normal)';
-                } elseif ($nilai > 1.0 && $nilai <= 2.0) {
-                    $result = 'Gizi lebih';
-                } elseif ($nilai > 2.0 && $nilai <= 3.0) {
-                    $result = 'Gizi lebih (risiko)';
+                    return 'Gizi buruk';
+                } elseif ($nilai < -2.0) {
+                    return 'Gizi kurang';
+                } elseif ($nilai <= 1.0) {
+                    return 'Gizi baik';
+                } elseif ($nilai <= 2.0) {
+                    return 'Berisiko gizi lebih';
+                } elseif ($nilai <= 3.0) {
+                    return 'Gizi lebih';
                 } else {
-                    $result = 'Obesitas';
+                    return 'Obesitas';
                 }
-                break; 
+                break;
             // Tambahkan kondisi untuk jenis lain seperti lingkarKepala, imt, dll.
             default:
                 $result = 'Indikator tidak valid';
         }
 
         return $result;
+    }
+}
+
+if (!function_exists('getInterpretasi')) {
+    /**
+     * Fungsi untuk memilih kategori interpretasi berdasarkan nilai Z-score
+     * @param string $indikator (misalnya: "berat", "tinggi", "berat/tinggi", "imt", "lingkarKepala")
+     * @param float $zscore nilai Z-score hasil perhitungan
+     * @return array interpretasi sesuai kategori
+    */
+    function getInterpretasi($indikator, $zscore)
+    {
+        $dataInterpretasi = require app_path('data/interpretasi.php');
+        if (!isset($dataInterpretasi[$indikator])) {
+            return [
+                "status" => "Tidak ditemukan",
+                "interpretasi" => "Indikator tidak tersedia.",
+                "saran" => []
+            ];
+        }
+
+        foreach ($dataInterpretasi[$indikator] as $kategori) {
+            $range = $kategori["range_z"];
+
+            // Parsing range manual
+            if (strpos($range, "<") !== false && strpos($range, "-") === false && $zscore < -3 && $range == "Z < -3") {
+                return $kategori;
+            }
+            if ($range == "-3 ≤ Z < -2" && $zscore >= -3 && $zscore < -2) {
+                return $kategori;
+            }
+            if ($range == "-2 ≤ Z ≤ +1" && $zscore >= -2 && $zscore <= 1) {
+                return $kategori;
+            }
+            if ($range == "Z > +1" && $zscore > 1) {
+                return $kategori;
+            }
+
+            // Untuk TB/U
+            if ($range == "-2 ≤ Z ≤ +3" && $zscore >= -2 && $zscore <= 3) {
+                return $kategori;
+            }
+            if ($range == "Z > +3" && $zscore > 3) {
+                return $kategori;
+            }
+
+            // Untuk WHZ & BAZ detail
+            if ($range == "Z < -3" && $zscore < -3) {
+                return $kategori;
+            }
+            if ($range == "-3 ≤ Z < -2" && $zscore >= -3 && $zscore < -2) {
+                return $kategori;
+            }
+            if ($range == "-2 ≤ Z ≤ +1" && $zscore >= -2 && $zscore <= 1) {
+                return $kategori;
+            }
+            if ($range == "+1 < Z ≤ +2" && $zscore > 1 && $zscore <= 2) {
+                return $kategori;
+            }
+            if ($range == "+2 < Z ≤ +3" && $zscore > 2 && $zscore <= 3) {
+                return $kategori;
+            }
+            if ($range == "Z > +3" && $zscore > 3) {
+                return $kategori;
+            }
+
+            // Untuk LK/U
+            if ($range == "-2 ≤ Z ≤ +2" && $zscore >= -2 && $zscore <= 2) {
+                return $kategori;
+            }
+        }
+
+        // Jika tidak cocok
+        return [
+            "status" => "Tidak terklasifikasi",
+            "interpretasi" => "Nilai Z-score tidak masuk dalam kategori standar.",
+            "saran" => []
+        ];
     }
 }

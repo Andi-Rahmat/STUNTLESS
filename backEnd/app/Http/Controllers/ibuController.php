@@ -91,9 +91,11 @@ class ibuController extends Controller
      */
     public function edit(Request $request)
     {
+        /** @var User|null $orangTua */
+        $orangTua = userOrangTua();
         // dd($request->all());
-        $id = userOrangTua()->id;
-        $ibu = OrangTua::find(userOrangTua()->orangTua->id);
+        $id = $orangTua->id;
+        $ibu = OrangTua::find($orangTua->orangTua->id);
         $user = User::find($id);
         if($request->password){
             $request->validate([

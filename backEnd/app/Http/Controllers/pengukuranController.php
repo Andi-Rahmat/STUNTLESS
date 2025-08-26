@@ -14,6 +14,18 @@ use Illuminate\Support\Facades\Auth;
 
 class pengukuranController extends Controller
 {
+    
+    public function dataIot(string $berat, string $tinggi, string $suhu, string $lingkar_kepala)
+    {
+        DataIot::create([
+            'berat' => $berat ,
+            'tinggi' => $tinggi ,
+            'suhu' => $suhu,
+            'lingkar_kepala' => $lingkar_kepala,
+        ]);
+        return response()->json('berat = '.$berat.'tinggi = '.$tinggi);
+    }
+    
     public function show()
     {  
         $balitaList = Balita::all();
@@ -40,7 +52,7 @@ class pengukuranController extends Controller
         $umur = $balita->tglLahir;
         $birthDateObj = Carbon::createFromFormat('Y-m-d', $umur);
         // Tanggal saat ini
-        $currentDate = Carbon::now();
+        $currentDate = $request->tglPengukuran ? Carbon::createFromFormat('Y-m-d', $request->tglPengukuran) : Carbon::now();
         // Menghitung selisih usia dalam bulan
         $months = (int) $birthDateObj->diffInMonths($currentDate);
 
@@ -48,7 +60,6 @@ class pengukuranController extends Controller
 
         // hitung Zscore Berat
         $data['dataBerat']    = $dataWHO['berat'][$balita->jenisKelamin == 'L' ? 'laki-laki' : 'perempuan'][$months];
-
         if($request->berat == $data['dataBerat']['SD0'] ){
             $zscoreBerat = ($request->berat - $data['dataBerat']['SD0']) / $data['dataBerat']['SD0']; 
         }elseif($request->berat < $data['dataBerat']['SD0']){
@@ -80,15 +91,15 @@ class pengukuranController extends Controller
         // end
 
         // hitung Zscore lingkarKepala
-            // $data['dataLingkarKepala']    = $dataWHO['lingkarKepala'][$balita->jenisKelamin == 'L' ? 'laki-laki' : 'perempuan'][$months];
+            $data['dataLingkarKepala']    = $dataWHO['lingkarKepala'][$balita->jenisKelamin == 'L' ? 'laki-laki' : 'perempuan'][$months];
             
-            // if($request->tinggi == $data['dataLingkarKepala']['SD0'] ){
-            //     $zscoreBerattinggi = ($request->tinggi - $data['dataLingkarKepala']['SD0']) / $data['dataLingkarKepala']['SD0']; 
-            // }elseif($request->tinggi < $data['dataLingkarKepala']['SD0']){
-            //     $zscoreBerattinggi = ($request->tinggi - $data['dataLingkarKepala']['SD0']) / ($data['dataLingkarKepala']['SD0'] - $data['dataLingkarKepala']['SD1neg']) ; 
-            // }else{
-            //     $zscoreBerattinggi = ($request->tinggi - $data['dataLingkarKepala']['SD0']) / ($data['dataLingkarKepala']['SD1'] - $data['dataLingkarKepala']['SD0']); 
-            // }
+            if($request->lingkarKepala == $data['dataLingkarKepala']['SD0'] ){
+                $zscoreLingkarKepala = ($request->lingkarKepala - $data['dataLingkarKepala']['SD0']) / $data['dataLingkarKepala']['SD0']; 
+            }elseif($request->lingkarKepala < $data['dataLingkarKepala']['SD0']){
+                $zscoreLingkarKepala = ($request->lingkarKepala - $data['dataLingkarKepala']['SD0']) / ($data['dataLingkarKepala']['SD0'] - $data['dataLingkarKepala']['SD1neg']) ; 
+            }else{
+                $zscoreLingkarKepala = ($request->lingkarKepala - $data['dataLingkarKepala']['SD0']) / ($data['dataLingkarKepala']['SD1'] - $data['dataLingkarKepala']['SD0']); 
+            }
         // end
 
         // hitung Zscore imt
@@ -105,6 +116,7 @@ class pengukuranController extends Controller
         $sdBerat =Arr::except($data['dataBerat'], ["L", "M", "S"]);
         $sdTinggi =Arr::except($data['dataTinggi'], ["L", "M", "S"]);
         $sdBeratTinggi =Arr::except($data['dataBeratTinggi'], ["L", "M", "S"]);
+        $sdLingkarKepala =Arr::except($data['dataLingkarKepala'], ["L", "M", "S"]);
         $sdImt =Arr::except($data['dataImt'], ["L", "M", "S"]);
 
         $idPengukuran = Pengukuran::create([
@@ -113,7 +125,7 @@ class pengukuranController extends Controller
             'berat'             => $request->berat, 
             'tinggi'            => $request->tinggi, 
             'suhu'              => $request->suhu,
-            'lingkarKepala'    => $request->lingkarKepala, 
+            'lingkarKepala'     =>  $request->lingkarKepala, 
             'imt'               => $IMT,
         ]);
 
@@ -124,8 +136,8 @@ class pengukuranController extends Controller
             'tinggi'                => $zscoreTinggi,
             'berat/tinggiSd'         => checkSD($request->berat,$sdBeratTinggi),
             'berat/tinggi'           => $zscoreBeratTinggi,
-            'lingkarKepalaSd'      => checkSD($request->Berat,$sdBeratTinggi),
-            'lingkarKepala'        => $zscoreBeratTinggi,
+            'lingkarKepalaSd'      => checkSD($request->lingkarKepala,$sdLingkarKepala),
+            'lingkarKepala'        => $zscoreLingkarKepala,
             'imtSd'                 => checkSD($IMT,$sdImt),
             'imt'                   => $zscoreIMT,
             'idPengukuran'          => $idPengukuran->id,

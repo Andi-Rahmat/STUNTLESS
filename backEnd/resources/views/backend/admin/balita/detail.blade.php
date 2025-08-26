@@ -54,6 +54,8 @@ if($dataSekarang != null) {
         }
         return $dataList;
     }
+    $interpretasi = getInterpretasi($indikator, $dataSekarang->zScore->$indikator);
+
 ?>
 
 <div class="pagetitle">
@@ -134,15 +136,15 @@ if($dataSekarang != null) {
             <div class="card" style="background-color:#faf9ee;">
                 @if(request('page') != 'riwayat')
                 <div class="card-body">
-                    <div class="card-title d-flex justify-content-around">
-                        <a href="?indikator=berat" class="btn btnKlasifikasi {{$indikator == 'berat' ? 'active' : '' }} ">Berat</a>
-                        <a href="?indikator=tinggi" class="btn btnKlasifikasi {{$indikator == 'tinggi' ? 'active' : '' }} ">Tinggi</a>
-                        <a href="?indikator=berat/tinggi" class="btn btnKlasifikasi {{$indikator == 'berat/tinggi' ? 'active' : '' }} ">Berat / Tinggi</a>
-                        <a href="?indikator=lingkarKepala" class="btn btnKlasifikasi {{$indikator == 'lingkarKepala' ? 'active' : '' }} ">Lingkar Kepala</a>
-                        <a href="?indikator=imt" class="btn btnKlasifikasi {{$indikator == 'imt' ? 'active' : '' }} ">IMT</a>
+                    <div class="card-title d-flex justify-content-between gap-3 overflow-scroll mx-3 hide-scrollbar">
+                        <a href="?indikator=berat" class="btn flex-shrink-0 btnKlasifikasi {{$indikator == 'berat' ? 'active' : '' }} ">Berat</a>
+                        <a href="?indikator=tinggi" class="btn flex-shrink-0 btnKlasifikasi {{$indikator == 'tinggi' ? 'active' : '' }} ">Tinggi</a>
+                        <a href="?indikator=berat/tinggi" class="btn flex-shrink-0 btnKlasifikasi {{$indikator == 'berat/tinggi' ? 'active' : '' }} ">Berat / Tinggi</a>
+                        <a href="?indikator=lingkarKepala" class="btn flex-shrink-0 btnKlasifikasi {{$indikator == 'lingkarKepala' ? 'active' : '' }} ">Lingkar Kepala</a>
+                        <a href="?indikator=imt" class="btn flex-shrink-0 btnKlasifikasi {{$indikator == 'imt' ? 'active' : '' }} ">IMT</a>
                     </div>
                     @if($indikator == 'berat/tinggi' || $indikator == 'imt')
-                    <div class="row text-center bg-white mx-5 border border-0.5 py-2 rounded-3 mb-4 shadow-sm">
+                    <div class="row text-center bg-white mx-3 border border-0.5 py-2 rounded-3 mb-4 shadow-sm">
                         <div class="col-4">
                             @if($dataSebelum != null)
                             <span>Date: {{$tglSebelum->translatedFormat('d F Y'); }}</span>
@@ -165,7 +167,7 @@ if($dataSekarang != null) {
                         </div>
                     </div>
                     @else
-                    <div class="row text-center bg-white mx-5 border border-0.5 py-2 rounded-3 mb-4 shadow-sm">
+                    <div class="row text-center bg-white mx-3 border border-0.5 py-2 rounded-3 mb-4 shadow-sm">
                         <div class="col-4">
                             @if($dataSebelum != null)
                             <span>Date: {{$tglSebelum->translatedFormat('d F Y'); }}</span>
@@ -188,7 +190,7 @@ if($dataSekarang != null) {
                         </div>
                     </div>
                     @endif
-                    <div class="card mx-5 py-2">
+                    <div class="card mx-3 py-2">
                         <div class="card-body text-center">
                             <p><b>Z-score : <?= number_format($dataSekarang->zScore->$indikator, 3); ?> </b></p>
                             <p><b>SD :
@@ -196,13 +198,41 @@ if($dataSekarang != null) {
                                 </b></p>
                             <div id="spedo" style="height: 250px"></div>
                             <p
-                                style="padding: 3px 20px ; background-color:#ec7fa9; width:max-content; margin:auto; color:white; border-radius:12px;">
-                                <b>{{checkIndikator($dataSekarang->zScore->$indikator,$indikator)}}</b>
+                                style="padding: 3px 20px ; background-color:{{$interpretasi['color']}}; width:max-content; margin:auto; color:white; border-radius:12px;">
+                                <b>{{$interpretasi['status']}}</b>
                             </p>
                             <p>Data Terakhir : {{$tglSekarang->translatedFormat('l, d F Y');}}</p>
                         </div>
                     </div>
-                    <div class="card card mx-5 py-2">
+                    <div class="card mx-3 py-2">
+                        <div class="card-body">
+                            <h5 class="card-title">Interpretasi {{$indikator}}</h5>
+                            <table class="table ">
+                                <tbody>
+                                    <tr>
+                                        <th width="30%">Status</th>
+                                        <td width="10%" class="text-center">:</td>
+                                        <td><span class="badge" style="background-color: {{$interpretasi['color']}}">{{ $interpretasi['status'] }}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <th width="30%">Interpretasi</th>
+                                        <td width="10%" class="text-center">:</td>
+                                        <td>{{$interpretasi['interpretasi']}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th width="30%">Saran</th>
+                                        <td width="10%" class="text-center">:</td>
+                                        <td>
+                                            @foreach($interpretasi['saran'] as $saran)
+                                            <p>{{$saran}}</p>
+                                            @endforeach
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card mx-3 py-2">
                         <div class="card-body">
                             <h5 class="card-title">Riwayat {{$indikator}}</h5>
                             <div style="height: 400px; width: 100%;">
@@ -442,7 +472,12 @@ if($dataSekarang != null) {
                 @else
                 <!-- riwayat -->
                 <div class="card-body">
-                    <div class="card mt-4">
+                    <div class="text-end mt-4 mx-3">
+                        <a href="{{route('pengukuran',['balita' => $balita->id])}}" class="btn btn-primary" style="background-color: #ec7fa9; border: none;">
+                            <strong>Tambah Data Pengukuran</strong>
+                        </a>
+                    </div>
+                    <div class="card mt-4 mx-3">
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-hover">
@@ -484,6 +519,7 @@ if($dataSekarang != null) {
                     </div>
                     @endif
                 </div>
+                <!-- belum ada pengukuran -->
                 @else
                 <div class="card">
                     <div class="card-body">
@@ -550,7 +586,7 @@ if($dataSekarang != null) {
                             <div class="d-flex flex-wrap gap-2">
                                 <span class="badge" style="background-color: #FF6E76">Gizi Buruk</span>
                                 <span class="badge" style="background-color: #FDDD60">Gizi Kurang</span>
-                                <span class="badge" style="background-color: #7CFFB2">Gizi Normal</span>
+                                <span class="badge" style="background-color: #7CFFB2">Gizi Baik</span>
                                 <span class="badge" style="background-color: #FDDD60">Gizi Lebih</span>
                                 <span class="badge" style="background-color: #FF6E76">Obesitas</span>
                             </div>
@@ -560,7 +596,7 @@ if($dataSekarang != null) {
                                     <span class="badge" style="background-color: 
                                     {{ in_array(checkIndikator($riwayat->zScore->berat, 'berat'), ['Gizi Buruk', 'Obesitas']) ? '#FF6E76' : 
                                        (in_array(checkIndikator($riwayat->zScore->berat, 'berat'), ['Gizi Kurang', 'Gizi Lebih']) ? '#FDDD60' : '#7CFFB2') }}">
-                                        {{ checkIndikator($riwayat->zScore->berat, 'berat') }}
+                                        {{ checkIndikator($riwayat->zScore->imt, 'imt') }}
                                     </span>
                                 </strong>
                             </div>

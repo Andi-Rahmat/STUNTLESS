@@ -15,18 +15,6 @@ use Illuminate\Support\Arr;
 class balitaController extends Controller
 {
 
-
-    public function dataIot(string $berat, string $tinggi, string $suhu, string $lingkar_kepala)
-    {
-        DataIot::create([
-            'berat' => $berat ,
-            'tinggi' => $tinggi ,
-            'suhu' => $suhu,
-            'lingkar_kepala' => $lingkar_kepala,
-        ]);
-        return response()->json('berat = '.$berat.'tinggi = '.$tinggi);
-    }
-
     /**
      * Display a listing of the resource.
      */
@@ -63,8 +51,7 @@ public function dataPengukuran()
                 'NIK'           => 'required|numeric|unique:balita,NIK',
                 'tglLahir'      => 'required|date',
                 'jenisKelamin'  => 'required|in:L,P',
-                'anakKe'        => 'required|integer',
-                'golonganDarah' => 'required|in:A,B,AB,O',
+                'golonganDarah' => 'in:A,B,AB,O',
                 'idOrangTua'    => 'required|exists:orang_tua,id',
             ]);
             $tanggal = Carbon::createFromFormat('d/m/Y', $request->tglLahir)->format('Y-m-d');
@@ -73,8 +60,7 @@ public function dataPengukuran()
             $balita->NIK            = $request->input('NIK');
             $balita->tglLahir       = $tanggal;
             $balita->jenisKelamin   = $request->input('jenisKelamin');
-            $balita->anak_ke        = $request->input('anakKe');
-            $balita->golongan_darah = $request->input('golonganDarah');
+            $balita->golongan_darah = $request->input('golonganDarah') ?? null;
             $balita->idOrangTua     = $request->input('idOrangTua');
             $balita->save();
     
@@ -88,7 +74,6 @@ public function dataPengukuran()
     public function show(string $id, $idPengukuran = null)
     {  
         $dataWHO = require app_path('data/dataWHO.php');
-
         $indikator = request()->query('indikator','berat');
         $data['balita'] = Balita::find($id);
         $balita = $data['balita'];
