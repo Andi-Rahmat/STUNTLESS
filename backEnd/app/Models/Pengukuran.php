@@ -32,6 +32,6 @@ class Pengukuran extends Model
 
     public function zScore()
     {
-        return $this->hasOne(zScore::class, 'idPengukuran', 'id');
+        return $this->hasOne(ZScore::class, 'idPengukuran', 'id');
     }
 }
