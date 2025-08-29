@@ -40,30 +40,20 @@ class LoginController extends Controller
     {
         $request->validate([
             'name'          => 'required|string|max:255',
-            'alamat'        => 'required|string|max:255',
-            'jenisKelamin'  => 'required|string|max:1',
-            'tglLahir'      => 'required',
-            'jumlahAnak'    => 'required',
-            'noTelp'        => 'required',
             'nik'           => 'required|string|max:16|unique:orang_tua,nik',
             'email'         => 'required|email|unique:users,email',
             'password'      => 'required|string',
         ]);
 
-        $tanggal = Carbon::createFromFormat('d/m/Y', $request->tglLahir)->format('Y-m-d');
+        // $tanggal = Carbon::createFromFormat('d/m/Y', $request->tglLahir)->format('Y-m-d');
         $user = User::create([
             'name'      => $request->name,
             'email'     => $request->email,
-            'noTelp'     => $request->noTelp,
             'password'  => Hash::make($request->password),
         ]);
 
         OrangTua::create([
             'namaLengkap'   => $request->name,
-            'tglLahir'      => $tanggal,
-            'alamat'        => $request->alamat,
-            'jenisKelamin'  => $request->jenisKelamin,
-            'jumlahAnak'    => $request->jumlahAnak,
             'nik'           => $request->nik,
             'idUser'       => $user->id,
         ]);

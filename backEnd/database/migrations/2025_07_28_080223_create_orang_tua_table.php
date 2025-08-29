@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('orang_tua', function (Blueprint $table) {
             $table->id();
             $table->string('namaLengkap');
-            $table->date('tglLahir');
-            $table->string('alamat');
-            $table->string('jenisKelamin');
-            $table->tinyInteger('jumlahAnak'); 
+            $table->date('tglLahir')->nullable();
+            $table->string('alamat')->nullable();
+            $table->string('jenisKelamin')->nullable();
+            $table->tinyInteger('jumlahAnak')->nullable(); 
             $table->string('nik')->unique();
             $table->unsignedBigInteger('idUser');
             $table->foreign('idUser')->references('id')->on('users')->onDelete('cascade');

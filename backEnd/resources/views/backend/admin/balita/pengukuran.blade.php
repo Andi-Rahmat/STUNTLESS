@@ -35,6 +35,11 @@
                 </div>
 
             </form>
+            <div class="text-start mb-3">
+                <a href="{{route('registrasi.balita')}}" class="btn btn-primary">
+                    <i class="bi bi-plus"></i> Tambah Balita
+                </a>
+            </div>
         </div>
     </div>
     @if(request()->query('balita') !== null)
@@ -52,25 +57,25 @@
 
                 <div class="col-md-6">
                     <div class="form-floating">
-                        <input type="text" class="form-control" id="berat" readonly name="berat" value="">
+                        <input type="text" class="form-control" id="berat" name="berat" value="">
                         <label for="floatingEmail">Berat Badan</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating">
-                        <input type="text" class="form-control" id="tinggi" readonly name="tinggi" value="">
+                        <input type="text" class="form-control" id="tinggi" name="tinggi" value="">
                         <label for="floatingPassword">Tinggi Badan</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating">
-                        <input type="text" class="form-control" id="suhu" readonly name="suhu" value="">
+                        <input type="text" class="form-control" id="suhu" name="suhu" value="">
                         <label for="floatingEmail">Suhu</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-floating">
-                        <input type="text" class="form-control" id="lingkarKepala" readonly name="lingkarKepala" value="">
+                        <input type="text" class="form-control" id="lingkarKepala" name="lingkarKepala" value="">
                         <label for="floatingPassword">Lingkar Kepala</label>
                     </div>
                 </div>

@@ -10,7 +10,7 @@ class ZScore extends Model
     use HasFactory;
 
     // Nama tabel yang digunakan oleh model ini
-    protected $table = 'z_score'; // Nama tabel di database
+    protected $table = 'z_score'; // Nama tabel di
     public $timestamps = false;
 
 
@@ -20,10 +20,10 @@ class ZScore extends Model
         'berat',
         'tinggiSd',
         'tinggi',
-        'beratTinggiSd',
-        'beratTinggi',
-        'lingkar_kepalaSd',
-        'lingkar_kepala',
+        'berat/tinggiSd',
+        'berat/tinggi',
+        'lingkarKepalaSd',
+        'lingkarKepala',
         'imtSd',
         'imt',
         'idPengukuran'

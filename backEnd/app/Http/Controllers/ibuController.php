@@ -21,6 +21,14 @@ class ibuController extends Controller
         return view('backend.admin.ibu.daftar_ibu',['data' => $dataView]);
     }
 
+    public function profile()
+    {
+
+        $ibu = userOrangTua();
+        return view('backend.ibu.profile',compact('ibu'));
+    }
+
+
     /**
      * Show the form for creating a new resource.
      */
@@ -81,9 +89,43 @@ class ibuController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Request $request)
     {
-        //
+        /** @var User|null $orangTua */
+        $orangTua = userOrangTua();
+        // dd($request->all());
+        $id = $orangTua->id;
+        $ibu = OrangTua::find($orangTua->orangTua->id);
+        $user = User::find($id);
+        if($request->password){
+            $request->validate([
+                'password' => 'required|string',
+                'newpassword' => 'required|string',
+                'renewpassword' => 'required|string',
+            ]);
+            if(!Hash::check($request->password, $user->password)){
+                return redirect()->back()->with('warning', 'Password lama salah');
+            }
+            if($request->newpassword != $request->renewpassword){
+                return redirect()->back()->with('warning', 'Password tidak sama');
+            }
+            $user->password = Hash::make($request->newpassword);
+            $user->save();
+        }else{
+            $ibu->namaLengkap = $request->name;
+            $ibu->nik = $request->nik;
+            $ibu->jenisKelamin = $request->jenisKelamin;
+            $ibu->alamat = $request->alamat;
+            $user->noTelp = $request->phone;
+            $user->email = $request->email;
+    
+            $ibu->save();
+            $user->save();
+        }
+
+
+        return redirect()->route('ibu.profile')->with('success', 'Profile Berhasil diupdate');
+
     }
 
     /**

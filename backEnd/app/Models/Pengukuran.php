@@ -14,19 +14,24 @@ class Pengukuran extends Model
 
     // Kolom yang bisa diisi massal
     protected $fillable = [
-        'idBalita', 
-        'tglPengukuran', 
+        'idBalita',
+        'tglPengukuran',
         'berat', 
         'tinggi', 
         'suhu', 
-        'lingkar_kepala', 
-        'IMT',
+        'lingkarKepala', 
+        'imt',
     ];
 
     public $timestamps = true;
 
     public function balita()
     {
-        return $this->belongsTo(Balita::class, 'idBalita','idBalita');
+        return $this->belongsTo(Balita::class, 'idBalita','id');
+    }
+
+    public function zScore()
+    {
+        return $this->hasOne(ZScore::class, 'idPengukuran', 'id');
     }
 }

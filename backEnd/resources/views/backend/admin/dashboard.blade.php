@@ -24,7 +24,7 @@
                             <i class="bi bi-people"></i>
                         </div>
                         <div class="ps-3">
-                            <h6>145 <span class="text-muted small pt-2 ps-1"></span> </h6>
+                            <h6>{{count($pengukuranToday)}} <span class="text-muted small pt-2 ps-1"></span> </h6>
                         </div>
                     </div>
                 </div>
@@ -41,7 +41,7 @@
                             <!-- <i class="bi bi-cash-coin"></i> -->
                         </div>
                         <div class="ps-3">
-                            <h6>145 <span class="text-muted small pt-2 ps-1">Ibu</span> </h6>
+                            <h6>{{count($orangTuaList)}} <span class="text-muted small pt-2 ps-1">Ibu</span> </h6>
                         </div>
                     </div>
                 </div>
@@ -58,7 +58,7 @@
                             <!-- <i class="bi bi-clipboard-x"></i> -->
                         </div>
                         <div class="ps-3">
-                            <h6>145 <span class="text-muted small pt-2 ps-1">Balita</span> </h6>
+                            <h6>{{count($balitaList)}} <span class="text-muted small pt-2 ps-1">Balita</span> </h6>
                         </div>
                     </div>
                 </div>
@@ -83,46 +83,20 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @if(count($pengukuranToday) != 0)
+                            @foreach ($pengukuranToday as $pengukuran)
                             <tr>
-                                <th scope="row">1</th>
-                                <td>Brandon Jacob</td>
-                                <td>Designer</td>
-                                <td>laki-laki</td>
-                                <td>28</td>
-                                <td>2016-05-25</td>
+                                <th scope="row">{{$pengukuran->balita->nik}}</th>
+                                <td>{{$pengukuran->balita->orangTua->namaLengkap}}</td>
+                                <td>{{$pengukuran->balita->namaLengkap}}</td>
+                                <td>{{checkKelamin($pengukuran->balita->kelamin)}}</td>
+                                <td>{{hitungUsia($pengukuran->balita->tglLahir)}}</td>
+                                <td>{{$pengukuran->tglPengukuran}}</td>
                             </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Bridie Kessler</td>
-                                <td>Developer</td>
-                                <td>laki-laki</td>
-                                <td>35</td>
-                                <td>2014-12-05</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>Ashleigh Langosh</td>
-                                <td>Finance</td>
-                                <td>laki-laki</td>
-                                <td>45</td>
-                                <td>2011-08-12</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">4</th>
-                                <td>Angus Grady</td>
-                                <td>HR</td>
-                                <td>laki-laki</td>
-                                <td>34</td>
-                                <td>2012-06-11</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">5</th>
-                                <td>Raheem Lehner</td>
-                                <td>Dynamic Division Officer</td>
-                                <td>laki-laki</td>
-                                <td>47</td>
-                                <td>2011-04-19</td>
-                            </tr>
+                            @endforeach
+                            @else
+                            <th colspan="6" class="text-center text-warning">TIDAK ADA PENGUKURAN HARI INI</th>
+                            @endif
                         </tbody>
                     </table>
                     <!-- End Table with stripped rows -->
