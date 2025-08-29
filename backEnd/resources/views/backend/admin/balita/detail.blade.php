@@ -204,9 +204,9 @@ if($dataSekarang != null) {
                         </div>
                     </div>
                     <div class="card mx-3 py-2">
-                        <div class="card-body">
+                        <div class="card-body table-responsive">
                             <h5 class="card-title">Interpretasi {{$indikator}}</h5>
-                            <table class="table ">
+                            <table class="table">
                                 <tbody>
                                     <tr>
                                         <th width="30%">Status</th>
