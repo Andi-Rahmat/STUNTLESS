@@ -19,7 +19,7 @@ Route::post('/api/chat', [aiController::class, 'chat']);       // non-stream
 Route::post('/api/chat/stream', [aiController::class, 'stream']);
 Route::get('/', function () {
 
-    return view('backend.pages.welcome');
+    return view('frontend.pages.welcome');
 });
 
 // Hrus login
