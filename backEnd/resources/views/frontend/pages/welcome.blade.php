@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link rel="icon" href="{{asset('assets/img/asset/Stuntless FIX.png')}}" type="image/x-icon">
+    <link rel="icon" href="{{asset('assets/img/Asset/Stuntless FIX.png')}}" type="image/x-icon">
     <title>STUNTLESS</title>
     <!-- Bootstrap CSS -->
     <link
@@ -156,7 +156,7 @@
               <!-- Logo -->
               <a class="navbar-brand d-flex align-items-center">
                 <img
-                  src="{{asset('assets/img/asset/Stuntless FIX.png')}}"
+                  src="{{asset('assets/img/Asset/Stuntless FIX.png')}}"
                   alt="Logo"
                   width="42"
                   height="50"
@@ -259,7 +259,7 @@
                 <div
                   class="col-lg-6 d-flex justify-content-center align-items-center flex-column col-sm-12 order-first order-lg-last"
                 >
-                  <img style="width: 100%" src="{{asset('assets/img/asset/new bening.png')}}" alt="" />
+                  <img style="width: 100%" src="{{asset('assets/img/Asset/new bening.png')}}" alt="" />
                 </div>
               </div>
             </div>
@@ -306,7 +306,7 @@
             >
               <div class="align-items-center d-flex" style="gap: 15px">
                 <img
-                  src="{{asset('assets/img/asset/batang putih.png' )}}"
+                  src="{{asset('assets/img/Asset/batang putih.png' )}}"
                   style="width: auto; height: 40px"
                   alt=""
                 />
@@ -336,7 +336,7 @@
             >
               <div class="align-items-center d-flex" style="gap: 15px">
                 <img
-                  src="{{asset('assets/img/asset/batang putih.png' )}}"
+                  src="{{asset('assets/img/Asset/batang putih.png' )}}"
                   style="width: auto; height: 40px"
                   alt=""
                 />
@@ -396,7 +396,7 @@
         <div class="justify-content-center text-center">
           <img
             style="justify-content: center; width: 70%"
-            src="{{asset('assets/img/asset/Piring Sehat.png' )}}"
+            src="{{asset('assets/img/Asset/Piring Sehat.png' )}}"
             alt=""
           />
         </div>
@@ -851,7 +851,7 @@
 
       <div class="mx-auto row px-lg-5 mb-4">
         <div class="col-6 text-center col-lg-3">
-          <img class="mb-4 p-2" src="{{asset('assets/img/asset/Anak Bugar.png' )}}" alt="" />
+          <img class="mb-4 p-2" src="{{asset('assets/img/Asset/Anak Bugar.png' )}}" alt="" />
           <p style="text-align: justify">
             Lorem ipsum, dolor sit amet consectetur adipisicing elit. Hic libero
             quod doloremque consectetur dolorum ratione, fugit deserunt aliquid
@@ -860,7 +860,7 @@
           </p>
         </div>
         <div class="col-6 text-center col-lg-3">
-          <img class="mb-4 p-2" src="{{asset('assets/img/asset/Timbangan.png')}}" alt="" />
+          <img class="mb-4 p-2" src="{{asset('assets/img/Asset/Timbangan.png')}}" alt="" />
           <p style="text-align: justify">
             Lorem ipsum, dolor sit amet consectetur adipisicing elit. Hic libero
             quod doloremque consectetur dolorum ratione, fugit deserunt aliquid
@@ -869,7 +869,7 @@
           </p>
         </div>
         <div class="col-6 text-center col-lg-3">
-          <img class="mb-4 p-2" src="{{asset('assets/img/asset/Tinggi Anak.png')}}" alt="" />
+          <img class="mb-4 p-2" src="{{asset('assets/img/Asset/Tinggi Anak.png')}}" alt="" />
           <p style="text-align: justify">
             Lorem ipsum, dolor sit amet consectetur adipisicing elit. Hic libero
             quod doloremque consectetur dolorum ratione, fugit deserunt aliquid
@@ -878,7 +878,7 @@
           </p>
         </div>
         <div class="col-6 text-center col-lg-3">
-          <img class="mb-4 p-2" src="{{asset('assets/img/asset/Tulang Anak.png')}}" alt="" />
+          <img class="mb-4 p-2" src="{{asset('assets/img/Asset/Tulang Anak.png')}}" alt="" />
           <p style="text-align: justify">
             Lorem ipsum, dolor sit amet consectetur adipisicing elit. Hic libero
             quod doloremque consectetur dolorum ratione, fugit deserunt aliquid
@@ -903,7 +903,7 @@
           style="width: 15rem"
         >
           <img
-            src="{{asset('assets/img/asset/Kemenkes Logo.png')}}"
+            src="{{asset('assets/img/Asset/Kemenkes Logo.png')}}"
             style="width: 3 rem; border-radius: 1rem; justify-content: center"
             class="card-img"
             alt="..."
@@ -926,7 +926,7 @@
         <!-- card beda -->
         <div class="card col-6 col-md-6 col-lg-3 col-lg-3" style="width: 15rem">
           <img
-            src="{{asset('assets/img/asset/SSGI.png' )}}"
+            src="{{asset('assets/img/Asset/SSGI.png' )}}"
             class="card-img p-2"
             style="justify-content: center; width: 3 rem; border-radius: 1rem"
             alt="..."
@@ -951,7 +951,7 @@
         <!-- card beda -->
         <div class="card col-6 col-md-6 col-lg-3 col-lg-3" style="width: 15rem">
           <img
-            src="{{asset('assets/img/asset/Stunting Genting.png' )}}"
+            src="{{asset('assets/img/Asset/Stunting Genting.png' )}}"
             class="card-img-top"
             style="width: 3 rem; border-radius: 1rem; justify-content: center"
             alt="..."
@@ -974,7 +974,7 @@
         <!-- card beda -->
         <div class="card col-6 col-md-6 col-lg-3 col-lg-3" style="width: 15rem">
           <img
-            src="{{asset('assets/img/asset/Stunting Genting.png' )}}"
+            src="{{asset('assets/img/Asset/Stunting Genting.png' )}}"
             class="card-img-top"
             style="width: 3 rem; border-radius: 1rem; justify-content: center"
             alt="..."
@@ -1041,7 +1041,7 @@
               <img
                 class="p-1 rounded-circle"
                 style="width: 30x; height: 30px; background-color: #ec7fa9"
-                src="{{asset('assets/img/asset/Phone.png')}}"
+                src="{{asset('assets/img/Asset/Phone.png')}}"
                 alt=""
               />
               <span
@@ -1062,7 +1062,7 @@
               <img
                 class="p-1 rounded-circle"
                 style="width: 30px; height: 30px; background-color: #ec7fa9"
-                src="{{asset('assets/img/asset/Letter.png' )}}"
+                src="{{asset('assets/img/Asset/Letter.png' )}}"
                 alt=""
               />
               <span
@@ -1082,7 +1082,7 @@
               <img
                 class="p-1 rounded-circle"
                 style="width: 40px; height: 40px; background-color: #ec7fa9"
-                src="{{asset('assets/img/asset/Map.png')}}"
+                src="{{asset('assets/img/Asset/Map.png')}}"
                 alt=""
               />
               <span
@@ -1101,7 +1101,7 @@
             <img
               class="p-1 rounded-circle"
               style="width: 40px; height: 40px; background-color: #ec7fa9"
-              src="{{asset('assets/img/asset/Clock.png')}}"
+              src="{{asset('assets/img/Asset/Clock.png')}}"
               alt=""
             />
             <span
@@ -1131,7 +1131,7 @@
               <div class="card" style="width: 60vw; height: 20vh">
                 <div class="d-flex align-items-center mt-3">
                   <img
-                    src="{{asset('assets/img/asset/Testi Andi.png' )}}"
+                    src="{{asset('assets/img/Asset/Testi Andi.png' )}}"
                     class="card-img-top-start rounded-circle mx-3"
                     style="width: 40px"
                     alt="..."
@@ -1162,7 +1162,7 @@
               <div class="card" style="width: 60vw; height: 20vh">
                 <div class="d-flex align-items-center mt-3">
                   <img
-                    src="{{asset('assets/img/asset/Toffan Taulany.png' )}}"
+                    src="{{asset('assets/img/Asset/Toffan Taulany.png' )}}"
                     class="card-img-top-start rounded-circle mx-3"
                     style="width: 40px"
                     alt="..."
@@ -1193,7 +1193,7 @@
               <div class="card" style="width: 60vw; height: 20vh">
                 <div class="d-flex align-items-center mt-3">
                   <img
-                    src="{{asset('assets/img/asset/Memei .png' )}}"
+                    src="{{asset('assets/img/Asset/Memei .png' )}}"
                     class="card-img-top-start rounded-circle mx-3"
                     style="width: 40px"
                     alt="..."
@@ -1250,7 +1250,7 @@
         >
           <img
             class="align-items-center"
-            src="{{asset('assets/img/asset/Stuntless FIX.png')}}"
+            src="{{asset('assets/img/Asset/Stuntless FIX.png')}}"
             width="70px"
             height="70px"
             alt=""
@@ -1311,7 +1311,7 @@
                 class="align-items-center"
                 width="20px"
                 height="20px"
-                src="{{asset('assets/img/asset/Instagram.png')}}"
+                src="{{asset('assets/img/Asset/Instagram.png')}}"
                 alt=""
               />
               <span style="font-size: clamp(12px, 2vw, 16px)"
@@ -1326,7 +1326,7 @@
                 class="align-items-center"
                 width="20px"
                 height="20px"
-                src="{{asset('assets/img/asset/TikTok.png' )}}"
+                src="{{asset('assets/img/Asset/TikTok.png' )}}"
                 alt=""
               />
               <span style="font-size: clamp(12px, 2vw, 16px)"
@@ -1341,7 +1341,7 @@
                 class="align-items-center"
                 width="20px"
                 height="20px"
-                src="{{asset('assets/img/asset/YouTube Squared.png')}}"
+                src="{{asset('assets/img/Asset/YouTube Squared.png')}}"
                 alt=""
               />
               <span style="font-size: clamp(12px, 2vw, 16px)">Stuntless</span>
