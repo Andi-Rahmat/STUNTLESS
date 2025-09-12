@@ -306,7 +306,7 @@
             >
               <div class="align-items-center d-flex" style="gap: 15px">
                 <img
-                  src="{{asset('assets/img/Asset/batang putih.png' )}}"
+                  src="{{asset('assets/img/Asset/batang putih.png')}}"
                   style="width: auto; height: 40px"
                   alt=""
                 />
