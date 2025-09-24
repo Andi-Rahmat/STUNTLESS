@@ -8,7 +8,7 @@ VPS_USER="padail"
 VPS_HOST="103.175.221.6"
 VPS_REPO_PATH="/var/www/STUNTLESS"
 
-# Navigate to the local git repository
+# Navigate to the local git repositor
 echo "Navigating to local repository..."
 # cd $LOCAL_REPO_PATH || { echo "Local repository not found!"; exit 1; }
 
