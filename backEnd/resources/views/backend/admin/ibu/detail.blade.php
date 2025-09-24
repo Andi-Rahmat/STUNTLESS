@@ -6,7 +6,7 @@
     <h1>Detail Ibu</h1>
     <nav>
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/admin/dashboard">Home</a></li>
+            <li class="breadcrumb-item"><a href="/{{cekRole()}}/dashboard">Home</a></li>
             <li class="breadcrumb-item"><a href="{{route('daftar_ibu')}}">Daftar Ibu</a></li>
             <li class="breadcrumb-item active">Detail</li>
         </ol>

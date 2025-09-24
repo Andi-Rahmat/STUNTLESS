@@ -61,8 +61,8 @@ if($dataSekarang != null) {
     <h1>Detail Balita</h1>
     <nav>
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/admin/dashboard">Home</a></li>
-            <li class="breadcrumb-item"><a href="{{route('daftar_balita')}}">Daftar Balita</a></li>
+            <li class="breadcrumb-item"><a href="/{{cekRole()}}/dashboard">Home</a></li>
+            <li class="breadcrumb-item"><a href="{{route('daftar_balita',['role' => cekRole()])}}">Daftar Balita</a></li>
             <li class="breadcrumb-item active">Detail</li>
         </ol>
     </nav>
@@ -106,11 +106,6 @@ if($dataSekarang != null) {
                                             <td width="auto">{{$balita->nik}}</td>
                                         </tr>
                                         <tr>
-                                            <td><b>Anaka Ke</b></td>
-                                            <td width="20%" class="text-center">:</td>
-                                            <td width="auto">{{$balita->anak_ke}}</td>
-                                        </tr>
-                                        <tr>
                                             <td><b>Golongan Darah</b></td>
                                             <td width="20%" class="text-center">:</td>
                                             <td width="auto">{{$balita->golongan_darah}}</td>
@@ -128,12 +123,25 @@ if($dataSekarang != null) {
     <div class="row">
         <div class="col-lg-12">
             @if($dataSekarang != null)
-            <div class="d-flex justify-content-around position-relative align-items-end mt-4">
-                <a href="?page=grafik" style="background-color:{{ request('page') != 'riwayat' ? '#faf9ee' : '#d9d9d9' }}; color:{{ request('page') != 'riwayat' ? '#F564A9' : 'grey' }}; border-radius:0 10px 0 0; text-decoration:none;" class="z-3 fw-bold position-absolute bottom-0 start-0 m-0 p-2 px-5 rounded-start-2">Grafik</a>
-                <a href="?page=riwayat" style="background-color:{{ request('page') == 'riwayat' ? '#faf9ee' : '#d9d9d9' }}; color:{{ request('page') == 'riwayat' ? '#F564A9' : 'grey' }}; border-radius:0 10px 0 0; text-decoration:none;" class="z-3 fw-bold position-absolute bottom-0 start-10 m-0 p-2 px-5 rounded-end-2">Riwayat</a>
+            <div class="d-flex flex-wrap justify-content-around align-items-end mt-4">
+                <a href="?page=grafik" 
+                   style="background-color:{{ request('page') != 'riwayat' && request('page') != 'perkembangan' ? '#faf9ee' : '#d9d9d9' }}; color:{{ request('page') != 'riwayat' && request('page') != 'perkembangan' ? '#F564A9' : 'grey' }}; border-radius:10px 0 0 0; text-decoration:none;" 
+                   class="fw-bold m-0 p-2 px-3 px-md-5 text-center flex-grow-1 flex-md-grow-0">
+                   Grafik
+                </a>
+                <a href="?page=riwayat" 
+                   style="background-color:{{ request('page') == 'riwayat' ? '#faf9ee' : '#d9d9d9' }}; color:{{ request('page') == 'riwayat' ? '#F564A9' : 'grey' }}; border-radius:0 0 0 0; text-decoration:none;" 
+                   class="fw-bold m-0 p-2 px-3 px-md-5 text-center flex-grow-1 flex-md-grow-0">
+                   Riwayat
+                </a>
+                <a href="?page=perkembangan" 
+                   style="background-color:{{ request('page') == 'perkembangan' ? '#faf9ee' : '#d9d9d9' }}; color:{{ request('page') == 'perkembangan' ? '#F564A9' : 'grey' }}; border-radius:0 10px 0 0; text-decoration:none;" 
+                   class="fw-bold m-0 p-2 px-3 px-md-5 text-center flex-grow-1 flex-md-grow-0">
+                   Perkembangan
+                </a>
             </div>
             <div class="card" style="background-color:#faf9ee;">
-                @if(request('page') != 'riwayat')
+                @if(request('page') != 'riwayat' && request('page') != 'perkembangan')
                 <div class="card-body">
                     <div class="card-title d-flex justify-content-between gap-3 overflow-scroll mx-3 hide-scrollbar">
                         <a href="?indikator=berat" class="btn flex-shrink-0 btnKlasifikasi {{$indikator == 'berat' ? 'active' : '' }} ">Berat</a>
@@ -468,14 +476,16 @@ if($dataSekarang != null) {
                         window.addEventListener('resize', myChart.resize);
                     </script>
                 </div>
-                @else
+                @elseif(request('page') == 'riwayat')
                 <!-- riwayat -->
                 <div class="card-body">
+                    @if(cekRole() == 'admin')
                     <div class="text-end mt-4 mx-3">
                         <a href="{{route('pengukuran',['balita' => $balita->id])}}" class="btn btn-primary" style="background-color: #ec7fa9; border: none;">
                             <strong>Tambah Data Pengukuran</strong>
                         </a>
                     </div>
+                    @endif
                     <div class="card mt-4 mx-3">
                         <div class="card-body">
                             <div class="table-responsive">
@@ -503,7 +513,7 @@ if($dataSekarang != null) {
                                             <td>{{ $riwayat->imt }}</td>
                                             <td>{{ checkIndikator($riwayat->zScore->berat, 'berat') }}</td>
                                             <td>
-                                                <button data-bs-toggle="modal" data-bs-target="#detailPengukuran" data-link="/modal/pengukuran/{{$riwayat->id}}" class="btn btn-info">
+                                                <button data-bs-toggle="modal" data-bs-target="#detailPengukuran" data-link="/modal/pengukuran/{{$riwayat->id}}" class="btn btn-sm btn-info">
                                                     <i class="bi bi-info-circle"></i>
                                                     <span class="info-text">Info Detail!</span>
                                                 </button>
@@ -516,7 +526,67 @@ if($dataSekarang != null) {
                             </div>
                         </div>
                     </div>
-                    @endif
+                @else
+                <!-- perkembangan -->
+                 <div class="card-body">
+                    <div class="text-end mt-4 mx-3">
+                        <select name="" id="tahapPerkembangan" class="form-select w-auto d-inline"  style="background-color: #ec7fa9; border: none; color:white; font-weight:600;">
+                            <option value="">Tahap Perkembangan</option>
+                            <option {{hitungUsiaBulan($balita->tglLahir) >= 0 && hitungUsiaBulan($balita->tglLahir) <= 3 ? 'selected' : ''}} value="0-3" >0-3 Bulan</option>
+                            <option {{hitungUsiaBulan($balita->tglLahir) >= 4 && hitungUsiaBulan($balita->tglLahir) <= 6 ? 'selected' : ''}} value="4-6" >4-6 Bulan</option>
+                            <option {{hitungUsiaBulan($balita->tglLahir) >= 7 && hitungUsiaBulan($balita->tglLahir) <= 9 ? 'selected' : ''}} value="7-9" >7-9 Bulan</option>
+                            <option {{hitungUsiaBulan($balita->tglLahir) >= 10 && hitungUsiaBulan($balita->tglLahir) <= 12 ? 'selected' : ''}} value="10-12" >10-12 Bulan</option>
+                            <option {{hitungUsiaBulan($balita->tglLahir) >= 13 && hitungUsiaBulan($balita->tglLahir) <= 18 ? 'selected' : ''}} value="13-18" >13-18 Bulan</option>
+                            <option {{hitungUsiaBulan($balita->tglLahir) >= 19 && hitungUsiaBulan($balita->tglLahir) <= 24 ? 'selected' : ''}} value="19-24" >19-24 Bulan</option>
+                            <option {{hitungUsiaBulan($balita->tglLahir) >= 25 && hitungUsiaBulan($balita->tglLahir) <= 36 ? 'selected' : ''}} value="25-36" >25-36 Bulan</option>
+                            <option {{hitungUsiaBulan($balita->tglLahir) >= 37 && hitungUsiaBulan($balita->tglLahir) <= 48 ? 'selected' : ''}} value="37-48" >37-48 Bulan</option>
+                            <option {{hitungUsiaBulan($balita->tglLahir) >= 49 && hitungUsiaBulan($balita->tglLahir) <= 60 ? 'selected' : ''}} value="49-60" >49-60 Bulan</option>
+                        </select>
+                    </div>  
+                    <div class="card mt-4 mx-3">
+                        <div class="card-body">
+                            <!-- Bordered Tabs -->
+                            <ul class="nav nav-tabs nav-tabs-bordered --flex-column flex-sm-row">
+
+                                <li class="nav-item flex-fill text-sm-center">
+                                    <button class="nav-link active w-100" data-bs-toggle="tab" data-bs-target="#motorik">
+                                        <span class="--d-none d-sm-block">Motorik</span>
+                                    </button>
+                                </li>
+
+                                <li class="nav-item flex-fill text-sm-center">
+                                    <button class="nav-link w-100" data-bs-toggle="tab" data-bs-target="#kognitif">
+                                        <span class="--d-none d-sm-block">Kognitif</span>
+                                    </button>
+                                </li>
+
+                                <li class="nav-item flex-fill text-sm-center">
+                                    <button class="nav-link w-100" data-bs-toggle="tab" data-bs-target="#sosial">
+                                        <span class="d-none d-sm-block">Sosial dan Emosional</span>
+                                        <span class="d-sm-none">Sosial</span>
+                                    </button>
+                                </li>
+
+                            </ul>
+                            <div class="tab-content pt-2">
+
+                                <div class="tab-pane fade show active motorik" id="motorik">
+
+                                </div>
+
+                                <div class="tab-pane fade kognitif pt-3" id="kognitif">
+                                </div>
+
+                                <div class="tab-pane fade pt-3 sosial" id="sosial">
+
+                                </div>
+
+                            </div>
+                            <!-- End Bordered Tabs -->
+                        </div>
+                    </div>
+                 </div>
+                @endif
                 </div>
                 <!-- belum ada pengukuran -->
                 @else
@@ -602,6 +672,7 @@ if($dataSekarang != null) {
                         </div>
                     </div>
                     <div class="modal-footer">
+                        @if(CekRole() == 'admin')
                         <form action="{{ route('hapus.pengukuran', ['id' => $dataSekarang->id]) }}" method="GET" style="display: inline;" onsubmit="return confirm('Anda Yakin Ingin Menghapus Data ini ?');">
                             @csrf
                             @method('DELETE')
@@ -610,11 +681,43 @@ if($dataSekarang != null) {
                                 Hapus Data
                             </button>
                         </form>
+                        @endif
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                     </div>
                 </div>
             </div>
         </div>
+        @endif
+
+        @if(request('page') == 'perkembangan')
+        <script>
+            document.getElementById('tahapPerkembangan').addEventListener('change', function() {
+                const tahap = this.value;
+                const motorikDiv = document.querySelector('.motorik');
+                const kognitifDiv = document.querySelector('.kognitif');
+                const sosialDiv = document.querySelector('.sosial');
+
+                if (tahap) {
+                    fetch(`/modal/perkembangan/${tahap}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            motorikDiv.innerHTML = data.motorik || '<p>Tidak ada data untuk tahap ini.</p>';
+                            kognitifDiv.innerHTML = data.kognitif || '<p>Tidak ada data untuk tahap ini.</p>';
+                            sosialDiv.innerHTML = data.sosial || '<p>Tidak ada data untuk tahap ini.</p>';
+                        })
+                        .catch(error => {
+                            console.error('Error fetching development data:', error);
+                            motorikDiv.innerHTML = '<p>Terjadi kesalahan saat memuat data.</p>';
+                            kognitifDiv.innerHTML = '<p>Terjadi kesalahan saat memuat data.</p>';
+                            sosialDiv.innerHTML = '<p>Terjadi kesalahan saat memuat data.</p>';
+                        });
+                } else {
+                    motorikDiv.innerHTML = '<h5 class="card-title text-center">Pilih Tahap Perkembangan terlebih dahulu</h5>';
+                    kognitifDiv.innerHTML = '<h5 class="card-title text-center">Pilih Tahap Perkembangan terlebih dahulu</h5>';
+                    sosialDiv.innerHTML = '<h5 class="card-title text-center">Pilih Tahap Perkembangan terlebih dahulu</h5>';
+                }
+            });
+        </script>
         @endif
 
         <script>

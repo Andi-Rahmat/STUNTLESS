@@ -3,10 +3,9 @@
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <meta content="" name="description">
   <meta content="" name="keywords">
-  <title>@yield('title', 'Dashboard - NiceAdmin')</title>
+  <title>@yield('title', 'Dashboard - STUNTLESS')</title>
 
-  <link href="{{ asset('assets/img/favicon.png') }}" rel="icon">
-  <link href="{{ asset('assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
+  <link rel="icon" href="{{asset('assets/img/Asset/Stuntless FIX.png')}}" type="image/x-icon">
   <link href="https://fonts.gstatic.com" rel="preconnect">
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
@@ -99,6 +98,7 @@
       background-color: #ec7fa9;
       color: black;
     }
+    
   </style>
 </head>
 
@@ -106,15 +106,62 @@
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="index.html" class="logo d-flex align-items-center">
-        <img src="{{asset('assets/img/logo.png')}}" alt="">
-        <span class="d-none d-lg-block">NiceAdmin</span>
+      <a href="dashboard" class="logo d-flex align-items-center">
+        <img src="{{asset('assets/img/Asset/Stuntless FIX.png')}}" alt="">
+        
+        <span class="d-none d-lg-block">STUNTLESS</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
 
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
+        <li class="nav-item dropdown">
+
+          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+            <i class="bi bi-bell"></i>
+            <span class="badge bg-primary badge-number">2</span>
+          </a><!-- End Notification Icon -->
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+            <li class="dropdown-header">
+              You have 2 new notifications
+              <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="notification-item">
+              <i class="bi bi-exclamation-circle text-warning"></i>
+              <div>
+                <h4>Reminder</h4>
+                <p>Yth. Bapak/Ibu Wali Balita,</p>
+                <p>Kami informasikan bahwa sudah 1 bulan sejak kunjungan terakhir. Saatnya membawa putra/putri Bapak/Ibu ke Posyandu untuk pemeriksaan rutin.</p>
+              </div>
+            </li>
+
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="notification-item">
+              <i class="bi bi-x-circle text-danger"></i>
+              <div>
+                <h4>Warning</h4>
+                <p>Yth. Bapak/Ibu Wali Balita,</p>
+                <p>Berdasarkan hasil pemantauan terakhir di Posyandu, putra/putri Bapak/Ibu teridentifikasi berisiko stunting. Kami menyarankan untuk melakukan pemeriksaan lanjutan dan mengikuti arahan petugas gizi.</p>
+              </div>
+            </li>
+<!-- 
+            <li>
+              <hr class="dropdown-divider">
+            </li> -->
+
+          </ul><!-- End Notification Dropdown Items -->
+
+        </li><!-- End Notification Nav -->
+
         <li class="nav-item dropdown pe-3">
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
@@ -130,7 +177,7 @@
             <li>
               <hr class="dropdown-divider">
             </li>
-            @if(Auth::user()->role == 'user')
+            @if(Auth::user()->role == 'ibu')
             <li>
               <a class="dropdown-item d-flex align-items-center" href="{{route('ibu.profile')}}">
                 <i class="bi bi-person"></i>

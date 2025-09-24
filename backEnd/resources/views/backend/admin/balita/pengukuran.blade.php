@@ -1,12 +1,12 @@
 @extends('backend.layouts.app')
 
-@section('title','dashboard')
+@section('title','pengukuran - STUNTLESS')
 @section('content')
 <div class="pagetitle">
     <h1>Pengukuran</h1>
     <nav>
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
+            <li class="breadcrumb-item"><a href="/{{cekRole()}}/dashboard">Home</a></li>
             <li class="breadcrumb-item active">Pengukuran</li>
         </ol>
     </nav>
@@ -36,7 +36,7 @@
 
             </form>
             <div class="text-start mb-3">
-                <a href="{{route('registrasi.balita')}}" class="btn btn-primary">
+                <a href="{{route('registrasi.balita',['role' => cekRole()])}}" class="btn btn-primary">
                     <i class="bi bi-plus"></i> Tambah Balita
                 </a>
             </div>

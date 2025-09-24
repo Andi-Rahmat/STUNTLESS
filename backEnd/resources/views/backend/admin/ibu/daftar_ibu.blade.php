@@ -1,6 +1,6 @@
 @extends('backend.layouts.app')
 
-@section('title','dashboard')
+@section('title','Daftar Ibu - STUNTLESS')
 @section('content')
 <div class="pagetitle">
     <h1>Daftar Ibu</h1>
@@ -19,7 +19,7 @@
                 <div class="card-body table-responsive">
                     <div class="d-flex justify-content-between align-items-center">
                         <h5 class="card-title">Daftar Ibu</h5>
-                        <a href="{{route('registrasi.ibu')}}" class="btn btn-success"><i class="bi bi-person-plus"></i> Tambahkan Data</a>
+                        <a href="{{route('registrasi.index')}}" class="btn btn-success"><i class="bi bi-person-plus"></i> Tambahkan Data</a>
                     </div>
                     <table class="table datatable">
                         <thead>
@@ -45,7 +45,7 @@
                                 <td>{{ $dataIbu->alamat }}</td>
                                 <td>{{ $dataIbu->user->noTelp }}</td>
                                 <td>
-                                    <a href="{{ route('detail_ibu', ['id' => $dataIbu->id]) }}" class="btn btn-info">
+                                    <a href="{{ route('detail_ibu', ['id' => $dataIbu->id]) }}" class="btn btn-sm btn-info">
                                         <i class="bi bi-info-circle"></i>
                                         <span class="info-text">Info Detail!</span>
                                     </a>
@@ -54,7 +54,7 @@
                                     <form action="{{ route('hapus.ibu', ['id' => $dataIbu->id]) }}" method="GET" onsubmit="return confirm('Anda Yakin Ingin Menghapus Data {{$dataIbu->namaLengkap}} ?');">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger">
+                                        <button type="submit" class="btn btn-sm btn-danger">
                                             <i class="bi bi-exclamation-octagon"></i>
                                             <span class="info-text">Hapus Data Ibu!</span>
                                         </button>

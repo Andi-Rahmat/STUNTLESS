@@ -28,12 +28,7 @@ class LoginController extends Controller
             ]);
         }
         Auth::login($user);
-        if(Auth::user()->role == 'admin'){
-            return redirect()->to('admin/dashboard');
-        }else{
-            return redirect()->to('ibu/dashboard');
-
-        }
+            return redirect()->to(cekRole().'/dashboard');
     }
 
     public function registrasi(Request $request)
@@ -45,7 +40,6 @@ class LoginController extends Controller
             'password'      => 'required|string',
         ]);
 
-        // $tanggal = Carbon::createFromFormat('d/m/Y', $request->tglLahir)->format('Y-m-d');
         $user = User::create([
             'name'      => $request->name,
             'email'     => $request->email,

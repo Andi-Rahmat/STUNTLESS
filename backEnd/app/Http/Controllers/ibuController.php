@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Balita;
 use App\Models\OrangTua;
+use App\Models\Pengukuran;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -21,10 +22,18 @@ class ibuController extends Controller
         return view('backend.admin.ibu.daftar_ibu',['data' => $dataView]);
     }
 
+        public function dashboard()
+    {
+        $balitaList = Balita::where('idOrangTua',userOrangTua()->id)->get();
+        $pengukuranList = Pengukuran::where('idBalita', 1)->get();
+        // Logic for the dashboard can be added here
+        return view('backend.ibu.dashboard', compact('balitaList', 'pengukuranList'));
+    }
+
     public function profile()
     {
 
-        $ibu = userOrangTua();
+        $ibu = userOrangTua()->user;
         return view('backend.ibu.profile',compact('ibu'));
     }
 
@@ -92,10 +101,10 @@ class ibuController extends Controller
     public function edit(Request $request)
     {
         /** @var User|null $orangTua */
-        $orangTua = userOrangTua();
+        $orangTua = userOrangTua()->user;
         // dd($request->all());
         $id = $orangTua->id;
-        $ibu = OrangTua::find($orangTua->orangTua->id);
+        $ibu = OrangTua::find(userOrangTua()->id);
         $user = User::find($id);
         if($request->password){
             $request->validate([

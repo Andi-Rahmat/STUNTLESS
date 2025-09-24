@@ -1,6 +1,6 @@
 @extends('backend.layouts.app')
 
-@section('title','dashboard')
+@section('title','daftar balita - STUNTLESS')
 @section('content')
 
 <div class="pagetitle">
@@ -20,7 +20,7 @@
                 <div class="card-body table-responsive">
                     <div class="d-flex justify-content-between align-items-center">
                         <h5 class="card-title">Daftar Balita</h5>
-                        <a href="{{route('registrasi.balita')}}" class="btn btn-success"><i class="bi bi-person-plus"></i> Tambahkan Data</a>
+                        <a href="{{route('registrasi.balita',['role' => cekRole()])}}" class="btn btn-success"><i class="bi bi-person-plus"></i> Tambahkan Data</a>
                     </div>
 
                     <table class="table datatable">
@@ -28,9 +28,10 @@
                             <tr>
                                 <th scope="col">NIK</th>
                                 <th scope="col">Nama Balita</th>
+                                @if(cekRole() == 'admin')
                                 <th scope="col">Nama Ibu</th>
+                                @endif
                                 <th scope="col">Usia</th>
-                                <th scope="col">Anak ke</th>
                                 <th scope="col">Golongan Darah</th>
                                 <th scope="col" colspan="2">Action</th>
                                 <th></th>
@@ -42,17 +43,18 @@
                             <tr>
                                 <td>{{$dataBalita->nik}}</td>
                                 <td>{{$dataBalita->namaLengkap}}</td>
+                                @if(cekRole() == 'admin')
                                 <td>{{$dataBalita->orangTua->namaLengkap}}</td>
+                                @endif
                                 <td>{{hitungUsia($dataBalita->tglLahir)}}</td>
-                                <td>{{$dataBalita->anak_ke}}</td>
                                 <td>{{$dataBalita->golongan_darah}}</td>
                                 <td>
-                                    <a href="{{ route('detail_balita',['id' => $dataBalita->id]) }}" class="btn btn-info"><i class="bi bi-info-circle"></i>
+                                    <a href="{{ route('detail_balita',['role' => cekRole(),'id' => $dataBalita->id]) }}" class="btn btn-sm btn-info"><i class="bi bi-info-circle"></i>
                                         <span class="info-text">Info Detail!</span>
                                     </a>
                                 </td>
                                 <td>
-                                    <a href="{{route('hapus.balita',$dataBalita->id)}}" class="btn btn-danger" onclick="return confirm('Anda Yakin Ingin Menghapus Data {{$dataBalita->namaLengkap}} ?');"><i class="bi bi-exclamation-octagon"></i>
+                                    <a href="{{route('hapus_balita',['role' => cekRole(),'id' => $dataBalita->id])}}" class="btn btn-danger btn-sm" onclick="return confirm('Anda Yakin Ingin Menghapus Data {{$dataBalita->namaLengkap}} ?');"><i class="bi bi-exclamation-octagon"></i>
                                         <span class="info-text">Hapus Data Balita!</span>
                                     </a>
                                 </td>

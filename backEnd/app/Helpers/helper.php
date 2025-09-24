@@ -45,7 +45,7 @@ if (!function_exists('userOrangTua')) {
      */
     function userOrangTua()
     {
-        $user = User::find(Auth::user()->id);
+        $user = User::find(Auth::user()->id)->orangTua;
 
         return  $user;
     }

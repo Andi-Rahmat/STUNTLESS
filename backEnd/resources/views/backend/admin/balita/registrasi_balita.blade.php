@@ -47,7 +47,7 @@
     <div class="flex md:w-1/3 w-1/2  bg-white rounded-lg shadow-lg my-[50px]">
         <div class="w-full p-8">
             <h2 class="text-3xl font-bold mb-6 text-center">Registrasi Balita</h2>
-            <form action="{{ route('registrasi.balita') }}" method="POST">
+            <form action="{{route('registrasi.balita',['role' => cekRole()])}}" method="POST">
                 @csrf
 
                 <!-- Nama Lengkap -->
@@ -106,6 +106,7 @@
                         Golongan Darah
                     </label>
                     <select name="golonganDarah" id="golonganDarah" class="w-full p-3 mb-2 border bg-gray-50 border-gray-300 focus:border-0 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400 transition-all duration-300">
+                        <option value="">-</option>
                         <option value="A" {{ old('golonganDarah') == 'A' ? 'selected' : '' }}>A</option>
                         <option value="B" {{ old('golonganDarah') == 'B' ? 'selected' : '' }}>B</option>
                         <option value="AB" {{ old('golonganDarah') == 'AB' ? 'selected' : '' }}>AB</option>
@@ -114,8 +115,7 @@
                 </div>
 
                 <!-- ID Orang Tua -->
-                 
-                @if(!is_array($orangTuaList))
+                @if(cekRole() == 'admin')
                 <div class="mb-4">
                     <label for="idOrangTua" class="block text-sm font-medium text-gray-600">
                         <span class="text-sm text-red-600">*</span>Orang Tua
