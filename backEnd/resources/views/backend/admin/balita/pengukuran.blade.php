@@ -50,7 +50,7 @@
             <!-- Floating Labels Form -->
             <form class="row g-3 d-flex align-items-center" action="{{route('pengukuran.store',['id' => $dataBalita->id])}}" method="post">
                 @csrf
-                <div class="row d-flex align-items-start mt-3">
+                <div class="row d-flex align-items-start mt-3 justify-content-center">
                     <div class="col-7">
                         <div class="form-floating">
                             <input type="text" class="form-control" id="folaotingTgl" name="tglPengukuran" required>
@@ -87,7 +87,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="text-center mt-3">
+                        <div class="text-center my-3">
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
                     </div>
