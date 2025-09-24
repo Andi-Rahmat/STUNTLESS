@@ -33,6 +33,7 @@ class pengukuranController extends Controller
     {
         $dataIot = DataIot::orderBy('id', 'desc')->first();
         $dataIot['lingkarKepala'] = optional(LingkarKepala::orderBy('id', 'desc')->first())->lingkarKepala;
+        $dataIot['imgLingkarKepala'] = asset('storage/images/kepala.png');
         return response()->json($dataIot);
     }
 

@@ -94,7 +94,7 @@
                     <div class="col-12 col-md-5">
                         <div class="card-title pt-0">hasil capture : </div>
                         <div class="text-center">
-                            <img src="{{asset('storage/images/kepala.png')}}" class="img-fluid rounded shadow" alt="Capture Kepala" style="max-width: 100%; height: auto;">
+                            <img id="imgLingkarKepala" class="img-fluid rounded shadow" alt="Capture Kepala" style="max-width: 100%; height: auto;">
                         </div>
                     </div>
                 </div>
@@ -102,10 +102,7 @@
 
         </div>
     </div>
-    @endif
     <script>
-
-
         // Fungsi untuk menghitung usia
         const dateInput = document.getElementById('folaotingTgl');
         const birthDate = new Date("{{$dataBalita->tglLahir}}");
@@ -133,6 +130,7 @@
         const tinggi = document.getElementById('tinggi');
         const suhu = document.getElementById('suhu');
         const lingkarKepala = document.getElementById('lingkarKepala');
+        const imgLingkarKepala = document.getElementById('imgLingkarKepala');
 
         function loadDataPengukuran() {
             $.ajax({
@@ -143,14 +141,17 @@
                     tinggi.value = response.tinggi
                     suhu.value = response.suhu;
                     lingkarKepala.value = response.lingkarKepala;
+                    imgLingkarKepala.setAttribute('src', response.imgLingkarKepala + '?t=' + new Date().getTime());
                 },
                 error: function() {
                     alert('Failed to retrieve data.');
                 }
             });
         }
-        setInterval(loadDataPengukuran, 2000);
-
+        setInterval(loadDataPengukuran, 3000);
+    </script>
+    @endif
+    <script>
         $(document).ready(function() {
             // Inisialisasi Select2 pada elemen select
             $('.selectpicker').select2();
