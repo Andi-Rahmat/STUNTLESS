@@ -32,12 +32,7 @@ class balitaController extends Controller
     }
 
 
-    public function dataPengukuran()
-    {
-        $dataIot = DataIot::orderBy('id', 'desc')->first();
 
-        return response()->json($dataIot);
-    }
 
     /**
      * Show the form for creating a new resource.

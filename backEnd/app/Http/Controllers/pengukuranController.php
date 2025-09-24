@@ -29,6 +29,13 @@ class pengukuranController extends Controller
         return response()->json('berat = ' . $berat . 'tinggi = ' . $tinggi);
     }
 
+        public function dataPengukuran()
+    {
+        $dataIot = DataIot::orderBy('id', 'desc')->first();
+        $dataIot['lingkarKepala'] = optional(LingkarKepala::orderBy('id', 'desc')->first())->lingkarKepala;
+        return response()->json($dataIot);
+    }
+
     public function show()
     {
         $balitaList = Balita::all();

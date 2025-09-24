@@ -44,7 +44,8 @@ Route::middleware('auth')->group(function () {
 
 
     Route::middleware('role:admin')->group(function () {
-        Route::get('/get-data-pengukuran', [balitaController::class, 'dataPengukuran'])->name('data.pengukuran');
+        Route::get('/get-data-pengukuran', [pengukuranController::class, 'dataPengukuran'])->name('data.pengukuran');
+        Route::get('/get-data-lingkarKepala', [pengukuranController::class, 'dataPengukuran'])->name('data.pengukuran_lingkar_kepala');
 
         Route::get('/admin/dashboard', [dashboardController::class, 'index'])->name('admin.dashboard');
         Route::get('/admin/registrasi-ibu', function () {

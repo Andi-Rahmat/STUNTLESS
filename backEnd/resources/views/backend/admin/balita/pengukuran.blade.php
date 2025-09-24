@@ -48,39 +48,55 @@
             <h5 class="card-title">{{$dataBalita->namaLengkap .' - '. hitungUsia($dataBalita->tglLahir)}}</h5>
 
             <!-- Floating Labels Form -->
-            <form class="row g-3" action="{{route('pengukuran.store',['id' => $dataBalita->id])}}" method="post">
+            <form class="row g-3 d-flex align-items-center" action="{{route('pengukuran.store',['id' => $dataBalita->id])}}" method="post">
                 @csrf
-                <div class="form-floating">
-                    <input type="text" class="form-control" id="folaotingTgl" name="tglPengukuran" required>
-                    <label for="floatingTgl">tanggal Pengukuran</label>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="form-floating">
-                        <input type="text" class="form-control" id="berat" name="berat" value="">
-                        <label for="floatingEmail">Berat Badan</label>
+                <div class="row d-flex align-items-start mt-3">
+                    <div class="col-7">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="folaotingTgl" name="tglPengukuran" required>
+                            <label for="floatingTgl">tanggal Pengukuran</label>
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-floating">
-                        <input type="text" class="form-control" id="tinggi" name="tinggi" value="">
-                        <label for="floatingPassword">Tinggi Badan</label>
+                    <div class="col-5">
+                        <p class="card-title">usia : <span id="usiaPengukuran">Silahkan pilih tgl Terlebih dahulu!!!</span></p>
                     </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-floating">
-                        <input type="text" class="form-control" id="suhu" name="suhu" value="">
-                        <label for="floatingEmail">Suhu</label>
+                    <div class="col-12 col-md-7">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="berat" name="berat" value="">
+                                    <label for="floatingEmail">Berat Badan</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="tinggi" name="tinggi" value="">
+                                    <label for="floatingPassword">Tinggi Badan</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="suhu" name="suhu" value="">
+                                    <label for="floatingEmail">Suhu</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="lingkarKepala" name="lingkarKepala" value="">
+                                    <label for="floatingPassword">Lingkar Kepala</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center mt-3">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-floating">
-                        <input type="text" class="form-control" id="lingkarKepala" name="lingkarKepala" value="">
-                        <label for="floatingPassword">Lingkar Kepala</label>
+                    <div class="col-12 col-md-5">
+                        <div class="card-title pt-0">hasil capture : </div>
+                        <div class="text-center">
+                            <img src="{{asset('storage/images/kepala.png')}}" class="img-fluid rounded shadow" alt="Capture Kepala" style="max-width: 100%; height: auto;">
+                        </div>
                     </div>
-                </div>
-                <div class="text-center">
-                    <button type="submit" class="btn btn-primary">Submt</button>
                 </div>
             </form><!-- End floating Labels Form -->
 
@@ -88,6 +104,25 @@
     </div>
     @endif
     <script>
+
+
+        // Fungsi untuk menghitung usia
+        const dateInput = document.getElementById('folaotingTgl');
+        const birthDate = new Date("{{$dataBalita->tglLahir}}");
+
+        dateInput.addEventListener('change', () => {
+            const selectedDate = new Date(dateInput.value);
+            let ageYears = selectedDate.getFullYear() - birthDate.getFullYear();
+            let ageMonths = selectedDate.getMonth() - birthDate.getMonth();
+
+            // Jika bulan lahir lebih besar dari bulan yang dipilih, kurangi tahun dan tambahkan bulan
+            if (ageMonths < 0) {
+                ageYears--;
+                ageMonths += 12;
+            }
+            document.getElementById('usiaPengukuran').innerText = `${ageYears} tahun ${ageMonths} bulan`;
+        });
+
         flatpickr("#folaotingTgl", {
             maxDate: "today",
             dateFormat: "Y-m-d", // format tanggal
@@ -107,7 +142,7 @@
                     berat.value = response.berat
                     tinggi.value = response.tinggi
                     suhu.value = response.suhu;
-                    lingkarKepala.value = response.lingkar_kepala;
+                    lingkarKepala.value = response.lingkarKepala;
                 },
                 error: function() {
                     alert('Failed to retrieve data.');
