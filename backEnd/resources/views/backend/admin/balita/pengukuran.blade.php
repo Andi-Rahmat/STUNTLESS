@@ -58,9 +58,9 @@
                         </div>
                     </div>
                     <div class="col-5">
-                        <p class="card-title">usia : <span id="usiaPengukuran">Silahkan pilih tgl Terlebih dahulu!!!</span></p>
+                        <p class="card-title py-0">usia : <span id="usiaPengukuran">Silahkan pilih tgl Terlebih dahulu!!!</span></p>
                     </div>
-                    <div class="col-12 col-md-7">
+                    <div class="col-12 col-md-7 mt-3">
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <div class="form-floating">
@@ -91,7 +91,7 @@
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
                     </div>
-                    <div class="col-12 col-md-5">
+                    <div class="col-12 col-md-5 mt-3">
                         <div class="card-title pt-0">hasil capture : </div>
                         <div class="text-center">
                             <img id="imgLingkarKepala" class="img-fluid rounded shadow" alt="Capture Kepala" style="max-width: 100%; height: auto;">
