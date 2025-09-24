@@ -11,6 +11,7 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::get('/data-iot/{berat}/{tinggi}/{suhu}/{lingkarKepala}', [pengukuranController::class, 'dataIot']);
+Route::get('/data-lingkar-kepala/{lingkarKepala}', [pengukuranController::class, 'ukurLingkarKepala']);
 Route::post('/upGambar', [pengukuranController::class, 'gambar']);
 Route::post('/chatAi', [aiController::class, 'chatAi']);       // non-stream
 

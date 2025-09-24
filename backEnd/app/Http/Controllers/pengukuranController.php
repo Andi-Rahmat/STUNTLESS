@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Balita;
 use App\Models\DataIot;
+use App\Models\LingkarKepala;
 use App\Models\Pengukuran;
 use App\Models\User;
 use App\Models\ZScore;
@@ -203,5 +204,14 @@ class pengukuranController extends Controller
             'message' => 'Gambar berhasil diupload!',
             'path' => $url,
         ]);
+    }
+
+    public function ukurLingkarKepala(string $lingkarKepala)
+    {
+        LingkarKepala::create([
+            'lingkarKepala' => $lingkarKepala,
+        ]);
+        return response()->json('data lk = '.$lingkarKepala.', berhasil');
+    
     }
 }
