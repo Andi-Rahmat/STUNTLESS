@@ -92,7 +92,7 @@
                         </div>
                     </div>
                     <div class="col-12 col-md-5 mt-3">
-                        <div class="card-title pt-0">hasil capture : </div>
+                        <div class="card-title py-0">hasil capture : </div>
                         <div class="text-center">
                             <img id="imgLingkarKepala" class="img-fluid rounded shadow" alt="Capture Kepala" style="max-width: 100%; height: auto;">
                         </div>
