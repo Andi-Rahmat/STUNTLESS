@@ -597,11 +597,13 @@ if($dataSekarang != null) {
                         </h3>
 
                         <p class="text-center mb-4">Silahkan lakukan pengukuran terlebih dahulu</p>
+                        @if(cekRole() == 'admin')
                         <div class="text-center">
                             <a href="{{route('pengukuran',['balita' => $balita->id])}}" class="btn btn-primary" style="background-color: #ec7fa9; border: none;">
                                 <strong>Tambah Data Pengukuran</strong>
                             </a>
                         </div>
+                        @endif
                     </div>
                 </div>
                 @endif
