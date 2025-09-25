@@ -400,13 +400,13 @@
           <div class="accordion-item">
             <h2 class="accordion-header">
               <button
-                class="accordion-button"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#collapseOne"
-                aria-expanded="true"
-                aria-controls="collapseOne">
-                Accordion Item #1
+          class="accordion-button"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapseOne"
+          aria-expanded="true"
+          aria-controls="collapseOne">
+          Karbohidrat
               </button>
             </h2>
             <div
@@ -414,28 +414,23 @@
               class="accordion-collapse collapse show"
               data-bs-parent="#accordionExample">
               <div class="accordion-body">
-                <strong>This is the first item’s accordion body.</strong> It
-                is shown by default, until the collapse plugin adds the
-                appropriate classes that we use to style each element. These
-                classes control the overall appearance, as well as the showing
-                and hiding via CSS transitions. You can modify any of this
-                with custom CSS or overriding our default variables. It’s also
-                worth noting that just about any HTML can go within the
-                <code>.accordion-body</code>, though the transition does limit
-                overflow.
+          <strong>Karbohidrat merupakan sumber energi utama bagi tubuh.</strong> 
+          Makanan yang mengandung karbohidrat seperti nasi, roti, kentang, dan sereal 
+          sangat penting untuk pertumbuhan dan perkembangan anak. Porsi karbohidrat 
+          yang disarankan adalah sekitar 45-65% dari total asupan kalori harian.
               </div>
             </div>
           </div>
           <div class="accordion-item">
             <h2 class="accordion-header">
               <button
-                class="accordion-button collapsed"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#collapseTwo"
-                aria-expanded="false"
-                aria-controls="collapseTwo">
-                Accordion Item #2
+          class="accordion-button collapsed"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapseTwo"
+          aria-expanded="false"
+          aria-controls="collapseTwo">
+          Protein
               </button>
             </h2>
             <div
@@ -443,28 +438,23 @@
               class="accordion-collapse collapse"
               data-bs-parent="#accordionExample">
               <div class="accordion-body">
-                <strong>This is the second item’s accordion body.</strong> It
-                is hidden by default, until the collapse plugin adds the
-                appropriate classes that we use to style each element. These
-                classes control the overall appearance, as well as the showing
-                and hiding via CSS transitions. You can modify any of this
-                with custom CSS or overriding our default variables. It’s also
-                worth noting that just about any HTML can go within the
-                <code>.accordion-body</code>, though the transition does limit
-                overflow.
+          <strong>Protein sangat penting untuk pertumbuhan dan perkembangan anak.</strong>
+          Sumber protein yang baik termasuk daging, ikan, telur, susu, dan kacang-kacangan.
+          Anak-anak membutuhkan protein sekitar 10-30% dari total asupan kalori harian untuk
+          mendukung pertumbuhan optimal dan mencegah stunting.
               </div>
             </div>
           </div>
           <div class="accordion-item">
             <h2 class="accordion-header">
               <button
-                class="accordion-button collapsed"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#collapseThree"
-                aria-expanded="false"
-                aria-controls="collapseThree">
-                Accordion Item #3
+          class="accordion-button collapsed"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapseThree"
+          aria-expanded="false"
+          aria-controls="collapseThree">
+          Vitamin dan Mineral
               </button>
             </h2>
             <div
@@ -472,44 +462,34 @@
               class="accordion-collapse collapse"
               data-bs-parent="#accordionExample">
               <div class="accordion-body">
-                <strong>This is the third item’s accordion body.</strong> It
-                is hidden by default, until the collapse plugin adds the
-                appropriate classes that we use to style each element. These
-                classes control the overall appearance, as well as the showing
-                and hiding via CSS transitions. You can modify any of this
-                with custom CSS or overriding our default variables. It’s also
-                worth noting that just about any HTML can go within the
-                <code>.accordion-body</code>, though the transition does limit
-                overflow.
+          <strong>Vitamin dan mineral esensial untuk sistem kekebalan tubuh.</strong>
+          Buah-buahan dan sayuran segar kaya akan vitamin dan mineral yang diperlukan untuk
+          pertumbuhan optimal. Pastikan anak mengonsumsi beragam buah dan sayur berwarna-warni
+          untuk mendapatkan berbagai nutrisi penting.
               </div>
             </div>
           </div>
           <div class="accordion-item">
             <h2 class="accordion-header">
               <button
-                class="accordion-button collapsed"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#collapseThree"
-                aria-expanded="false"
-                aria-controls="collapseThree">
-                Accordion Item #4
+          class="accordion-button collapsed"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapseFour"
+          aria-expanded="false"
+          aria-controls="collapseFour">
+          Lemak Sehat
               </button>
             </h2>
             <div
-              id="collapseThree"
+              id="collapseFour"
               class="accordion-collapse collapse"
               data-bs-parent="#accordionExample">
               <div class="accordion-body">
-                <strong>This is the third item’s accordion body.</strong> It
-                is hidden by default, until the collapse plugin adds the
-                appropriate classes that we use to style each element. These
-                classes control the overall appearance, as well as the showing
-                and hiding via CSS transitions. You can modify any of this
-                with custom CSS or overriding our default variables. It’s also
-                worth noting that just about any HTML can go within the
-                <code>.accordion-body</code>, though the transition does limit
-                overflow.
+          <strong>Lemak sehat penting untuk perkembangan otak anak.</strong>
+          Sumber lemak sehat seperti ikan, alpukat, minyak zaitun, dan kacang-kacangan
+          membantu penyerapan vitamin dan mendukung pertumbuhan otak. Porsi lemak yang
+          direkomendasikan adalah 25-35% dari total asupan kalori harian.
               </div>
             </div>
           </div>
@@ -670,30 +650,30 @@
         <!-- Dropdown untuk Jenis Kelamin -->
         <label for="jenisKelamin">Jenis Kelamin:</label>
         <select id="jenisKelamin" name="jenisKelamin" required>
-          <option value="anak_perempuan">Anak Perempuan</option>
-          <option value="anak_laki">Anak Laki-laki</option>
+          <option value="P">Anak Perempuan</option>
+          <option value="L">Anak Laki-laki</option>
         </select>
 
         <!-- Input untuk Tinggi Badan -->
         <div class="d-flex flex-column">
           <label for="tinggiBadan">Tinggi Badan (cm):</label>
-          <input type="number" id="tinggiBadan" name="tinggiBadan" />
+          <input type="number" id="tinggiBadan" name="tinggi" />
         </div>
 
         <!-- Input untuk Berat Badan -->
         <label for="beratBadan">Berat Badan (kg):</label>
-        <input type="number" id="beratBadan" name="beratBadan" required />
+        <input type="number" id="beratBadan" name="berat" required />
 
         <!-- Input untuk Lingkar Kepala -->
         <label for="beratBadan">Lingkar Kepala (cm) :</label>
         <input
           type="number"
           id="lingkar Kepala"
-          name="lingkar Kepala"
+          name="lingkarKepala"
           required />
 
         <!-- Tombol untuk Simpan -->
-        <button type="button" id="simpanButton">Simpan</button>
+        <button type="submit" id="simpanButton">Simpan</button>
       </form>
 
       <!-- Hasil perhitungan -->
@@ -703,15 +683,15 @@
         <div class="result-card" id="bbResult">
           <h3>Berat Badan Berdasarkan Umur:</h3>
           <p>
-            Z-Score: - <br />
-            Status Gizi: -
+            Z-Score: <span id="zScoreBerat"></span> <br />
+            Status Gizi: <span id="giziBerat"></span>
           </p>
         </div>
         <div class="result-card" id="tbResult">
           <h3>Tinggi Badan Berdasarkan Umur:</h3>
           <p>
-            Z-Score: - <br />
-            Status Gizi: -
+            Z-Score: <span id="zScoreTinggi"></span> <br />
+            Status Gizi: <span id="giziTinggi"></span>
           </p>
         </div>
       </div>
@@ -722,15 +702,15 @@
         <div class="result-card" id="bbTbResult">
           <h3>Tinggi dan Berat Badan Berdasarkan Umur:</h3>
           <p>
-            Z-Score: - <br />
-            Status Gizi: -
+            Z-Score: <span id="zScoreTinggiBerat"></span> <br />
+            Status Gizi: <span id="giziTinggiBerat"></span>
           </p>
         </div>
         <div class="result-card" id="bmiResult">
           <h3>Lingkar Kepala Berdasarkan Umur: <br /></h3>
           <p>
-            Z-Score: - <br />
-            Status Gizi: -
+            Z-Score: <span id="zScoreLingkarKepala"></span> <br />
+            Status Gizi: <span id="giziLingkarKepala"></span>
           </p>
           <style></style>
         </div>
@@ -818,40 +798,40 @@
 
     <div class="mx-auto row px-lg-5 mb-4">
       <div class="col-6 text-center col-lg-3">
-        <img class="mb-4 p-2" src="{{asset('assets/img/Asset/Anak Bugar.png' )}}" alt="" />
-        <p style="text-align: justify">
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Hic libero
-          quod doloremque consectetur dolorum ratione, fugit deserunt aliquid
-          aspernatur distinctio quae quaerat quas officia optio veniam
-          voluptates asperiores soluta eius.
-        </p>
+      <img class="mb-4 p-2" src="{{asset('assets/img/Asset/Anak Bugar.png' )}}" alt="" />
+      <p style="text-align: justify">
+        Pertumbuhan fisik yang terhambat merupakan tanda utama stunting. Anak dengan 
+        stunting memiliki tinggi badan yang lebih pendek dibanding anak seusianya dan 
+        tampak lebih muda dari usia sebenarnya. Hal ini dapat terlihat jelas saat 
+        dibandingkan dengan anak-anak lain seusianya.
+      </p>
       </div>
       <div class="col-6 text-center col-lg-3">
-        <img class="mb-4 p-2" src="{{asset('assets/img/Asset/Timbangan.png')}}" alt="" />
-        <p style="text-align: justify">
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Hic libero
-          quod doloremque consectetur dolorum ratione, fugit deserunt aliquid
-          aspernatur distinctio quae quaerat quas officia optio veniam
-          voluptates asperiores soluta eius.
-        </p>
+      <img class="mb-4 p-2" src="{{asset('assets/img/Asset/Timbangan.png')}}" alt="" />
+      <p style="text-align: justify">
+        Anak dengan stunting sering mengalami keterlambatan perkembangan motorik dan 
+        kognitif. Mereka mungkin terlambat belajar berjalan, berbicara, atau memiliki 
+        kesulitan dalam memproses informasi. Kemampuan belajar dan daya tangkap mereka 
+        juga bisa lebih rendah dibanding anak-anak seusianya.
+      </p>
       </div>
       <div class="col-6 text-center col-lg-3">
-        <img class="mb-4 p-2" src="{{asset('assets/img/Asset/Tinggi Anak.png')}}" alt="" />
-        <p style="text-align: justify">
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Hic libero
-          quod doloremque consectetur dolorum ratione, fugit deserunt aliquid
-          aspernatur distinctio quae quaerat quas officia optio veniam
-          voluptates asperiores soluta eius.
-        </p>
+      <img class="mb-4 p-2" src="{{asset('assets/img/Asset/Tinggi Anak.png')}}" alt="" />
+      <p style="text-align: justify">
+        Sistem kekebalan tubuh yang lemah membuat anak stunting lebih rentan terhadap 
+        penyakit infeksi. Mereka lebih sering mengalami sakit seperti diare dan infeksi 
+        saluran pernapasan. Hal ini dapat mengganggu pertumbuhan dan perkembangan 
+        mereka lebih lanjut.
+      </p>
       </div>
       <div class="col-6 text-center col-lg-3">
-        <img class="mb-4 p-2" src="{{asset('assets/img/Asset/Tulang Anak.png')}}" alt="" />
-        <p style="text-align: justify">
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Hic libero
-          quod doloremque consectetur dolorum ratione, fugit deserunt aliquid
-          aspernatur distinctio quae quaerat quas officia optio veniam
-          voluptates asperiores soluta eius.
-        </p>
+      <img class="mb-4 p-2" src="{{asset('assets/img/Asset/Tulang Anak.png')}}" alt="" />
+      <p style="text-align: justify">
+        Wajah anak stunting terlihat lebih muda dari usianya, dengan struktur tulang 
+        yang kurang berkembang. Mereka juga cenderung memiliki berat badan rendah 
+        dan massa otot yang kurang. Kondisi ini dapat memengaruhi kepercayaan diri 
+        dan perkembangan sosial mereka.
+      </p>
       </div>
     </div>
   </section>
@@ -1271,6 +1251,55 @@
   </footer>
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.getElementById('giziForm').addEventListener('submit', function(e) {
+    e.preventDefault(); // Mencegah form melakukan submit secara default
+
+    // Ambil data dari form
+    const formData = new FormData(this);
+
+    // Konversi FormData menjadi objek
+    const formObject = {};
+    formData.forEach((value, key) => {
+        formObject[key] = value;
+    });
+    const zScoreBerat = document.getElementById('zScoreBerat');
+    const giziBerat = document.getElementById('giziBerat');
+    const zScoreTinggi = document.getElementById('zScoreTinggi');
+    const giziTinggi = document.getElementById('giziTinggi');
+    const zScoreTinggiBerat = document.getElementById('zScoreTinggiBerat');
+    const giziTinggiBerat = document.getElementById('giziTinggiBerat');
+    const zScoreLingkarKepala = document.getElementById('zScoreLingkarKepala');
+    const giziLingkarKepala = document.getElementById('giziLingkarKepala');
+    // Kirim data menggunakan fetch
+    fetch('/api/giziForm', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formObject) // Kirim data sebagai JSON
+    })
+    .then(response => response.json()) // Menangani respons JSON dari server
+    .then(data => {
+        console.log('Success:', data);
+        zScoreBerat.innerHTML = data.berat;
+        giziBerat.innerHTML = data.giziberat;
+        zScoreTinggi.innerHTML = data.tinggi;
+        giziTinggi.innerHTML = data.gizitinggi;
+        zScoreTinggiBerat.innerHTML = data.beratTinggi;
+        giziTinggiBerat.innerHTML = data.giziberatTinggi;
+        zScoreLingkarKepala.innerHTML = data.lingkarKepala;
+        giziLingkarKepala.innerHTML = data.gizilingkarKepala;
+        
+
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Terjadi kesalahan saat mengirim data');
+    });
+});
+
+  </script>
 </body>
 
 </html>

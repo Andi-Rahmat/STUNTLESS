@@ -25,7 +25,9 @@ class ibuController extends Controller
         public function dashboard()
     {
         $balitaList = Balita::where('idOrangTua',userOrangTua()->id)->get();
-        $pengukuranList = Pengukuran::where('idBalita', 1)->get();
+        $pengukuranList = Pengukuran::whereIn('idBalita', userOrangTua()->balita->pluck('id'))
+        ->orderBy('tglPengukuran', 'desc')
+        ->get();
         // Logic for the dashboard can be added here
         return view('backend.ibu.dashboard', compact('balitaList', 'pengukuranList'));
     }

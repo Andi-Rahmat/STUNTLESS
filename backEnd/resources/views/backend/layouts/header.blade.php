@@ -116,52 +116,57 @@
 
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
+        @if(cekRole() == 'ibu' && notif()['jumlahN'] != 0)
+        <?php $notif = notif(); ?>
         <li class="nav-item dropdown">
-
           <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
             <i class="bi bi-bell"></i>
-            <span class="badge bg-primary badge-number">2</span>
+            <span class="badge bg-primary badge-number">{{$notif['jumlahN']}}</span>
           </a><!-- End Notification Icon -->
-
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
             <li class="dropdown-header">
-              You have 2 new notifications
-              <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+              You have {{$notif['jumlahN']}} new notifications
+              <!-- <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a> -->
             </li>
             <li>
               <hr class="dropdown-divider">
             </li>
-
+            @if(!empty($notif['reminder']))
+            @foreach($notif['reminder'] as $reminder)
             <li class="notification-item">
               <i class="bi bi-exclamation-circle text-warning"></i>
               <div>
                 <h4>Reminder</h4>
-                <p>Yth. Bapak/Ibu Wali Balita,</p>
-                <p>Kami informasikan bahwa sudah 1 bulan sejak kunjungan terakhir. Saatnya membawa putra/putri Bapak/Ibu ke Posyandu untuk pemeriksaan rutin.</p>
+                <p>Yth. Bapak/Ibu Wali  <b>{{$reminder->balita->namaLengkap}}</b>,</p>
+                <p>Kami informasikan bahwa sudah lebih dari 1 bulan sejak kunjungan terakhir. Saatnya membawa putra/putri Bapak/Ibu ke Posyandu untuk pemeriksaan rutin.</p>
               </div>
             </li>
 
             <li>
               <hr class="dropdown-divider">
             </li>
-
+            @endforeach
+            @endif
+            @if(!empty($notif['warning']))
+            @foreach($notif['warning'] as $warning)
             <li class="notification-item">
               <i class="bi bi-x-circle text-danger"></i>
               <div>
                 <h4>Warning</h4>
-                <p>Yth. Bapak/Ibu Wali Balita,</p>
-                <p>Berdasarkan hasil pemantauan terakhir di Posyandu, putra/putri Bapak/Ibu teridentifikasi berisiko stunting. Kami menyarankan untuk melakukan pemeriksaan lanjutan dan mengikuti arahan petugas gizi.</p>
+                <p>Yth. Bapak/Ibu Wali <b>{{$warning->balita->namaLengkap}}</b>,</p>
+                <p>Berdasarkan hasil pemantauan terakhir, putra/putri Bapak/Ibu teridentifikasi berisiko stunting. Kami menyarankan untuk melakukan pemeriksaan lanjutan dan mengikuti arahan petugas gizi.</p>
               </div>
             </li>
-<!-- 
+            
             <li>
               <hr class="dropdown-divider">
-            </li> -->
-
+            </li>
+            @endforeach
+            @endif
           </ul><!-- End Notification Dropdown Items -->
 
         </li><!-- End Notification Nav -->
-
+        @endif
         <li class="nav-item dropdown pe-3">
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">

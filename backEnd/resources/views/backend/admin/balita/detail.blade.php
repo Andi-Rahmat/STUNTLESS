@@ -691,8 +691,10 @@ if($dataSekarang != null) {
 
         @if(request('page') == 'perkembangan')
         <script>
-            document.getElementById('tahapPerkembangan').addEventListener('change', function() {
-                const tahap = this.value;
+            
+            document.addEventListener('DOMContentLoaded', function () {
+            // Fungsi untuk memuat data berdasarkan tahap
+            const loadDevelopmentData = (tahap = '') => {
                 const motorikDiv = document.querySelector('.motorik');
                 const kognitifDiv = document.querySelector('.kognitif');
                 const sosialDiv = document.querySelector('.sosial');
@@ -716,7 +718,19 @@ if($dataSekarang != null) {
                     kognitifDiv.innerHTML = '<h5 class="card-title text-center">Pilih Tahap Perkembangan terlebih dahulu</h5>';
                     sosialDiv.innerHTML = '<h5 class="card-title text-center">Pilih Tahap Perkembangan terlebih dahulu</h5>';
                 }
-            });
+            };
+
+            // Jalankan loadDevelopmentData pertama kali dengan tahap yang dipilih (jika ada)
+            const tahap = document.getElementById('tahapPerkembangan').value;
+            loadDevelopmentData(tahap);
+
+            // Tambahkan event listener untuk perubahan pada select
+            document.getElementById('tahapPerkembangan').addEventListener('change', function () {
+                const tahap = this.value;
+                loadDevelopmentData(tahap);
+    });
+});
+
         </script>
         @endif
 

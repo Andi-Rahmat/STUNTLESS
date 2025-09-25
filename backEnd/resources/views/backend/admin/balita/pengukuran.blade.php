@@ -103,7 +103,6 @@
         </div>
     </div>
     <script>
-        // Fungsi untuk menghitung usia
         const dateInput = document.getElementById('folaotingTgl');
         const birthDate = new Date("{{$dataBalita->tglLahir}}");
 
@@ -112,7 +111,6 @@
             let ageYears = selectedDate.getFullYear() - birthDate.getFullYear();
             let ageMonths = selectedDate.getMonth() - birthDate.getMonth();
 
-            // Jika bulan lahir lebih besar dari bulan yang dipilih, kurangi tahun dan tambahkan bulan
             if (ageMonths < 0) {
                 ageYears--;
                 ageMonths += 12;
@@ -122,8 +120,8 @@
 
         flatpickr("#folaotingTgl", {
             maxDate: "today",
-            dateFormat: "Y-m-d", // format tanggal
-            allowInput: true, // biarkan input manual jika diinginkan
+            dateFormat: "Y-m-d", 
+            allowInput: true, 
         });
 
         const berat = document.getElementById('berat');
@@ -134,7 +132,7 @@
 
         function loadDataPengukuran() {
             $.ajax({
-                url: '/get-data-pengukuran', // URL untuk request data
+                url: '/get-data-pengukuran', 
                 type: 'GET',
                 success: function(response) {
                     berat.value = response.berat

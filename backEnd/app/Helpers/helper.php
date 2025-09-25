@@ -1,6 +1,8 @@
 <?php
 
+use App\Models\Pengukuran;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 if (!function_exists('hitungUsia')) {
@@ -17,6 +19,47 @@ if (!function_exists('hitungUsia')) {
         $age = $today->diff($birthDate);
 
         return $age->y . ' tahun ' . $age->m . ' bulan';
+    }
+}
+
+if (!function_exists('notif')) {
+    function notif()
+    {
+        $idBalitas = userOrangTua()->balita->pluck('id');
+        $pengukurans = Pengukuran::whereIn('idBalita', $idBalitas)
+        ->orderBy('idBalita')  // Mengurutkan berdasarkan idBalita (opsional, hanya untuk pengelompokkan)
+        ->orderBy('tglPengukuran', 'desc')
+        ->get()
+        ->groupBy('idBalita');  // Mengelompokkan berdasarkan idBalita
+
+        $i = 0;
+        $reminder = [];
+        $warning = [];
+
+        foreach ($pengukurans as $pengukuran) {
+            $pengukuranTerbaru = $pengukuran->first();
+            $pengukuranSebelumnya = $pengukuran->skip(1)->first() ?? null;
+            $tanggalPengukuran = Carbon::parse(($pengukuranTerbaru)->tglPengukuran);
+            $tanggalSekarang = Carbon::now();
+            $selisihBulan = $tanggalPengukuran->diffInMonths($tanggalSekarang);
+            $selisihBulanWarning = Carbon::parse(($pengukuranSebelumnya)->tglPengukuran)->diffInMonths(Carbon::parse(($pengukuranTerbaru)->tglPengukuran));
+            if($pengukuranTerbaru->zScore->tinggi <= -2 && $pengukuranSebelumnya->zScore->tinggi <= -2 && $selisihBulanWarning >= 1 ){
+                $warning[$i] = $pengukuranTerbaru;
+            }
+            if ($selisihBulan >= 1) {
+                $reminder[$i] = $pengukuranTerbaru;
+            }
+            $i++;
+        }
+        $jumlahNotif = count($reminder) + count($warning);
+        $dataNotif = [
+            'reminder'  => $reminder,
+            'warning'   => $warning,
+            'jumlahN'   => $jumlahNotif
+        ];
+        
+        return $dataNotif;
+
     }
 }
 if (!function_exists('hitungUsiaBulan')) {

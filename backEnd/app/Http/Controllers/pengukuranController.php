@@ -222,4 +222,87 @@ class pengukuranController extends Controller
         return response()->json('data lk = '.$lingkarKepala.', berhasil');
     
     }
+
+    public function feGiziForm(Request $request)
+    {
+        $dataWHO = require app_path('data/dataWHO.php');
+        $months = $request->input('umur');
+         $IMT = number_format($request->berat / (($request->tinggi / 100) * ($request->tinggi / 100)), 3);
+
+        // hitung Zscore Berat
+        $data['dataBerat']    = $dataWHO['berat'][$request->jenisKelamin == 'L' ? 'laki-laki' : 'perempuan'][$months];
+        if ($request->berat == $data['dataBerat']['SD0']) {
+            $zscoreBerat = ($request->berat - $data['dataBerat']['SD0']) / $data['dataBerat']['SD0'];
+        } elseif ($request->berat < $data['dataBerat']['SD0']) {
+            $zscoreBerat = ($request->berat - $data['dataBerat']['SD0']) / ($data['dataBerat']['SD0'] - $data['dataBerat']['SD1neg']);
+        } else {
+            $zscoreBerat = ($request->berat - $data['dataBerat']['SD0']) / ($data['dataBerat']['SD1'] - $data['dataBerat']['SD0']);
+        }
+
+        // hitung Zscore tinggi
+        $data['dataTinggi']    = $dataWHO['tinggi'][$request->jenisKelamin == 'L' ? 'laki-laki' : 'perempuan'][$months];
+
+        if ($request->tinggi == $data['dataTinggi']['SD0']) {
+            $zscoreTinggi = ($request->tinggi - $data['dataTinggi']['SD0']) / $data['dataTinggi']['SD0'];
+        } elseif ($request->tinggi < $data['dataTinggi']['SD0']) {
+            $zscoreTinggi = ($request->tinggi - $data['dataTinggi']['SD0']) / ($data['dataTinggi']['SD0'] - $data['dataTinggi']['SD1neg']);
+        } else {
+            $zscoreTinggi = ($request->tinggi - $data['dataTinggi']['SD0']) / ($data['dataTinggi']['SD1'] - $data['dataTinggi']['SD0']);
+        }
+        // END 
+        // hitung Zscore BERAT/TINGGI
+        $data['dataBeratTinggi']    = $dataWHO['berat/tinggi'][$request->jenisKelamin == 'L' ? 'laki-laki' : 'perempuan'][$months >= 24 ? 1 : 0][(float)$request->tinggi];
+        if ($request->berat == $data['dataBeratTinggi']['SD0']) {
+            $zscoreBeratTinggi = ($request->berat - $data['dataBeratTinggi']['SD0']) / $data['dataBeratTinggi']['SD0'];
+        } elseif ($request->berat < $data['dataBeratTinggi']['SD0']) {
+            $zscoreBeratTinggi = ($request->berat - $data['dataBeratTinggi']['SD0']) / ($data['dataBeratTinggi']['SD0'] - $data['dataBeratTinggi']['SD1neg']);
+        } else {
+            $zscoreBeratTinggi = ($request->berat - $data['dataBeratTinggi']['SD0']) / ($data['dataBeratTinggi']['SD1'] - $data['dataBeratTinggi']['SD0']);
+        }
+        // end
+
+        // hitung Zscore lingkarKepala
+        $data['dataLingkarKepala']    = $dataWHO['lingkarKepala'][$request->jenisKelamin == 'L' ? 'laki-laki' : 'perempuan'][$months];
+
+        if ($request->lingkarKepala == $data['dataLingkarKepala']['SD0']) {
+            $zscoreLingkarKepala = ($request->lingkarKepala - $data['dataLingkarKepala']['SD0']) / $data['dataLingkarKepala']['SD0'];
+        } elseif ($request->lingkarKepala < $data['dataLingkarKepala']['SD0']) {
+            $zscoreLingkarKepala = ($request->lingkarKepala - $data['dataLingkarKepala']['SD0']) / ($data['dataLingkarKepala']['SD0'] - $data['dataLingkarKepala']['SD1neg']);
+        } else {
+            $zscoreLingkarKepala = ($request->lingkarKepala - $data['dataLingkarKepala']['SD0']) / ($data['dataLingkarKepala']['SD1'] - $data['dataLingkarKepala']['SD0']);
+        }
+        // end
+
+        // hitung Zscore imt
+        $data['dataImt']    = $dataWHO['imt'][$request->jenisKelamin == 'L' ? 'laki-laki' : 'perempuan'][$months];
+
+        if ($IMT == $data['dataImt']['SD0']) {
+            $zscoreIMT = ($IMT - $data['dataImt']['SD0']) / $data['dataImt']['SD0'];
+        } elseif ($IMT < $data['dataImt']['SD0']) {
+            $zscoreIMT = ($IMT - $data['dataImt']['SD0']) / ($data['dataImt']['SD0'] - $data['dataImt']['SD1neg']);
+        } else {
+            $zscoreIMT = ($IMT - $data['dataImt']['SD0']) / ($data['dataImt']['SD1'] - $data['dataImt']['SD0']);
+        }
+        // // end
+        // $sdBerat = Arr::except($data['dataBerat'], ["L", "M", "S"]);
+        // $sdTinggi = Arr::except($data['dataTinggi'], ["L", "M", "S"]);
+        // $sdBeratTinggi = Arr::except($data['dataBeratTinggi'], ["L", "M", "S"]);
+        // $sdLingkarKepala = Arr::except($data['dataLingkarKepala'], ["L", "M", "S"]);
+        // $sdImt = Arr::except($data['dataImt'], ["L", "M", "S"]);
+
+        return response()->json([
+            'message' => 'Data berhasil diterima',
+            'berat' => $zscoreBerat,
+            'tinggi' => $zscoreTinggi,
+            'beratTinggi' => $zscoreBeratTinggi,
+            'IMT' => $zscoreIMT,
+            'lingkarKepala' => $zscoreLingkarKepala,
+            'giziberat' => checkIndikator($zscoreBerat,"berat"),
+            'gizitinggi' => checkIndikator($zscoreTinggi,"tinggi"),
+            'giziberatTinggi' => checkIndikator($zscoreBeratTinggi,"berat/tinggi"),
+            'giziIMT' => checkIndikator($zscoreIMT,"imt"),
+            'gizilingkarKepala' => checkIndikator($zscoreLingkarKepala,"lingkarKepala"),
+        ]);
+
+    }
 }
