@@ -684,14 +684,14 @@
           <h3>Berat Badan Berdasarkan Umur:</h3>
           <p>
             Z-Score: <span id="zScoreBerat"></span> <br />
-            Status Gizi: <span id="giziBerat"></span>
+            Status : <span id="giziBerat"></span>
           </p>
         </div>
         <div class="result-card" id="tbResult">
           <h3>Tinggi Badan Berdasarkan Umur:</h3>
           <p>
             Z-Score: <span id="zScoreTinggi"></span> <br />
-            Status Gizi: <span id="giziTinggi"></span>
+            Status : <span id="giziTinggi"></span>
           </p>
         </div>
       </div>
@@ -703,14 +703,14 @@
           <h3>Tinggi dan Berat Badan Berdasarkan Umur:</h3>
           <p>
             Z-Score: <span id="zScoreTinggiBerat"></span> <br />
-            Status Gizi: <span id="giziTinggiBerat"></span>
+            Status : <span id="giziTinggiBerat"></span>
           </p>
         </div>
         <div class="result-card" id="bmiResult">
           <h3>Lingkar Kepala Berdasarkan Umur: <br /></h3>
           <p>
             Z-Score: <span id="zScoreLingkarKepala"></span> <br />
-            Status Gizi: <span id="giziLingkarKepala"></span>
+            Status : <span id="giziLingkarKepala"></span>
           </p>
           <style></style>
         </div>
