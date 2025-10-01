@@ -41,15 +41,17 @@ if (!function_exists('notif')) {
             $pengukuranSebelumnya = $pengukuran->skip(1)->first() ?? null;
             $tanggalPengukuran = Carbon::parse(($pengukuranTerbaru)->tglPengukuran);
             $tanggalSekarang = Carbon::now();
-            $selisihBulan = $tanggalPengukuran->diffInMonths($tanggalSekarang);
-            $selisihBulanWarning = Carbon::parse(($pengukuranSebelumnya)->tglPengukuran)->diffInMonths(Carbon::parse(($pengukuranTerbaru)->tglPengukuran));
-            if($pengukuranTerbaru->zScore->tinggi <= -2 && $pengukuranSebelumnya->zScore->tinggi <= -2 && $selisihBulanWarning >= 1 ){
-                $warning[$i] = $pengukuranTerbaru;
+            if($tanggalPengukuran != null){
+                $selisihBulan = $tanggalPengukuran->diffInMonths($tanggalSekarang);
+                $selisihBulanWarning = Carbon::parse(($pengukuranSebelumnya)->tglPengukuran)->diffInMonths(Carbon::parse(($pengukuranTerbaru)->tglPengukuran));
+                if($pengukuranTerbaru->zScore->tinggi <= -2 && $pengukuranSebelumnya->zScore->tinggi <= -2 && $selisihBulanWarning >= 1 ){
+                    $warning[$i] = $pengukuranTerbaru;
+                }
+                if ($selisihBulan >= 1) {
+                    $reminder[$i] = $pengukuranTerbaru;
+                }
+                $i++;
             }
-            if ($selisihBulan >= 1) {
-                $reminder[$i] = $pengukuranTerbaru;
-            }
-            $i++;
         }
         $jumlahNotif = count($reminder) + count($warning);
         $dataNotif = [

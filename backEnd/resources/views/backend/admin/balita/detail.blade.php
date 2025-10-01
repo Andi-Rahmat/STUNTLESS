@@ -610,7 +610,7 @@ if($dataSekarang != null) {
             </div>
         </div>
 
-        @if(request('page') == 'riwayat')
+        @if(request('page') == 'riwayat' )
         <!-- Modal -->
         <div class="modal fade" id="detailPengukuran" tabindex="-1" aria-labelledby="detailPengukuranLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
