@@ -138,7 +138,7 @@
                                 <td>{{hitungUsia($pengukuran->balita->tglLahir,$pengukuran->tglPengukuran)}}</td>
                                 <td>{{$pengukuran->tglPengukuran}}</td>
                                 <td>
-                                    <a href="{{route('detail_balita_pengukuran',['id' => $pengukuran->idBalita, 'idPengukuran' => $pengukuran->id ])}}" class="btn btn-info"><i class="bi bi-info-circle"></i>
+                                    <a href="{{route('detail_balita_pengukuran',['role' => cekRole() ,'id' => $pengukuran->idBalita, 'idPengukuran' => $pengukuran->id ])}}" class="btn btn-info"><i class="bi bi-info-circle"></i>
                                         <span class="info-text">Info Detail!</span>
                                     </a>
                                 </td>
