@@ -47,11 +47,11 @@ if (!function_exists('notif')) {
                 if($pengukuranTerbaru->zScore->tinggi <= -2 && $pengukuranSebelumnya->zScore->tinggi <= -2 && $selisihBulanWarning >= 1 ){
                     $warning[$i] = $pengukuranTerbaru;
                 }
-                if ($selisihBulan >= 1) {
-                    $reminder[$i] = $pengukuranTerbaru;
-                }
-                $i++;
             }
+            if ($selisihBulan >= 1) {
+                $reminder[$i] = $pengukuranTerbaru;
+            }
+            $i++;
         }
         $jumlahNotif = count($reminder) + count($warning);
         $dataNotif = [
