@@ -41,7 +41,7 @@ if (!function_exists('notif')) {
             $pengukuranSebelumnya = $pengukuran->skip(1)->first() ?? null;
             $tanggalPengukuran = Carbon::parse(($pengukuranTerbaru)->tglPengukuran);
             $tanggalSekarang = Carbon::now();
-            if($tanggalPengukuran != null){
+            if($pengukuranSebelumnya != null){
                 $selisihBulan = $tanggalPengukuran->diffInMonths($tanggalSekarang);
                 $selisihBulanWarning = Carbon::parse(($pengukuranSebelumnya)->tglPengukuran)->diffInMonths(Carbon::parse(($pengukuranTerbaru)->tglPengukuran));
                 if($pengukuranTerbaru->zScore->tinggi <= -2 && $pengukuranSebelumnya->zScore->tinggi <= -2 && $selisihBulanWarning >= 1 ){
