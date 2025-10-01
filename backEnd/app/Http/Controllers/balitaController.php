@@ -143,7 +143,6 @@ class balitaController extends Controller
                                 </h2>
                                 <div id="collapseMotorik'.$i.'" class="accordion-collapse collapse" aria-labelledby="headingMotorik'.$i.'" data-bs-parent="#accordionExample">
                                     <div class="accordion-body text-center">
-                                        <img class="mb-3" src="https://www.shutterstock.com/shutterstock/photos/134640377/display_1500/stock-photo-cute-baby-boy-over-white-background-134640377.jpg" alt="" width="250">
                                         <div class="d-flex w-100 justify-content-center align-items-center flex-column">
                                             <div class="btn-group-vertical w-75" role="group">
                                                 <input type="radio" class="btn-check" name="radio_Motorik'.$i.'" id="yes_Motorik'.$i.'" autocomplete="off">
