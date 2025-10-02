@@ -93,7 +93,8 @@ class balitaController extends Controller
         $currentDate = $data['dataSekarang'] == null ? now() : Carbon::createFromFormat('Y-m-d', $data['dataSekarang']->tglPengukuran);
         $months = (int) $birthDateObj->diffInMonths($currentDate);
         if ($data['dataSekarang']) {
-            $data['dataWHO']        = $indikator == 'berat/tinggi' ? $dataWHO[$indikator][$balita->jenisKelamin == 'L' ? 'laki-laki' : 'perempuan'][$months >= 24 ? 1 : 0][(float)$data['dataSekarang']->tinggi]
+            $batasTinggiWHO = $months >= 24 ? 119 : 110;
+            $data['dataWHO']        = $indikator == 'berat/tinggi' ? $dataWHO['berat/tinggi'][$balita->jenisKelamin == 'L' ? 'laki-laki' : 'perempuan'][$months >= 24 ? 1 : 0][(float)$request->tinggi > $batasTinggiWHO ? $batasTinggiWHO : $request->tinggi]
                 : $dataWHO[$indikator][$balita->jenisKelamin == 'L' ? 'laki-laki' : 'perempuan'][$months];
         }
         $data['indikator']      = $indikator;
