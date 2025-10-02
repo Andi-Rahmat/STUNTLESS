@@ -94,7 +94,7 @@ class balitaController extends Controller
         $months = (int) $birthDateObj->diffInMonths($currentDate);
         if ($data['dataSekarang']) {
             $batasTinggiWHO = $months >= 24 ? 119 : 110;
-            $data['dataWHO']        = $indikator == 'berat/tinggi' ? $dataWHO['berat/tinggi'][$balita->jenisKelamin == 'L' ? 'laki-laki' : 'perempuan'][$months >= 24 ? 1 : 0][(float)$request->tinggi > $batasTinggiWHO ? $batasTinggiWHO : $request->tinggi]
+            $data['dataWHO']        = $indikator == 'berat/tinggi' ? $dataWHO['berat/tinggi'][$balita->jenisKelamin == 'L' ? 'laki-laki' : 'perempuan'][$months >= 24 ? 1 : 0][(float)$data['dataSekarang']->tinggi > $batasTinggiWHO ? $batasTinggiWHO : $request->tinggi]
                 : $dataWHO[$indikator][$balita->jenisKelamin == 'L' ? 'laki-laki' : 'perempuan'][$months];
         }
         $data['indikator']      = $indikator;
