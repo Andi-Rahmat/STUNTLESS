@@ -90,7 +90,8 @@ class pengukuranController extends Controller
         }
         // END 
         // hitung Zscore BERAT/TINGGI
-        $data['dataBeratTinggi']    = $dataWHO['berat/tinggi'][$balita->jenisKelamin == 'L' ? 'laki-laki' : 'perempuan'][$months >= 24 ? 1 : 0][(float)$request->tinggi];
+        $batasTinggiWHO = $months >= 24 ? 119 : 110;
+        $data['dataBeratTinggi']    = $dataWHO['berat/tinggi'][$balita->jenisKelamin == 'L' ? 'laki-laki' : 'perempuan'][$months >= 24 ? 1 : 0][(float)$request->tinggi > $batasTinggiWHO ? $batasTinggiWHO : $request->tinggi];
         if ($request->berat == $data['dataBeratTinggi']['SD0']) {
             $zscoreBeratTinggi = ($request->berat - $data['dataBeratTinggi']['SD0']) / $data['dataBeratTinggi']['SD0'];
         } elseif ($request->berat < $data['dataBeratTinggi']['SD0']) {
