@@ -53,6 +53,7 @@ if (!function_exists('notif')) {
             }
             $i++;
         }
+        $warning[$i] = $pengukuranTerbaru;
         $jumlahNotif = count($reminder) + count($warning);
         $dataNotif = [
             'reminder'  => $reminder,
