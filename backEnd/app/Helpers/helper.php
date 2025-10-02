@@ -136,7 +136,7 @@ if (!function_exists('checkSD')) {
      */
     function checkSD($nilai, array $sdData)
     {
-        $kategori = '';
+        $kategori = null;
 
         $prevKey = null;
         $prevValue = null;
@@ -155,7 +155,7 @@ if (!function_exists('checkSD')) {
         }
 
         // Jika nilai lebih besar dari semua batas
-        if (!isset($kategori)) {
+        if ($kategori == null ) {
             $kategori = array_key_last($sdData);
         }
 
