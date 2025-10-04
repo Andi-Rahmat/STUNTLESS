@@ -3,6 +3,7 @@
 use App\Http\Controllers\aiController;
 use App\Http\Controllers\balitaController;
 use App\Http\Controllers\pengukuranController;
+use App\Models\DataIot;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,4 +16,6 @@ Route::get('/data-lingkar-kepala/{lingkarKepala}', [pengukuranController::class,
 Route::post('/upGambar', [pengukuranController::class, 'gambar']);
 Route::post('/giziForm', [pengukuranController::class, 'feGiziForm']);
 Route::post('/chatAi', [aiController::class, 'chatAi']);       // non-stream
+
+Route::get('/get-data-pengukuran', [pengukuranController::class, 'dataPengukuran']);
 
